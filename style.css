@@ -1,0 +1,287 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 22.3.2016, 15:48:28
+    Author     : F@nny
+*/
+
+body {
+    background-color: white;
+}
+
+header {
+    padding: 30px;
+}
+
+header nav {
+    background-color: gray;
+    text-transform: uppercase;
+}
+
+header nav .active {
+    background-color: black;
+}
+
+.navbar-default .navbar-nav > li > .active {
+    color: white;
+}
+
+header nav ul :hover{
+    background-color: grey;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    color: white;
+}
+
+#logy:hover:before {
+    content: "prover ";
+}
+
+#navod:hover:before {
+    content: "precti ";
+}
+
+#domu:hover:before {
+    content: "jdi ";
+}
+
+#pridej:hover:after {
+    content: " zaznam";
+}
+
+#prehled:hover:before {
+    content: "ziskej ";
+}
+
+#zaloha:hover:after {
+    content: " nebo ztrat";
+}
+
+#synchro:hover:after {
+    content: " se SAP";
+}
+
+#inventura:hover:after {
+    content: " bez manka";
+}
+
+#vystav:hover:after {
+    content: " to";
+}
+
+#uzivatel:hover:before{
+    content: "ne";
+}
+
+article {
+    padding: 40px;
+    padding-top: 0px;
+}
+
+#insert {
+    width: 400px;
+}
+
+.formular {
+    padding: 30px;
+    padding-top: 0;
+}
+
+#vypis {
+    padding-top: 50px;
+}
+
+#vypis table {
+    border: gray solid 1px;
+}
+
+#prehled-form {
+
+}
+
+.vysledek > td {
+    font-weight: bolder;
+    border-top: grey double medium !important;
+}
+
+input[type=number] {-moz-appearance: textfield;}
+::-webkit-inner-spin-button { -webkit-appearance: none;}
+::-webkit-outer-spin-button { -webkit-appearance: none;}
+
+div.fileinputs {
+    position: relative;
+}
+
+div.fakefile {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+
+}
+
+input.file {
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+}
+
+
+#inventuraVysledek td {
+    border: black solid 1px;
+    padding: 10px;
+}
+
+.vydej {
+    float:right;
+}
+
+.vydej:hover, .prijem:hover {
+    background-color: darkgrey;
+    color:black;
+    border-color: black;
+}
+
+.prijem, .vydej{
+    border-color: black;
+}
+
+.oznaceno {
+    background-color: lightgreen;
+    color: grey;
+}
+
+.oznacenoC{
+    background-color: #ff9e7b;
+    color: white;
+}
+
+.oznacenoC:hover{
+    background-color: red !important;
+}
+
+.oznaceno:hover {
+    background-color: green !important;
+    color: white;
+}
+
+#nevystavene td{
+
+}
+
+.navodSeznam, .navodSeznam a {
+    color: black;
+    text-decoration: underline;
+}
+
+.navodSeznam a:hover {
+    color: darkslategray;
+}
+
+@media print{
+    body{
+        background-color: black !important;
+    }
+    .vysledek{
+        color: white;
+    }
+    .oznaceno {
+        color: blue !important;
+        -webkit-print-color-adjust: exact; 
+    }
+}
+
+div#zk {
+    position: relative;
+    width: 300px;
+}
+
+img#zk{
+    -moz-transition: all .5s;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+}
+
+div#zk:active img {
+    margin: auto;
+    position: relative;
+    -moz-transform: scale(3.3,3.3);
+    -webkit-transform: scale(3.3,3.3);
+    transform: scale(2.0,2.0);
+}
+
+@media (min-width: 768px) and (max-width: 1000px) {
+
+    #logy:hover:before {
+        content: "" !important;
+    }
+
+    #navod:hover:before {
+        content: "" !important;
+    }
+
+    #domu:hover:before {
+        content: "" !important;
+    }
+
+    #pridej:hover:after {
+        content: "" !important;
+    }
+
+    #prehled:hover:before {
+        content: "" !important;
+    }
+
+    #zaloha:hover:after {
+        content: "" !important;
+    }
+
+    #synchro:hover:after {
+        content: "" !important;
+    }
+
+    #inventura:hover:after {
+        content: "" !important;
+    }
+
+    #vystav:hover:after {
+        content: "" !important;
+    }
+
+    #uzivatel:hover:before{
+        content: "" !important;
+    }
+
+}
+
+.ziskejInfo {
+    width: 300px; 
+    background-color: white; 
+    border: black solid thin;
+    padding-top: 5px; 
+    padding-bottom: 5px; 
+
+}
+
+.styla{
+    position: absolute; 
+    top:-45px;
+}
+
+.stylb {
+    position: absolute; 
+    left: 270px;
+    top: -100px;
+}
+
+.stylc {
+    position: absolute;
+    top: -100px;
+}
