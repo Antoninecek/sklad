@@ -145,7 +145,7 @@ if (isset($this->vysledek)) {
         <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;">
             <div class="form-group">
                 <div class="col-sm-10" style="padding: 0;">
-                    <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required autofocus>
+                    <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
                 </div>
                 <div class="col-sm-2 text-center">
                     <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> > <abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje">Heslo? (najed)</abbr>
@@ -161,7 +161,7 @@ if (isset($this->vysledek)) {
 
             <div class="row">
                 <div class="col-sm-10" style="padding-top: 30px;">
-                    <input class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="showIt(this.value)" placeholder="EAN" required autofocus>
+                    <input class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
                 </div>
                 <div class="col-sm-2">
                     <div id="txtHint" class="col-sm-6">
