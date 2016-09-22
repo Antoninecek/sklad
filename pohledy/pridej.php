@@ -65,6 +65,7 @@
 
 <?php
 if ($this->uspesnePridani) {
+    
 
     if ($this->summ == "prijem") {
         ?>
