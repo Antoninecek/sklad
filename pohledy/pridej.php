@@ -6,7 +6,6 @@
     <input type="submit" value="Submit">
 </form> 
 
-
 <script>
     function showIt(str) {
         if (str == "") {
@@ -63,10 +62,14 @@
     }
 </script>
 
+
 <?php
 if ($this->uspesnePridani) {
+<<<<<<< HEAD
     
 
+=======
+>>>>>>> refs/remotes/origin/master
     if ($this->summ == "prijem") {
         ?>
         <div class="alert alert-success">
