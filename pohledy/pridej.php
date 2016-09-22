@@ -56,18 +56,27 @@
             }, 1500);
         }
     }
+    
+    function zobrazeniUndo(){
+        document.getElementById('formUndo').className="show";
+    }
 </script>
 
 
 <?php
 if ($this->uspesnePridani) {
+
     if ($this->summ == "prijem") {
         ?>
         <div class="alert alert-success">
             <strong>pridano</strong>
-            <form  id="formUndo" role="form" method="post" action="pridej/undo">
+            <br>
+            <div onclick="zobrazeniUndo()" style="cursor:pointer">
+                <span class="glyphicon glyphicon-fast-backward"></span> zobraz opraveni akce
+            </div>
+            <form  id="formUndo" class="hidden" role="form" method="post" action="pridej/undo">
                 <div class="form-group">
-                    <input type="text" name="formUndoHeslo" placeholder="HESLO" required>
+                    <input type="password" name="formUndoHeslo" placeholder="HESLO" required>
                 </div>
                 <button class="btn btn-default" type="submit">Oprav posledni akci</button>
             </form>
@@ -77,7 +86,11 @@ if ($this->uspesnePridani) {
         ?>
         <div class="alert alert-success">
             <strong>vydano</strong>
-            <form  id="formUndo" role="form" method="post" action="pridej/undo">
+            <br>
+            <div onclick="zobrazeniUndo()" style="cursor:pointer">
+                 <span class="glyphicon glyphicon-fast-backward"></span> zobraz opraveni akce
+            </div>
+            <form  id="formUndo" class="hidden" role="form" method="post" action="pridej/undo">
                 <div class="form-group">
                     <input type="password" name="formUndoHeslo" placeholder="HESLO" required>
                 </div>
@@ -148,7 +161,7 @@ if (isset($this->vysledek)) {
                     <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
                 </div>
                 <div class="col-sm-2 text-center">
-                    <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> > <abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje">Heslo? (najed)</abbr>
+                    <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> tabindex="-1"> <abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje">Heslo? (najed)</abbr>
                 </div>
             </div>
             <br/>
@@ -157,7 +170,7 @@ if (isset($this->vysledek)) {
             </div>
 
             <br>
-            <input id="skok" type="checkbox" name="skoc" checked> <abbr title="odskrtni pro zadani eanu/imei rucne">Automat skakani (najed mysi)</abbr>
+            <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> <abbr title="odskrtni pro zadani eanu/imei rucne">Automat skakani (najed mysi)</abbr>
 
             <div class="row">
                 <div class="col-sm-10" style="padding-top: 30px;">
