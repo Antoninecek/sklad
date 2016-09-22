@@ -6,7 +6,6 @@
     <input type="submit" value="Submit">
 </form> 
 
-
 <script>
     function showIt(str) {
         if (str == "") {
