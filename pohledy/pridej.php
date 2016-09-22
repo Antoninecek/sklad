@@ -65,11 +65,7 @@
 
 <?php
 if ($this->uspesnePridani) {
-<<<<<<< HEAD
-    
 
-=======
->>>>>>> refs/remotes/origin/master
     if ($this->summ == "prijem") {
         ?>
         <div class="alert alert-success">
