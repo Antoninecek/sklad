@@ -57,6 +57,10 @@
             }, 1500);
         }
     }
+    
+    function zobrazeniUndo(){
+        document.getElementById('formUndo').className="show";
+    }
 </script>
 
 <?php
@@ -65,9 +69,12 @@ if ($this->uspesnePridani) {
         ?>
         <div class="alert alert-success">
             <strong>pridano</strong>
-            <form  id="formUndo" role="form" method="post" action="pridej/undo">
+            <div onclick="zobrazeniUndo()">
+                <span class="glyphicon glyphicon-fast-backward"></span> zobraz undo
+            </div>
+            <form  id="formUndo" class="hidden" role="form" method="post" action="pridej/undo">
                 <div class="form-group">
-                    <input type="text" name="formUndoHeslo" placeholder="HESLO" required>
+                    <input type="password" name="formUndoHeslo" placeholder="HESLO" required>
                 </div>
                 <button class="btn btn-default" type="submit">Oprav posledni akci</button>
             </form>
@@ -77,7 +84,10 @@ if ($this->uspesnePridani) {
         ?>
         <div class="alert alert-success">
             <strong>vydano</strong>
-            <form  id="formUndo" role="form" method="post" action="pridej/undo">
+            <div id="zobrazUndo" onclick="zobrazeniUndo()">
+                 <span class="glyphicon glyphicon-fast-backward"></span> zobraz undo
+            </div>
+            <form  id="formUndo" class="hidden" role="form" method="post" action="pridej/undo">
                 <div class="form-group">
                     <input type="password" name="formUndoHeslo" placeholder="HESLO" required>
                 </div>
