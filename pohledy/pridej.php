@@ -70,8 +70,9 @@ if ($this->uspesnePridani) {
         ?>
         <div class="alert alert-success">
             <strong>pridano</strong>
-            <div onclick="zobrazeniUndo()">
-                <span class="glyphicon glyphicon-fast-backward"></span> zobraz undo
+            <br>
+            <div onclick="zobrazeniUndo()" style="cursor:pointer">
+                <span class="glyphicon glyphicon-fast-backward"></span> zobraz opraveni akce
             </div>
             <form  id="formUndo" class="hidden" role="form" method="post" action="pridej/undo">
                 <div class="form-group">
@@ -85,8 +86,9 @@ if ($this->uspesnePridani) {
         ?>
         <div class="alert alert-success">
             <strong>vydano</strong>
-            <div id="zobrazUndo" onclick="zobrazeniUndo()">
-                 <span class="glyphicon glyphicon-fast-backward"></span> zobraz undo
+            <br>
+            <div onclick="zobrazeniUndo()" style="cursor:pointer">
+                 <span class="glyphicon glyphicon-fast-backward"></span> zobraz opraveni akce
             </div>
             <form  id="formUndo" class="hidden" role="form" method="post" action="pridej/undo">
                 <div class="form-group">
@@ -159,7 +161,7 @@ if (isset($this->vysledek)) {
                     <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
                 </div>
                 <div class="col-sm-2 text-center">
-                    <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> tabindex=0> <abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje">Heslo? (najed)</abbr>
+                    <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> tabindex="-1"> <abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje">Heslo? (najed)</abbr>
                 </div>
             </div>
             <br/>
@@ -168,7 +170,7 @@ if (isset($this->vysledek)) {
             </div>
 
             <br>
-            <input id="skok" type="checkbox" name="skoc" checked> <abbr title="odskrtni pro zadani eanu/imei rucne">Automat skakani (najed mysi)</abbr>
+            <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> <abbr title="odskrtni pro zadani eanu/imei rucne">Automat skakani (najed mysi)</abbr>
 
             <div class="row">
                 <div class="col-sm-10" style="padding-top: 30px;">
