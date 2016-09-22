@@ -47,11 +47,11 @@ class ZiskejInfoKontroler extends Kontroler {
             <div class="ziskejInfo stylc">
                 <div class="col-sm-6" style="width: 100%">
                     <label for="ora">EAN </label>
-                    <input type="text" class="form-control" name="" value="<?php echo(empty($row[0]) ? "novy, sparuj" : "$row[2]"); ?>" required readonly>
+                    <input type="text" class="form-control" name="" value="<?php echo(empty($row[0]) ? "novy, sparuj" : "$row[2]"); ?>" tabindex=0 required readonly>
                 </div>
                 <div class="col-sm-6" style="width: 100%;">
                     <label for="popis">ITEM </label>
-                    <input type="text" class="form-control" name="" value="<?php echo(empty($row[0]) ? "se SAPem" : "$row[1]"); ?>" required readonly>
+                    <input type="text" class="form-control" name="" value="<?php echo(empty($row[0]) ? "se SAPem" : "$row[1]"); ?>" tabindex=0 required readonly>
                 </div>
             </div>
             <?php
