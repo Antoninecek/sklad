@@ -65,6 +65,7 @@
 
 <?php
 if ($this->uspesnePridani) {
+
     if ($this->summ == "prijem") {
         ?>
         <div class="alert alert-success">
@@ -206,9 +207,10 @@ if (isset($this->vysledek)) {
 
 <div class="pull-right">
     <table class="table table-hover">
-        <?php 
+        <?php
         //print_r($this->seznamZaznamu);
-        foreach ($this->seznamZaznamu as $a) { ?>
+        foreach ($this->seznamZaznamu as $a) {
+            ?>
             <tr>
                 <td> <?php echo $a['ean'] ?></td>
                 <td> <?php echo $a['imei'] ?></td>
