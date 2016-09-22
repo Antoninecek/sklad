@@ -60,7 +60,6 @@
 
 <?php
 if ($this->uspesnePridani) {
-
     if ($this->summ == "prijem") {
         ?>
         <div class="alert alert-success">
