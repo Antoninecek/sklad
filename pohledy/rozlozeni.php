@@ -92,7 +92,12 @@ and open the template in the editor.
                             </div>
                         </div>
                         <div class="col-sm-2">
-                            <div class=" text-center" style = "float: right">Frantisek Jukl<br><span class = "glyphicon glyphicon-copyright-mark"></span> 2016<br></div>
+                            <div class=" text-center" style = "float: right; margin-top: 10px;">
+                                Frantisek Jukl<br>
+                                <span class = "glyphicon glyphicon-copyright-mark"></span> 2016<br>
+                                <a href="mailto:frantisek.jukl@gmail.com" style="color: grey;">frantisek.jukl@gmail.com</a><br>
+                                <span style="color: grey">+420 607 749 929</span>
+                            </div>
                         </div>
                     </div>
                 </div>
