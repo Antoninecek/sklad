@@ -286,14 +286,7 @@ div#zk:active img {
     top: -100px;
 }
 
-.imei-input-notok {
-    background-image: url("pics/dialog-close.png");
-    background-repeat: no-repeat;
-    background-position: right;
-}
-
-.imei-input-ok {
-    background-image: url("pics/apply.png");
+.imei-input-bg {
     background-repeat: no-repeat;
     background-position: right;
 }
