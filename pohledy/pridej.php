@@ -44,19 +44,24 @@
             document.getElementById("pocet-input").disabled = true;
             document.getElementById("imei1-input").disabled = false;
             var a = validateIMEI(document.getElementById('imei-input').value);
-            console.log(a);
             if(a){
-                document.getElementById('imei-input').className.replace(new RegExp('(?:^|\\s)'+"imei-input-notok"+'(?!\\S)') ,'');
-                document.getElementById('imei-input').classList.add("imei-input-ok");
+                document.getElementById('imei-input').style.backgroundImage = "url('../pics/Apply.png')";
             } else {
-                console.log("a");
-                document.getElementById('imei-input').className.replace(new RegExp('(?:^|\\s)'+"imei-input-ok"+'(?!\\S)') ,'');
-                document.getElementById('imei-input').classList.add("imei-input-notok");
+                document.getElementById('imei-input').style.backgroundImage = "url('../pics/dialog-close.png')";
             }
         } else {
             document.getElementById("pocet-input").disabled = false;
             document.getElementById("imei1-input").disabled = true;
             document.getElementById("imei1-input").value = '';
+        }
+        
+        if(document.getElementById('imei1-input').value != "") {
+            var a = validateIMEI(document.getElementById('imei1-input').value);
+            if(a){
+                document.getElementById('imei1-input').style.backgroundImage = "url('../pics/Apply.png')";
+            } else {
+                document.getElementById('imei1-input').style.backgroundImage = "url('../pics/dialog-close.png')";
+            }
         }
 
 
@@ -224,7 +229,7 @@ if (isset($this->vysledek)) {
             </div>
             <p id="test"></p>
             <div class="form-group">
-                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" disabled onmouseover="disableIt()">
+                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" disabled onmouseover="disableIt()" onchange="disableIt()">
             </div>
 
             <div class="form-group">
