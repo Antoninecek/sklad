@@ -285,3 +285,15 @@ div#zk:active img {
     position: absolute;
     top: -100px;
 }
+
+.imei-input-notok {
+    background-image: url("pics/dialog-close.png");
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.imei-input-ok {
+    background-image: url("pics/apply.png");
+    background-repeat: no-repeat;
+    background-position: right;
+}

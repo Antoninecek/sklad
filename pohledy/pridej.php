@@ -43,6 +43,16 @@
             document.getElementById('pocet-input').value = 1;
             document.getElementById("pocet-input").disabled = true;
             document.getElementById("imei1-input").disabled = false;
+            var a = validateIMEI(document.getElementById('imei-input').value);
+            console.log(a);
+            if(a){
+                document.getElementById('imei-input').className.replace(new RegExp('(?:^|\\s)'+"imei-input-notok"+'(?!\\S)') ,'');
+                document.getElementById('imei-input').classList.add("imei-input-ok");
+            } else {
+                console.log("a");
+                document.getElementById('imei-input').className.replace(new RegExp('(?:^|\\s)'+"imei-input-ok"+'(?!\\S)') ,'');
+                document.getElementById('imei-input').classList.add("imei-input-notok");
+            }
         } else {
             document.getElementById("pocet-input").disabled = false;
             document.getElementById("imei1-input").disabled = true;
@@ -56,9 +66,35 @@
             }, 1500);
         }
     }
+
     
-    function zobrazeniUndo(){
-        document.getElementById('formUndo').className="show";
+
+    function validateIMEI(value) {
+        if (/[^0-9-\s]+/.test(value))
+            return false;
+
+        // The Luhn Algorithm. It's so pretty.
+        var nCheck = 0, nDigit = 0, bEven = false;
+        value = value.replace(/\D/g, "");
+
+        for (var n = value.length - 1; n >= 0; n--) {
+            var cDigit = value.charAt(n),
+                    nDigit = parseInt(cDigit, 10);
+
+            if (bEven) {
+                if ((nDigit *= 2) > 9)
+                    nDigit -= 9;
+            }
+
+            nCheck += nDigit;
+            bEven = !bEven;
+        }
+
+        return (nCheck % 10) == 0;
+    }
+
+    function zobrazeniUndo() {
+        document.getElementById('formUndo').className = "show";
     }
 </script>
 
@@ -88,7 +124,7 @@ if ($this->uspesnePridani) {
             <strong>vydano</strong>
             <br>
             <div onclick="zobrazeniUndo()" style="cursor:pointer">
-                 <span class="glyphicon glyphicon-fast-backward"></span> zobraz opraveni akce
+                <span class="glyphicon glyphicon-fast-backward"></span> zobraz opraveni akce
             </div>
             <form  id="formUndo" class="hidden" role="form" method="post" action="pridej/undo">
                 <div class="form-group">
@@ -186,6 +222,7 @@ if (isset($this->vysledek)) {
             <div class="form-group">
                 <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()" onchange="disableIt()">
             </div>
+            <p id="test"></p>
             <div class="form-group">
                 <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" disabled onmouseover="disableIt()">
             </div>
@@ -222,6 +259,6 @@ if (isset($this->vysledek)) {
                 <td style="max-width: 200px; word-wrap: break-word;"> <?php echo $a['text'] ?></td>
                 <td> <?php echo $a['datum'] ?></td>
             </tr>
-        <?php } ?>
+<?php } ?>
     </table>
 </div>
