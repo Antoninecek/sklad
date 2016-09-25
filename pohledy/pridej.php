@@ -36,9 +36,6 @@
             }, 1500);
         }
     }
-    
-    var imeiOk;
-    var imei1Ok;
 
     var imeiOk;
     var imei1Ok;
@@ -51,7 +48,6 @@
             document.getElementById("imei1-input").disabled = false;
             var a = validateIMEI(document.getElementById('imei-input').value);
             if(a){
-<<<<<<< HEAD
                 document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
                 document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei-input').style.backgroundPosition = "right";
@@ -60,14 +56,7 @@
                 document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
                 document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei-input').style.backgroundPosition = "right";
-=======
-                document.getElementById('imei-input').style.backgroundImage = "url('../pics/Apply.png')";
-                imeiOk = TRUE;
-            } else {
-                document.getElementById('imei-input').style.backgroundImage = "url('../pics/dialog-close.png')";
->>>>>>> origin/pridej-pohled-validace-imei
                 imeiOk = FALSE;
-            }
         } else {
             document.getElementById("pocet-input").disabled = false;
             document.getElementById("imei1-input").disabled = true;
@@ -77,7 +66,6 @@
         if(document.getElementById('imei1-input').value != "") {
             var a = validateIMEI(document.getElementById('imei1-input').value);
             if(a){
-<<<<<<< HEAD
                 document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
                 document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei1-input').style.backgroundPosition = "right";
@@ -87,12 +75,7 @@
                 document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
                 document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei1-input').style.backgroundPosition = "right";
-=======
-                document.getElementById('imei1-input').style.backgroundImage = "url('../pics/Apply.png')";
-                imei1Ok = TRUE;
-            } else {
                 document.getElementById('imei1-input').style.backgroundImage = "url('../pics/dialog-close.png')";
->>>>>>> origin/pridej-pohled-validace-imei
                 imei1Ok = FALSE;
             }
         }
