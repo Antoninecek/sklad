@@ -36,6 +36,9 @@
             }, 1500);
         }
     }
+    
+    var imeiOk;
+    var imei1Ok;
 
     function disableIt() {
 
@@ -45,9 +48,15 @@
             document.getElementById("imei1-input").disabled = false;
             var a = validateIMEI(document.getElementById('imei-input').value);
             if(a){
-                document.getElementById('imei-input').style.backgroundImage = "url('../pics/Apply.png')";
+                document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
+                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+                document.getElementById('imei-input').style.backgroundPosition = "right";
+                imeiOk = TRUE;
             } else {
-                document.getElementById('imei-input').style.backgroundImage = "url('../pics/dialog-close.png')";
+                document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
+                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+                document.getElementById('imei-input').style.backgroundPosition = "right";
+                imeiOk = FALSE;
             }
         } else {
             document.getElementById("pocet-input").disabled = false;
@@ -58,9 +67,16 @@
         if(document.getElementById('imei1-input').value != "") {
             var a = validateIMEI(document.getElementById('imei1-input').value);
             if(a){
-                document.getElementById('imei1-input').style.backgroundImage = "url('../pics/Apply.png')";
+                document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
+                document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
+                document.getElementById('imei1-input').style.backgroundPosition = "right";
+                imei1Ok = TRUE;
+                
             } else {
-                document.getElementById('imei1-input').style.backgroundImage = "url('../pics/dialog-close.png')";
+                document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
+                document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
+                document.getElementById('imei1-input').style.backgroundPosition = "right";
+                imei1Ok = FALSE;
             }
         }
 
@@ -100,6 +116,16 @@
 
     function zobrazeniUndo() {
         document.getElementById('formUndo').className = "show";
+    }
+    
+    function validate(){
+        if(document.getElementById(imei-input).value != ""){
+            if(document.getElementById(imei1-input).value != ""){
+                if(imeiOk == TRUE && imei1Ok == TRUE){
+                    
+                }
+            }
+        }
     }
 </script>
 
@@ -229,7 +255,7 @@ if (isset($this->vysledek)) {
             </div>
             <p id="test"></p>
             <div class="form-group">
-                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" disabled onmouseover="disableIt()" onchange="disableIt()">
+                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" disabled onmouseover="disableIt()" oninput="disableIt()" onchange="disableIt()">
             </div>
 
             <div class="form-group">
