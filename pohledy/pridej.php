@@ -119,15 +119,6 @@
     }
     
     function validate(){
-<<<<<<< HEAD
-        if(document.getElementById(imei-input).value != ""){
-            if(document.getElementById(imei1-input).value != ""){
-                if(imeiOk == TRUE && imei1Ok == TRUE){
-                    
-                }
-            }
-        }
-=======
      if(document.getElementById('imei-input').value != ""){
       if(document.getElementById('imei1-input').value != ""){
        return imeiOk == TRUE && imei1Ok == TRUE;
@@ -135,7 +126,6 @@
          return imeiOk == TRUE;
      }
         else return TRUE;
->>>>>>> origin/pridej-pohled-validace-imei
     }
 </script>
 
