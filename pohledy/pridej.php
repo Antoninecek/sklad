@@ -40,6 +40,9 @@
     var imeiOk;
     var imei1Ok;
 
+    var imeiOk;
+    var imei1Ok;
+    
     function disableIt() {
 
         if (document.getElementById('imei-input').value != "") {
@@ -48,6 +51,7 @@
             document.getElementById("imei1-input").disabled = false;
             var a = validateIMEI(document.getElementById('imei-input').value);
             if(a){
+<<<<<<< HEAD
                 document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
                 document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei-input').style.backgroundPosition = "right";
@@ -56,6 +60,12 @@
                 document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
                 document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei-input').style.backgroundPosition = "right";
+=======
+                document.getElementById('imei-input').style.backgroundImage = "url('../pics/Apply.png')";
+                imeiOk = TRUE;
+            } else {
+                document.getElementById('imei-input').style.backgroundImage = "url('../pics/dialog-close.png')";
+>>>>>>> origin/pridej-pohled-validace-imei
                 imeiOk = FALSE;
             }
         } else {
@@ -67,6 +77,7 @@
         if(document.getElementById('imei1-input').value != "") {
             var a = validateIMEI(document.getElementById('imei1-input').value);
             if(a){
+<<<<<<< HEAD
                 document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
                 document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei1-input').style.backgroundPosition = "right";
@@ -76,6 +87,12 @@
                 document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
                 document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei1-input').style.backgroundPosition = "right";
+=======
+                document.getElementById('imei1-input').style.backgroundImage = "url('../pics/Apply.png')";
+                imei1Ok = TRUE;
+            } else {
+                document.getElementById('imei1-input').style.backgroundImage = "url('../pics/dialog-close.png')";
+>>>>>>> origin/pridej-pohled-validace-imei
                 imei1Ok = FALSE;
             }
         }
@@ -119,6 +136,7 @@
     }
     
     function validate(){
+<<<<<<< HEAD
         if(document.getElementById(imei-input).value != ""){
             if(document.getElementById(imei1-input).value != ""){
                 if(imeiOk == TRUE && imei1Ok == TRUE){
@@ -126,6 +144,15 @@
                 }
             }
         }
+=======
+     if(document.getElementById('imei-input').value != ""){
+      if(document.getElementById('imei1-input').value != ""){
+       return imeiOk == TRUE && imei1Ok == TRUE;
+      }
+         return imeiOk == TRUE;
+     }
+        else return TRUE;
+>>>>>>> origin/pridej-pohled-validace-imei
     }
 </script>
 
@@ -222,7 +249,7 @@ if (isset($this->vysledek)) {
 
 <div class="container formular pull-left" style="max-width: 300px;">
     <div class="row"style="max-width: 100%;">
-        <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;">
+        <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;" onsubmit="validate()">
             <div class="form-group">
                 <div class="col-sm-10" style="padding: 0;">
                     <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
