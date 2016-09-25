@@ -37,6 +37,9 @@
         }
     }
 
+    var imeiOk;
+    var imei1Ok;
+    
     function disableIt() {
 
         if (document.getElementById('imei-input').value != "") {
@@ -46,8 +49,10 @@
             var a = validateIMEI(document.getElementById('imei-input').value);
             if(a){
                 document.getElementById('imei-input').style.backgroundImage = "url('../pics/Apply.png')";
+                imeiOk = TRUE;
             } else {
                 document.getElementById('imei-input').style.backgroundImage = "url('../pics/dialog-close.png')";
+                imeiOk = FALSE;
             }
         } else {
             document.getElementById("pocet-input").disabled = false;
@@ -59,8 +64,10 @@
             var a = validateIMEI(document.getElementById('imei1-input').value);
             if(a){
                 document.getElementById('imei1-input').style.backgroundImage = "url('../pics/Apply.png')";
+                imei1Ok = TRUE;
             } else {
                 document.getElementById('imei1-input').style.backgroundImage = "url('../pics/dialog-close.png')";
+                imei1Ok = FALSE;
             }
         }
 
@@ -100,6 +107,16 @@
 
     function zobrazeniUndo() {
         document.getElementById('formUndo').className = "show";
+    }
+    
+    function validate(){
+     if(document.getElementById('imei-input').value != ""){
+      if(document.getElementById('imei1-input').value != ""){
+       return imeiOk == TRUE && imei1Ok == TRUE;
+      }
+         return imeiOk == TRUE;
+     }
+        else return TRUE;
     }
 </script>
 
@@ -196,7 +213,7 @@ if (isset($this->vysledek)) {
 
 <div class="container formular pull-left" style="max-width: 300px;">
     <div class="row"style="max-width: 100%;">
-        <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;">
+        <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;" onsubmit="validate()">
             <div class="form-group">
                 <div class="col-sm-10" style="padding: 0;">
                     <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
