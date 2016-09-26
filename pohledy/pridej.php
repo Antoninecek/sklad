@@ -39,7 +39,7 @@
 
     var imeiOk;
     var imei1Ok;
-    
+
     function disableIt() {
 
         if (document.getElementById('imei-input').value != "") {
@@ -47,39 +47,38 @@
             document.getElementById("pocet-input").disabled = true;
             document.getElementById("imei1-input").disabled = false;
             var a = validateIMEI(document.getElementById('imei-input').value);
-            if(a){
+            if (a) {
                 document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
                 document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei-input').style.backgroundPosition = "right";
-                imeiOk = TRUE;
+                imeiOk = true;
             } else {
                 document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
                 document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei-input').style.backgroundPosition = "right";
-                imeiOk = FALSE;
+                imeiOk = false;
+            }
         } else {
             document.getElementById("pocet-input").disabled = false;
             document.getElementById("imei1-input").disabled = true;
             document.getElementById("imei1-input").value = '';
         }
-        
-        if(document.getElementById('imei1-input').value != "") {
+
+        if (document.getElementById('imei1-input').value != "") {
             var a = validateIMEI(document.getElementById('imei1-input').value);
-            if(a){
+            console.log(a);
+            if (a) {
                 document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
                 document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei1-input').style.backgroundPosition = "right";
-                imei1Ok = TRUE;
-                
+                imei1Ok = true;
             } else {
                 document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
                 document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei1-input').style.backgroundPosition = "right";
-                document.getElementById('imei1-input').style.backgroundImage = "url('../pics/dialog-close.png')";
-                imei1Ok = FALSE;
+                imei1Ok = false;
             }
         }
-
 
         if (document.getElementById("skok").checked) {
             setTimeout(function () {
@@ -88,7 +87,7 @@
         }
     }
 
-    
+
 
     function validateIMEI(value) {
         if (/[^0-9-\s]+/.test(value))
@@ -117,15 +116,21 @@
     function zobrazeniUndo() {
         document.getElementById('formUndo').className = "show";
     }
-    
-    function validate(){
-     if(document.getElementById('imei-input').value != ""){
-      if(document.getElementById('imei1-input').value != ""){
-       return imeiOk == TRUE && imei1Ok == TRUE;
-      }
-         return imeiOk == TRUE;
-     }
-        else return TRUE;
+
+    function validate() {
+        if (document.getElementById('imei-input').value != "") {
+            if (document.getElementById('imei1-input').value != "") {
+                document.getElementById('imeiMsg').className = "show";
+                document.getElementById('imeiMsg').setAttribute("data-content", "Krizek znaci nespravne IMEI");
+                document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
+                return imeiOk == true && imei1Ok == true;
+            }
+            document.getElementById('imeiMsg').className = "show";
+            document.getElementById('imeiMsg').setAttribute("data-content", "Krizek znaci nespravne IMEI");
+            document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
+            return imeiOk == true;
+        } else
+        return true;
     }
 </script>
 
@@ -222,7 +227,7 @@ if (isset($this->vysledek)) {
 
 <div class="container formular pull-left" style="max-width: 300px;">
     <div class="row"style="max-width: 100%;">
-        <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;" onsubmit="validate()">
+        <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;" onsubmit="return validate()">
             <div class="form-group">
                 <div class="col-sm-10" style="padding: 0;">
                     <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
@@ -255,19 +260,30 @@ if (isset($this->vysledek)) {
             </div>
             <p id="test"></p>
             <div class="form-group">
-                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" disabled onmouseover="disableIt()" oninput="disableIt()" onchange="disableIt()">
+                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" disabled oninput="disableIt()" onchange="disableIt()">
             </div>
 
             <div class="form-group">
-                <input id="pocet-input" type="number" class="form-control" name="kusy" value="<?= $this->vypisZnova && isset($_POST['kusy']) ? $_POST['kusy'] : "1" ?>" min="1" required onmouseover="disableIt()">
+                <input id="pocet-input" type="number" class="form-control" name="kusy" value="<?= $this->vypisZnova && isset($_POST['kusy']) ? $_POST['kusy'] : "1" ?>" min="1" required >
             </div>
 
             <!--<div class="form-group">
                 <label><input type="checkbox" name="vydej"> Vydej</label>
             </div>-->
+            <a id="imeiMsg" href="#" class="hidden" onclick="return false" class="" data-content="" data-original-title="" style="color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px;" data-toggle="popover" data-trigger="focus" tabindex="-1">
+                <span class="glyphicon glyphicon-remove"></span>
+                Proc se mi nedari pridat/vydat?<span class="glyphicon glyphicon-remove">
 
+                </span>
+            </a>
+            <script>
+                $(document).ready(function () {
+                    $('[data-toggle="popover"]').popover();
+                });
+            </script>
             <button type="submit" class="prijem btn btn-default" name="summ" value="prijem">Prijem</button>
             <button type="submit" class="vydej btn btn-default" name="summ" value="vydej">Vydej</button>
+
         </form>
     </div>
 </div>
@@ -290,6 +306,6 @@ if (isset($this->vysledek)) {
                 <td style="max-width: 200px; word-wrap: break-word;"> <?php echo $a['text'] ?></td>
                 <td> <?php echo $a['datum'] ?></td>
             </tr>
-<?php } ?>
+        <?php } ?>
     </table>
 </div>
