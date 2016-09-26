@@ -23,7 +23,7 @@ class ZiskejInfoKontroler extends Kontroler {
             <div id="zisk1" class="ziskejInfo <?= $parametry[2] == "pridej" ? "styla" : "stylb" ?>" >
                 <div class="col-sm-6" style="width: 100%;">
                     <label for="ora">ORA </label>
-                    <input type="text" class="form-control" name="" value="<?php echo(empty($row[0]) ? "naovy, sparuj" : "$row[0]"); ?>" tabindex="-1" required readonly>
+                    <input type="text" class="form-control" name="" value="<?php echo(empty($row[0]) ? "novy, sparuj" : "$row[0]"); ?>" tabindex="-1" required readonly>
                 </div>
                 <div class="col-sm-6" style="width: 100%;">
                     <label for="popis">ITEM </label>

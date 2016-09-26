@@ -141,14 +141,14 @@ if ($this->vypisZnova) {
             if (document.getElementById('imei1-input').value != "") {
                 if (imeiOk != true || imei1Ok != true) {
                     document.getElementById('imeiMsg').className = "show";
-                    document.getElementById('imeiMsg').setAttribute("data-content", "Krizek znaci nespravne IMEI");
+                    document.getElementById('imeiMsg').setAttribute("data-content", "V poli oznacenym krizkem neni IMEI");
                     document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
                 }
                 return imeiOk == true && imei1Ok == true;
             }
             if (imeiOk != true) {
                 document.getElementById('imeiMsg').className = "show";
-                document.getElementById('imeiMsg').setAttribute("data-content", "Krizek znaci nespravne IMEI");
+                document.getElementById('imeiMsg').setAttribute("data-content", "V poli oznacenym krizkem neni IMEI");
                 document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
             }
             return imeiOk == true;
@@ -173,6 +173,7 @@ if ($this->vypisZnova) {
                     var reg = new RegExp("\s*true\s*");
                     if (reg.test(ans)) {
                         document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
+                        document.getElementById('vydejMsg').className = "hidden";
                     } else {
                         document.getElementById('submitVydej').style.backgroundColor = "red";
                         document.getElementById('vydejMsg').className = "show";
@@ -328,7 +329,7 @@ if (isset($this->vysledek)) {
             </a>
             <a id="vydejMsg" href="#" class="hidden" onclick="return false" class="" data-content="" data-original-title="" style="color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px;" data-toggle="popover" data-trigger="focus" tabindex="-1">
                 <span class="glyphicon glyphicon-remove"></span>
-                Proc je tlacitko VYDEJ cervene?
+                Proc je tlacitko VYDEJ rude?
                 <span class="glyphicon glyphicon-remove"></span>
             </a>
             <script>
