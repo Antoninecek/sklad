@@ -15,6 +15,7 @@ class PridejKontroler extends Kontroler {
 
     protected $message = "";
     protected $heslo = "";
+    protected $text = "";
     protected $summ = "";
     protected $logMsg = "";
     protected $seznamZaznamu;
@@ -31,6 +32,7 @@ class PridejKontroler extends Kontroler {
         switch (isset($params[1]) ? $params[1] : FALSE) {
             case "pridano":
                 $this->heslo = $_POST['jmeno'];
+                $this->text = $_POST['text'];
                 $this->pokusPridat = TRUE;
                 if (isset($_POST['formZachovejHeslo']) && $_POST['formZachovejHeslo'] == TRUE) {
                     $this->zachovatHeslo = TRUE;

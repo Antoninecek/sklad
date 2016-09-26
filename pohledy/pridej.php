@@ -229,19 +229,19 @@ if (isset($this->vysledek)) {
     <div class="row"style="max-width: 100%;">
         <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;" onsubmit="return validate()">
             <div class="form-group">
+                <input type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->text : "" ?>"  <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
+            </div>
+            <br>
+            <div class="form-group">
                 <div class="col-sm-10" style="padding: 0;">
-                    <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
+                    <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required>
                 </div>
                 <div class="col-sm-2 text-center">
                     <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> tabindex="-1"> <abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje">Heslo? (najed)</abbr>
                 </div>
             </div>
             <br/>
-            <div>
-                <input type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->vypisZnova ? $_POST['text'] : "" ?>"
-            </div>
-
-            <br>
+            
             <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> <abbr title="odskrtni pro zadani eanu/imei rucne">Automat skakani (najed mysi)</abbr>
 
             <div class="row">
