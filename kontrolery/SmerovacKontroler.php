@@ -38,6 +38,8 @@ class SmerovacKontroler extends Kontroler {
         $this->pohled = 'rozlozeni';
         if(preg_match("/ZiskejInfo/", $naparsovanaURL[0])){
             $this->pohled = '';
+        } else if(preg_match("/ZkontrolujImei/", $naparsovanaURL[0])){
+            $this->pohled = '';
         }
     }
 

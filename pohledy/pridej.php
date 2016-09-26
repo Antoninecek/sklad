@@ -66,6 +66,7 @@ if ($this->vypisZnova) {
                 document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
                 document.getElementById('imei-input').style.backgroundPosition = "right";
                 imeiOk = true;
+                checkImeiFromDb();
             } else {
                 document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
                 document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
@@ -80,7 +81,6 @@ if ($this->vypisZnova) {
 
         if (document.getElementById('imei1-input').value != "") {
             var a = validateIMEI(document.getElementById('imei1-input').value);
-            console.log(a);
             if (a) {
                 document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
                 document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
@@ -107,8 +107,6 @@ if ($this->vypisZnova) {
 
 
     }
-
-
 
     function validateIMEI(value) {
         if (/[^0-9-\s]+/.test(value))
@@ -157,8 +155,38 @@ if ($this->vypisZnova) {
         } else
             return true;
     }
-</script>
 
+    function checkImeiFromDb() {
+        var ans;
+        var str = document.getElementById('imei-input').value;
+        if (str != "") {
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    ans = xmlhttp.responseText;
+                    var reg = new RegExp("\s*true\s*");
+                    if (reg.test(ans)) {
+                        document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
+                    } else {
+                        document.getElementById('submitVydej').style.backgroundColor = "red";
+                        document.getElementById('vydejMsg').className = "show";
+                        document.getElementById('vydejMsg').setAttribute("data-content", "Zkus misto tohodle druhe IMEI");
+                        document.getElementById('vydejMsg').setAttribute("data-original-title", "Spatne zadane IMEI");
+                    }
+                    //document.getElementById("testik").innerHTML
+                }
+            };
+            xmlhttp.open("GET", "ZkontrolujImei/" + str, true);
+            xmlhttp.send();
+        }
+    }
+</script>
 
 <?php
 if ($this->uspesnePridani) {
@@ -282,7 +310,7 @@ if (isset($this->vysledek)) {
 
             </div>
             <div class="form-group" style="padding-top: 15px;">
-                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()" onchange="disableIt()">
+                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()">
             </div>
             <p id="test"></p>
             <div class="form-group">
@@ -292,24 +320,24 @@ if (isset($this->vysledek)) {
             <div class="form-group">
                 <input id="pocet-input" type="number" class="form-control" name="kusy" value="<?= $this->vypisZnova && isset($_POST['kusy']) ? $_POST['kusy'] : "1" ?>" min="1" required >
             </div>
-
-            <!--<div class="form-group">
-                <label><input type="checkbox" name="vydej"> Vydej</label>
-            </div>-->
             <a id="imeiMsg" href="#" class="hidden" onclick="return false" class="" data-content="" data-original-title="" style="color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px;" data-toggle="popover" data-trigger="focus" tabindex="-1">
                 <span class="glyphicon glyphicon-remove"></span>
                 Proc se mi nedari pridat/vydat?<span class="glyphicon glyphicon-remove">
 
                 </span>
             </a>
+            <a id="vydejMsg" href="#" class="hidden" onclick="return false" class="" data-content="" data-original-title="" style="color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px;" data-toggle="popover" data-trigger="focus" tabindex="-1">
+                <span class="glyphicon glyphicon-remove"></span>
+                Proc je tlacitko VYDEJ cervene?
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
             <script>
                 $(document).ready(function () {
                     $('[data-toggle="popover"]').popover();
                 });
             </script>
-            <button type="submit" class="prijem btn btn-default" name="summ" value="prijem">Prijem</button>
-            <button type="submit" class="vydej btn btn-default" name="summ" value="vydej">Vydej</button>
-
+            <button id="submitPrijem" type="submit" class="prijem btn btn-default" name="summ" value="prijem">Prijem</button>
+            <button id="submitVydej" type="submit" class="vydej btn btn-default" name="summ" value="vydej">Vydej</button>
         </form>
     </div>
 </div>
