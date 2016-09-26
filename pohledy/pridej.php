@@ -7,6 +7,20 @@
 </form> 
 
 <script>
+<?php
+if ($this->vypisZnova) {
+    ?>
+        window.onload = disableIt;
+        var zmenaFocus = true;
+    <?php
+} else {
+    ?>
+        var zmenaFocus = false;
+    <?php
+}
+?>
+
+
     function showIt(str) {
         if (str == "") {
             document.getElementById("txtHint").innerHTML = "";
@@ -80,11 +94,18 @@
             }
         }
 
-        if (document.getElementById("skok").checked) {
-            setTimeout(function () {
-                document.getElementById("imei1-input").focus();
-            }, 1500);
+        if (zmenaFocus) {
+            document.getElementById('jmenoPridejForm').focus();
+            zmenaFocus = false;
+        } else {
+            if (document.getElementById("skok").checked) {
+                setTimeout(function () {
+                    document.getElementById("imei1-input").focus();
+                }, 1500);
+            }
         }
+
+
     }
 
 
@@ -120,17 +141,21 @@
     function validate() {
         if (document.getElementById('imei-input').value != "") {
             if (document.getElementById('imei1-input').value != "") {
+                if (imeiOk != true || imei1Ok != true) {
+                    document.getElementById('imeiMsg').className = "show";
+                    document.getElementById('imeiMsg').setAttribute("data-content", "Krizek znaci nespravne IMEI");
+                    document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
+                }
+                return imeiOk == true && imei1Ok == true;
+            }
+            if (imeiOk != true) {
                 document.getElementById('imeiMsg').className = "show";
                 document.getElementById('imeiMsg').setAttribute("data-content", "Krizek znaci nespravne IMEI");
                 document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
-                return imeiOk == true && imei1Ok == true;
             }
-            document.getElementById('imeiMsg').className = "show";
-            document.getElementById('imeiMsg').setAttribute("data-content", "Krizek znaci nespravne IMEI");
-            document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
             return imeiOk == true;
         } else
-        return true;
+            return true;
     }
 </script>
 
@@ -231,36 +256,37 @@ if (isset($this->vysledek)) {
             <div class="form-group">
                 <input type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->text : "" ?>"  <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
             </div>
-            <br>
             <div class="form-group">
-                <div class="col-sm-10" style="padding: 0;">
-                    <input type="password" class="form-control" name="jmeno" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required>
+                <div class="col-sm-9" style="padding: 0;">
+                    <input type="password" class="form-control" id="jmenoPridejForm" name="jmeno" value="<?= $this->zachovatHeslo ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required>
                 </div>
-                <div class="col-sm-2 text-center">
-                    <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> tabindex="-1"> <abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje">Heslo? (najed)</abbr>
+                <div class="col-sm-3 text-center" style="display: inline-block">
+                    <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> tabindex="-1"><abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje (vhodne pro prijem kamionu)">Zapamatuj</abbr>
                 </div>
             </div>
             <br/>
-            
-            <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> <abbr title="odskrtni pro zadani eanu/imei rucne">Automat skakani (najed mysi)</abbr>
 
             <div class="row">
-                <div class="col-sm-10" style="padding-top: 30px;">
+                <div class="col-sm-8" style="padding-top: 10px;">
                     <input class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1" style="padding: 0;">
+                    <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> 
+                    <br>
+                    <abbr title="odskrtni pro zadani eanu/imei rucne">Skok</abbr>
+                </div>
+                <div class="col-sm-3">
                     <div id="txtHint" class="col-sm-6">
                     </div>
                 </div>
 
             </div>
-            <br>
-            <div class="form-group">
+            <div class="form-group" style="padding-top: 15px;">
                 <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()" onchange="disableIt()">
             </div>
             <p id="test"></p>
             <div class="form-group">
-                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" disabled oninput="disableIt()" onchange="disableIt()">
+                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> oninput="disableIt()" onchange="disableIt()">
             </div>
 
             <div class="form-group">

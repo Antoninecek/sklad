@@ -25,6 +25,7 @@ class PridejKontroler extends Kontroler {
     protected $pokusUnda = FALSE;
     protected $vysledekUnda = FALSE;
     protected $vypisZnova = FALSE;
+    protected $zmenaFocus;
 
     public function zpracuj($params) {
         $spravceZaznamu = new SpravceZaznamu();
