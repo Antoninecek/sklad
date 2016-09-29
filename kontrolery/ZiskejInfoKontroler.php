@@ -12,7 +12,7 @@ class ZiskejInfoKontroler extends Kontroler {
 
         mysqli_select_db($con, DATABASE);
         //print_r($parametry);
-        if ($parametry[2] == "pridej" || $parametry[2] == "ean") {
+        if (@$parametry[2] == "pridej" || @$parametry[2] == "ean") {
             $sql = "SELECT * FROM sap WHERE ean = " . $parametry[1] . "";
             $result = mysqli_query($con, $sql);
             //echo $sql;

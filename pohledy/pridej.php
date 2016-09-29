@@ -60,7 +60,7 @@ if ($this->vypisZnova) {
             document.getElementById("imei1-input").placeholder = "IMEI 2";
             return;
         } else {
-            console.log("a");
+            
             if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
@@ -79,6 +79,10 @@ if ($this->vypisZnova) {
                         document.getElementById("imei1-input").style.backgroundColor = "#ffb3b3";
                         return true;
                     } else {
+                        document.getElementById("imei1-input").placeholder = "IMEI 2";
+                        if(document.getElementById("imei-input").value == ""){
+                            document.getElementById("imei1-input").style.backgroundColor = "lightgrey";
+                        }
                         return true;
                     }
                 }
@@ -97,6 +101,7 @@ if ($this->vypisZnova) {
             document.getElementById('pocet-input').value = 1;
             document.getElementById("pocet-input").disabled = true;
             document.getElementById("imei1-input").disabled = false;
+            document.getElementById("imei1-input").style.backgroundColor = 'transparent';
             var a = validateIMEI(document.getElementById('imei-input').value);
             if (a) {
                 document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
@@ -114,6 +119,7 @@ if ($this->vypisZnova) {
             document.getElementById("pocet-input").disabled = false;
             document.getElementById("imei1-input").disabled = true;
             document.getElementById("imei1-input").value = '';
+            
         }
 
         if (document.getElementById('imei1-input').value != "") {
