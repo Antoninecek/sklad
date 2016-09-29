@@ -29,7 +29,7 @@ if ($this->vypisZnova) {
             document.getElementById("txtHint").innerHTML = "";
             return;
         } else {
-            document.getElementById("txtHint").innerHTML = str;
+            //document.getElementById("txtHint").innerHTML = str;
             if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
