@@ -13,6 +13,10 @@
  */
 class SpravceZaznamu {
     
+    public function jeDualsim($ora){
+        return Db::dotazJeden('SELECT dualsim FROM dualsim WHERE zbozi = ?', array($ora));
+    }
+    
     public function vratJmenoUzivatele($heslo){
         return Db::dotazJeden('SELECT jmeno FROM uzivatele WHERE heslo = ?', array($heslo));
     }

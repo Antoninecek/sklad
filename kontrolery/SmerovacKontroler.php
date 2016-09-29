@@ -14,31 +14,33 @@
 class SmerovacKontroler extends Kontroler {
 
     public function zpracuj($parametry) {
-        
+
         $naparsovanaURL = $this->parsujURL($parametry[0]);
-        
-        
-        
+
+
+
         if (empty($naparsovanaURL[0])) {
             $this->presmeruj(PATHEMPTYURL);
         }
         $tridaKontroleru = $this->pomlckyDoVelbloudiNotace($naparsovanaURL[0]) . "Kontroler";
 
-        
+
         if (file_exists("kontrolery/" . $tridaKontroleru . ".php")) {
             $this->kontroler = new $tridaKontroleru;
         } else {
             $this->presmeruj(PATHERR);
         }
-        
-        
-        
+
+
+
         $this->kontroler->zpracuj($naparsovanaURL);
         $this->data['titulek'] = $this->kontroler->titulekS;
         $this->pohled = 'rozlozeni';
-        if(preg_match("/ZiskejInfo/", $naparsovanaURL[0])){
+        if (preg_match("/ZiskejInfo/", $naparsovanaURL[0])) {
             $this->pohled = '';
-        } else if(preg_match("/ZkontrolujImei/", $naparsovanaURL[0])){
+        } else if (preg_match("/ZkontrolujImei/", $naparsovanaURL[0])) {
+            $this->pohled = '';
+        } else if (preg_match("/ZkontrolujDualsim/", $naparsovanaURL[0])) {
             $this->pohled = '';
         }
     }

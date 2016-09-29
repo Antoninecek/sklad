@@ -19,9 +19,12 @@ if ($this->vypisZnova) {
     <?php
 }
 ?>
+    function showIt(str){
+        fce1(str);
+        dualsimCheck(str);
+    }
 
-
-    function showIt(str) {
+    function fce1(str) {
         if (str == "") {
             document.getElementById("txtHint").innerHTML = "";
             return;
@@ -39,8 +42,8 @@ if ($this->vypisZnova) {
                     document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
                 }
             };
-            xmlhttp.open("GET", "ZiskejInfo/" + str + "/pridej", true);
-            xmlhttp.send();
+            xmlhttp.open("GET", "ZiskejInfo/" + str + "/pridej", false);
+            xmlhttp.send();          
         }
         //setTimeout(function(){document.getElementById("imei-input").focus();},2000);
 
@@ -48,6 +51,40 @@ if ($this->vypisZnova) {
             setTimeout(function () {
                 document.getElementById("imei-input").focus();
             }, 1500);
+        }
+        
+    }
+
+    function dualsimCheck(str) {
+        if (str == "") {
+            document.getElementById("imei1-input").placeholder = "IMEI 2";
+            return;
+        } else {
+            console.log("a");
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    ans = xmlhttp.responseText;
+                    
+                    var reg = new RegExp("\s*true\s*");
+                    console.log(reg.test(ans));
+                    if(reg.test(ans)){
+                        document.getElementById("imei1-input").placeholder = "DUAL SIM";
+                        document.getElementById("imei1-input").style.backgroundColor = "#ffb3b3";
+                        return true;
+                    } else {
+                        return true;
+                    }
+                }
+            };
+            xmlhttp.open("GET", "ZkontrolujDualsim/" + str, true);
+            xmlhttp.send();
         }
     }
 
