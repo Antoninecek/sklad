@@ -47,12 +47,16 @@ if ($this->vypisZnova) {
         }
         //setTimeout(function(){document.getElementById("imei-input").focus();},2000);
 
+        
+        
+    }
+    
+    function jump(){
         if (document.getElementById("skok").checked) {
             setTimeout(function () {
                 document.getElementById("imei-input").focus();
             }, 1500);
         }
-        
     }
 
     function dualsimCheck(str) {
@@ -340,7 +344,7 @@ if (isset($this->vysledek)) {
 
             <div class="row">
                 <div class="col-sm-8" style="padding-top: 10px;">
-                    <input class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
+                    <input class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="jump()" onblur="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
                 </div>
                 <div class="col-sm-1" style="padding: 0;">
                     <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> 
