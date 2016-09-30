@@ -14,6 +14,7 @@ body {
 
 header {
     padding: 30px;
+    padding-bottom: 15px;
 }
 
 header nav {
@@ -286,4 +287,13 @@ div#zk:active img {
     position: absolute;
     top: -110px;
     left: 500px;
+}
+
+.napoveda {
+    font-style: italic;
+    color: darkslategrey;
+}
+
+.napoveda:before {
+    content: "NAPOVEDA: ";
 }

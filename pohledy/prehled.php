@@ -85,15 +85,13 @@
     <div class="form-group" style="width: 1230px;">
         <div class="row" style="width: 500px;">
             <div class="col-sm-6" >
-                <label for="eankod">EAN </label>
-                <input id="eanek" pattern="[0-9]{11,13}" class="form-control" name="eankod" value="<?php echo(isset($this->ean) ? $this->ean : "") ?> " onblur="showIt(this.value)" autofocus>
-                <button type="submit" name="submit" class="btn btn-default" value="eanKodSubmit">Zobraz</button>
+                <input id="eanek" pattern="[0-9]{11,13}" class="form-control" name="eankod" value="<?php echo(isset($this->ean) ? $this->ean : "") ?> " onblur="showIt(this.value)" value="" autofocus>
+                <button type="submit" name="submit" class="btn btn-default" value="eanKodSubmit">EAN</button>
             </div>
 
             <div class="col-sm-6" style="padding-left: 55px;">
-                <label for="ora">ORA </label>
-                <input id="oracek" pattern="[0-9]{7}" class="form-control" name="orakod" value="<?php echo(isset($this->ora) ? $this->ora : "") ?>" onblur="showItOra(this.value)" value="" >
-                <button type="submit" name="submit" class="btn btn-default" value="oraKodSubmit">Zobraz</button>
+                <input id="oracek" pattern="[0-9]{7}" class="form-control" name="orakod" value="<?php echo(isset($this->ora) ? $this->ora : "") ?>" onblur="showItOra(this.value)" >
+                <button type="submit" name="submit" class="btn btn-default" value="oraKodSubmit">ORA</button>
 
             </div>
 
@@ -105,7 +103,7 @@
 
 
 </form>
-
+<h6 class="napoveda">Pro zobrazeni informaci o naskenovanem EANu nebo zadanem ORA kodu, staci kliknout mimo policko.</h6>
 <hr>
 <h3>Dotaz: </h3> 
 <?php echo $this->ean . $this->ora ?>

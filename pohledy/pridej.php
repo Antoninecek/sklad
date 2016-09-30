@@ -245,8 +245,8 @@ if ($this->vypisZnova) {
         document.getElementById(str).value = myTrim(txt);
         return document.getElementById(str).value;
     }
-    
-    function smazMezeryImei(){
+
+    function smazMezeryImei() {
         smazMezery('imei-input');
         smazMezery('imei1-input');
     }
@@ -405,11 +405,12 @@ if (isset($this->vysledek)) {
         </form>
     </div>
 </div>
-</div>
+
 
 
 
 <div class="pull-right">
+    <h6 id="napoveda" class="napoveda"></h6>
     <table class="table table-hover">
         <?php
         //print_r($this->seznamZaznamu);
@@ -427,3 +428,19 @@ if (isset($this->vysledek)) {
         <?php } ?>
     </table>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#napoveda").text(function(){
+            var arr = [
+                "Zaskrtavaci policko Zapamatuj ti pomuze prijmout vice veci, bez zbytecneho opakovani hesla.",
+                "Kdyz potrebujes zadat EAN/IMEI rucne, odskrtni policko SKOK.",
+                "Krizek/Fajfka u IMEI kontroluje, zda nactene cislo je IMEI.",
+                "Cervene/Zelene tlacitko Vydej ti kontroluje dostupnost nacteneho IMEI pro vydej.",
+                "Zcervenani pole IMEI 2 a prepsani textu na DUALSIM ti pripomina povinnost skenovat pri prijmu obe IMEI."
+            ];
+            var a = Math.floor((Math.random() * arr.length) + 1);
+            return arr[a-1];
+        });
+    });
+</script>
