@@ -18,10 +18,11 @@
     }
 
     function showIt(str) {
-        if (str == "") {
-            document.getElementById("txtHint").innerHTML = "";
+        str = smazMezery('eanek');
+        if (str == ""){
             return;
         } else {
+            document.getElementById("eanek").value = str;
             document.getElementById("txtHint").innerHTML = str;
             if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -39,11 +40,22 @@
             xmlhttp.send();
         }
     }
+    
+     function myTrim(x) {
+        return x.replace(/^\s+|\s+$/gm, '');
+    }
+
+    function smazMezery(str) {
+        var txt = document.getElementById(str).value;
+        return myTrim(txt);
+    }
+    
     function showItOra(str) {
+        str = smazMezery('oracek');
         if (str == "") {
-            document.getElementById("txtHint").innerHTML = "";
             return;
         } else {
+            document.getElementById("oracek").value = str;
             document.getElementById("txtHint").innerHTML = str;
             if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -74,13 +86,13 @@
         <div class="row" style="width: 500px;">
             <div class="col-sm-6" >
                 <label for="eankod">EAN </label>
-                <input id="eanek" type="number" class="form-control" name="eankod" onfocus="showIt(this.value)" value="<?php echo(isset($this->ean) ? $this->ean : "") ?> " oninput="showIt(this.value)" autofocus>
+                <input id="eanek" pattern="[0-9]{11,13}" class="form-control" name="eankod" value="<?php echo(isset($this->ean) ? $this->ean : "") ?> " onblur="showIt(this.value)" autofocus>
                 <button type="submit" name="submit" class="btn btn-default" value="eanKodSubmit">Zobraz</button>
             </div>
 
             <div class="col-sm-6" style="padding-left: 55px;">
                 <label for="ora">ORA </label>
-                <input id="oracek" type="number" class="form-control" name="orakod" onfocus="showItOra(this.value)" value="<?php echo(isset($this->ora) ? $this->ora : "") ?>" oninput="showItOra(this.value)" value="" >
+                <input id="oracek" pattern="[0-9]{7}" class="form-control" name="orakod" value="<?php echo(isset($this->ora) ? $this->ora : "") ?>" onblur="showItOra(this.value)" value="" >
                 <button type="submit" name="submit" class="btn btn-default" value="oraKodSubmit">Zobraz</button>
 
             </div>

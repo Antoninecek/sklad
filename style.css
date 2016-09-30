@@ -278,11 +278,12 @@ div#zk:active img {
 
 .stylb {
     position: absolute; 
-    left: 270px;
-    top: -100px;
+    left: 500px;
+    top: -110px;
 }
 
 .stylc {
     position: absolute;
-    top: -100px;
+    top: -110px;
+    left: 500px;
 }
