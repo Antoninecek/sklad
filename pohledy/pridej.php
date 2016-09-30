@@ -19,7 +19,8 @@ if ($this->vypisZnova) {
     <?php
 }
 ?>
-    function showIt(str){
+    function showIt(str) {
+        str = smazMezery("pridejEan");
         fce1(str);
         dualsimCheck(str);
     }
@@ -43,15 +44,15 @@ if ($this->vypisZnova) {
                 }
             };
             xmlhttp.open("GET", "ZiskejInfo/" + str + "/pridej", false);
-            xmlhttp.send();          
+            xmlhttp.send();
         }
         //setTimeout(function(){document.getElementById("imei-input").focus();},2000);
 
-        
-        
+
+
     }
-    
-    function jump(){
+
+    function jump() {
         if (document.getElementById("skok").checked) {
             setTimeout(function () {
                 document.getElementById("imei-input").focus();
@@ -64,7 +65,7 @@ if ($this->vypisZnova) {
             document.getElementById("imei1-input").placeholder = "IMEI 2";
             return;
         } else {
-            
+
             if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
@@ -75,16 +76,16 @@ if ($this->vypisZnova) {
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     ans = xmlhttp.responseText;
-                    
+
                     var reg = new RegExp("\s*true\s*");
                     console.log(reg.test(ans));
-                    if(reg.test(ans)){
+                    if (reg.test(ans)) {
                         document.getElementById("imei1-input").placeholder = "DUAL SIM";
                         document.getElementById("imei1-input").style.backgroundColor = "#ffb3b3";
                         return true;
                     } else {
                         document.getElementById("imei1-input").placeholder = "IMEI 2";
-                        if(document.getElementById("imei-input").value == ""){
+                        if (document.getElementById("imei-input").value == "") {
                             document.getElementById("imei1-input").style.backgroundColor = "lightgrey";
                         }
                         return true;
@@ -123,7 +124,7 @@ if ($this->vypisZnova) {
             document.getElementById("pocet-input").disabled = false;
             document.getElementById("imei1-input").disabled = true;
             document.getElementById("imei1-input").value = '';
-            
+
         }
 
         if (document.getElementById('imei1-input').value != "") {
@@ -233,6 +234,21 @@ if ($this->vypisZnova) {
             xmlhttp.open("GET", "ZkontrolujImei/" + str, true);
             xmlhttp.send();
         }
+    }
+
+    function myTrim(x) {
+        return x.replace(/^\s+|\s+$/gm, '');
+    }
+
+    function smazMezery(str) {
+        var txt = document.getElementById(str).value;
+        document.getElementById(str).value = myTrim(txt);
+        return document.getElementById(str).value;
+    }
+    
+    function smazMezeryImei(){
+        smazMezery('imei-input');
+        smazMezery('imei1-input');
     }
 </script>
 
@@ -344,7 +360,7 @@ if (isset($this->vysledek)) {
 
             <div class="row">
                 <div class="col-sm-8" style="padding-top: 10px;">
-                    <input class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="jump()" onblur="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
+                    <input id="pridejEan" class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="jump()" onblur="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
                 </div>
                 <div class="col-sm-1" style="padding: 0;">
                     <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> 
@@ -362,7 +378,7 @@ if (isset($this->vysledek)) {
             </div>
             <p id="test"></p>
             <div class="form-group">
-                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> oninput="disableIt()" onchange="disableIt()">
+                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> oninput="disableIt()" onchange="disableIt()" onblur="smazMezeryImei()" >
             </div>
 
             <div class="form-group">
