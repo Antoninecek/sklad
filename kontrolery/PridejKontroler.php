@@ -69,6 +69,8 @@ class PridejKontroler extends Kontroler {
                 }
                 if(isset($_POST['imei1']) && $_POST['imei1'] == 0){
                     $_POST['imei1'] = NULL;
+                } else if (isset ($_POST['imei1']) && $_POST['imei1'] == $_POST['imei']){
+                    $_POST['imei1'] = NULL;
                 }
             } else if (isset($_POST['kusy'])) {
                 $_POST['imei'] = NULL;

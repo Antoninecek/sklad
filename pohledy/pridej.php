@@ -249,7 +249,7 @@ if ($this->uspesnePridani) {
             </div>
             <form  id="formUndo" class="hidden" role="form" method="post" action="pridej/undo">
                 <div class="form-group">
-                    <input type="password" name="formUndoHeslo" placeholder="HESLO" required>
+                    <input type="password" name="formUndoHeslo" placeholder="HESLO" autocomplete="off" required>
                 </div>
                 <button class="btn btn-default" type="submit">Oprav posledni akci</button>
             </form>
