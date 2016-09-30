@@ -68,11 +68,11 @@ class SynchroKontroler extends Kontroler {
 
     private function synchronizuj() {
         // nacist do db z csv
-        $databasehost = "localhost";
+        $databasehost = DBHOST;
         $databasename = DATABASE;
         $databasetable = "sap";
-        $databaseusername = "root";
-        $databasepassword = "";
+        $databaseusername = DBUSER;
+        $databasepassword = DBPASS;
         $fieldseparator = ";";
         $lineseparator = "\n";
         $csvfile = "up/sap.csv";
