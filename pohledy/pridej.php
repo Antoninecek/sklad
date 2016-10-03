@@ -106,20 +106,6 @@ if ($this->vypisZnova) {
             document.getElementById('pocet-input').value = 1;
             document.getElementById("pocet-input").disabled = true;
             document.getElementById("imei1-input").disabled = false;
-            document.getElementById("imei1-input").style.backgroundColor = 'transparent';
-            var a = validateIMEI(document.getElementById('imei-input').value);
-            if (a) {
-                document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
-                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-                document.getElementById('imei-input').style.backgroundPosition = "right";
-                imeiOk = true;
-                checkImeiFromDb();
-            } else {
-                document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
-                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-                document.getElementById('imei-input').style.backgroundPosition = "right";
-                imeiOk = false;
-            }
         } else {
             document.getElementById("pocet-input").disabled = false;
             document.getElementById("imei1-input").disabled = true;
@@ -206,6 +192,7 @@ if ($this->vypisZnova) {
 
     function checkImeiFromDb() {
         var ans;
+        var reg = new RegExp("\s*true\s*");
         var str = document.getElementById('imei-input').value;
         if (str != "") {
             if (window.XMLHttpRequest) {
@@ -218,16 +205,34 @@ if ($this->vypisZnova) {
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     ans = xmlhttp.responseText;
-                    var reg = new RegExp("\s*true\s*");
-                    if (reg.test(ans)) {
-                        document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
-                        document.getElementById('vydejMsg').className = "hidden";
+
+                    var a = validateIMEI(str);
+                    if (a) {
+                        document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
+                        document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+                        document.getElementById('imei-input').style.backgroundPosition = "right";
+                        imeiOk = true;
+                        var b = reg.test(ans);
+                        if (b) {
+                            document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
+                            document.getElementById('vydejMsg').className = "hidden";
+                            console.log("b");
+                        } else {
+                            document.getElementById('submitVydej').style.backgroundColor = "red";
+                            document.getElementById('vydejMsg').className = "show";
+                            document.getElementById('vydejMsg').setAttribute("data-content", "Zkus misto tohodle druhe IMEI");
+                            document.getElementById('vydejMsg').setAttribute("data-original-title", "Spatne zadane IMEI");
+                        }
+
                     } else {
-                        document.getElementById('submitVydej').style.backgroundColor = "red";
-                        document.getElementById('vydejMsg').className = "show";
-                        document.getElementById('vydejMsg').setAttribute("data-content", "Zkus misto tohodle druhe IMEI");
-                        document.getElementById('vydejMsg').setAttribute("data-original-title", "Spatne zadane IMEI");
+                        document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
+                        document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+                        document.getElementById('imei-input').style.backgroundPosition = "right";
+                        document.getElementById('submitVydej').style.backgroundColor = "transparent";
+                        imeiOk = false;
                     }
+
+
                     //document.getElementById("testik").innerHTML
                 }
             };
@@ -249,6 +254,39 @@ if ($this->vypisZnova) {
     function smazMezeryImei() {
         smazMezery('imei-input');
         smazMezery('imei1-input');
+    }
+
+    function zbarveniVydej(imei) {
+        if (imei != "") {
+            var a = validateIMEI(imei);
+            if (a) {
+                document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
+                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+                document.getElementById('imei-input').style.backgroundPosition = "right";
+                imeiOk = true;
+                var b = checkImeiFromDb();
+                if (b) {
+                    document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
+                    document.getElementById('vydejMsg').className = "hidden";
+                    console.log("b");
+                } else {
+                    document.getElementById('submitVydej').style.backgroundColor = "red";
+                    document.getElementById('vydejMsg').className = "show";
+                    document.getElementById('vydejMsg').setAttribute("data-content", "Zkus misto tohodle druhe IMEI");
+                    document.getElementById('vydejMsg').setAttribute("data-original-title", "Spatne zadane IMEI");
+                }
+
+            } else {
+                document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
+                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+                document.getElementById('imei-input').style.backgroundPosition = "right";
+                imeiOk = false;
+            }
+        } else {
+            document.getElementById('imei-input').style.backgroundImage = "";
+            document.getElementById('submitVydej').style.backgroundColor = "transparent";
+            document.getElementById('vydejMsg').className = "hidden";
+        }
     }
 </script>
 
@@ -374,7 +412,7 @@ if (isset($this->vysledek)) {
 
             </div>
             <div class="form-group" style="padding-top: 15px;">
-                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()">
+                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()" onblur="checkImeiFromDb()">
             </div>
             <p id="test"></p>
             <div class="form-group">
@@ -431,7 +469,7 @@ if (isset($this->vysledek)) {
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#napoveda").text(function(){
+        $("#napoveda").text(function () {
             var arr = [
                 "Zaskrtavaci policko Zapamatuj ti pomuze prijmout vice veci, bez zbytecneho opakovani hesla.",
                 "Kdyz potrebujes zadat EAN/IMEI rucne, odskrtni policko SKOK.",
@@ -440,7 +478,7 @@ if (isset($this->vysledek)) {
                 "Zcervenani pole IMEI 2 a prepsani textu na DUALSIM ti pripomina povinnost skenovat pri prijmu obe IMEI."
             ];
             var a = Math.floor((Math.random() * arr.length) + 1);
-            return arr[a-1];
+            return arr[a - 1];
         });
     });
 </script>
