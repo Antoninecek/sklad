@@ -291,9 +291,9 @@ div#zk:active img {
 
 .napoveda {
     font-style: italic;
-    color: darkslategrey;
+    color: blue;
 }
 
 .napoveda:before {
-    content: "NAPOVEDA: ";
+    content: "TIP: ";
 }

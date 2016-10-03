@@ -85,7 +85,7 @@
     <div class="form-group" style="width: 1230px;">
         <div class="row" style="width: 500px;">
             <div class="col-sm-6" >
-                <input id="eanek" pattern="[0-9]{11,13}" class="form-control" name="eankod" value="<?php echo(isset($this->ean) ? $this->ean : "") ?> " onblur="showIt(this.value)" value="" autofocus>
+                <input id="eanek" pattern="[0-9]{11,13}" class="form-control" name="eankod" value="<?php echo(isset($this->ean) ? $this->ean : "") ?>" onblur="showIt(this.value)" value="" autofocus>
                 <button type="submit" name="submit" class="btn btn-default" value="eanKodSubmit">EAN</button>
             </div>
 
