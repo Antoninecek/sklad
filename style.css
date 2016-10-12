@@ -59,7 +59,7 @@ header nav ul :hover{
 }
 
 #zaloha:hover:after {
-    content: " nebo ztrat";
+    content: " databazi";
 }
 
 #synchro:hover:after {
@@ -67,15 +67,15 @@ header nav ul :hover{
 }
 
 #inventura:hover:after {
-    content: " bez manka";
+    content: " skladu";
 }
 
 #vystav:hover:after {
-    content: " to";
+    content: " vse";
 }
 
-#uzivatel:hover:before{
-    content: "ne";
+#uzivatel:hover:after{
+    content: "ske rozhrani";
 }
 
 article {

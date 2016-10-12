@@ -100,6 +100,9 @@ if ($this->vypisZnova) {
     var imeiOk;
     var imei1Ok;
 
+
+
+
     function disableIt() {
 
         if (document.getElementById('imei-input').value != "") {
@@ -190,56 +193,106 @@ if ($this->vypisZnova) {
             return true;
     }
 
-    function checkImeiFromDb() {
-        var ans;
-        var reg = new RegExp("\s*true\s*");
-        var str = document.getElementById('imei-input').value;
-        if (str != "") {
-            if (window.XMLHttpRequest) {
-                // code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            } else {
-                // code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    ans = xmlhttp.responseText;
-
-                    var a = validateIMEI(str);
-                    if (a) {
-                        document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
-                        document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-                        document.getElementById('imei-input').style.backgroundPosition = "right";
-                        imeiOk = true;
-                        var b = reg.test(ans);
-                        if (b) {
-                            document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
-                            document.getElementById('vydejMsg').className = "hidden";
-                            console.log("b");
-                        } else {
-                            document.getElementById('submitVydej').style.backgroundColor = "red";
-                            document.getElementById('vydejMsg').className = "show";
-                            document.getElementById('vydejMsg').setAttribute("data-content", "Zkus misto tohodle druhe IMEI");
-                            document.getElementById('vydejMsg').setAttribute("data-original-title", "Spatne zadane IMEI");
-                        }
-
-                    } else {
-                        document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
-                        document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-                        document.getElementById('imei-input').style.backgroundPosition = "right";
-                        document.getElementById('submitVydej').style.backgroundColor = "transparent";
-                        imeiOk = false;
-                    }
-
-
-                    //document.getElementById("testik").innerHTML
+    $(document).ready(function () {
+        $("#imei-input").focusout(function () {
+            var ans;
+            var reg = new RegExp("\s*true\s*");
+            var str = $('#imei-input').val();
+            if (str != "") {
+                if (window.XMLHttpRequest) {
+                    // code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    // code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                 }
-            };
-            xmlhttp.open("GET", "ZkontrolujImei/" + str, true);
-            xmlhttp.send();
-        }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        ans = xmlhttp.responseText;
+
+                        var a = validateIMEI(str);
+                        if (a) {
+                            $('#imei-input').css('background-image', "url('pics/Apply.png')");
+                            imeiOk = true;
+                            var b = reg.test(ans);
+                            if (b) {
+                                $('#submitVydej').css('background-color', "lightgreen");
+                                $('#vydejMsg').css("display", "none");
+                            } else {
+                                $('#submitVydej').css("background-color", "red");
+                                $('#vydejMsg').css("display", "block");
+                            }
+                        } else {
+                            $('#imei-input').css("background-image", "url('pics/dialog-close.png')");
+                            $('#submitVydej').css("background-color", "transparent");
+                            $('#vydejMsg').css("display", "none");
+                            imeiOk = false;
+                        }
+                    }
+                };
+                xmlhttp.open("GET", "ZkontrolujImei/" + str, true);
+                xmlhttp.send();
+            } else {
+                resetImeiForm();
+            }
+        });
+    });
+    
+    function resetImeiForm(){
+        $('#imei-input').css('background-image', "none");
+        $('#imei1-input').css('background-image', "none");
+        $('#vydejMsg').css("display", "none");
+        $('#submitVydej').css("backgroundColor", "transparent");
     }
+
+//    function checkImeiFromDb() {
+//        var ans;
+//        var reg = new RegExp("\s*true\s*");
+//        var str = document.getElementById('imei-input').value;
+//        if (str != "") {
+//            if (window.XMLHttpRequest) {
+//                // code for IE7+, Firefox, Chrome, Opera, Safari
+//                xmlhttp = new XMLHttpRequest();
+//            } else {
+//                // code for IE6, IE5
+//                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+//            }
+//            xmlhttp.onreadystatechange = function () {
+//                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//                    ans = xmlhttp.responseText;
+//
+//                    var a = validateIMEI(str);
+//                    if (a) {
+//                        document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
+//                        document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+//                        document.getElementById('imei-input').style.backgroundPosition = "right";
+//                        imeiOk = true;
+//                        var b = reg.test(ans);
+//                        if (b) {
+//                            document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
+//                            document.getElementById('vydejMsg').className = "hidden";
+//                            console.log("b");
+//                        } else {
+//                            document.getElementById('submitVydej').style.backgroundColor = "red";
+//                            document.getElementById('vydejMsg').className = "show";
+//                        }
+//
+//                    } else {
+//                        document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
+//                        document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+//                        document.getElementById('imei-input').style.backgroundPosition = "right";
+//                        document.getElementById('submitVydej').style.backgroundColor = "transparent";
+//                        imeiOk = false;
+//                    }
+//
+//
+//                    //document.getElementById("testik").innerHTML
+//                }
+//            };
+//            xmlhttp.open("GET", "ZkontrolujImei/" + str, true);
+//            xmlhttp.send();
+//        }
+//    }
 
     function myTrim(x) {
         return x.replace(/^\s+|\s+$/gm, '');
@@ -256,38 +309,38 @@ if ($this->vypisZnova) {
         smazMezery('imei1-input');
     }
 
-    function zbarveniVydej(imei) {
-        if (imei != "") {
-            var a = validateIMEI(imei);
-            if (a) {
-                document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
-                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-                document.getElementById('imei-input').style.backgroundPosition = "right";
-                imeiOk = true;
-                var b = checkImeiFromDb();
-                if (b) {
-                    document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
-                    document.getElementById('vydejMsg').className = "hidden";
-                    console.log("b");
-                } else {
-                    document.getElementById('submitVydej').style.backgroundColor = "red";
-                    document.getElementById('vydejMsg').className = "show";
-                    document.getElementById('vydejMsg').setAttribute("data-content", "Zkus misto tohodle druhe IMEI");
-                    document.getElementById('vydejMsg').setAttribute("data-original-title", "Spatne zadane IMEI");
-                }
-
-            } else {
-                document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
-                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-                document.getElementById('imei-input').style.backgroundPosition = "right";
-                imeiOk = false;
-            }
-        } else {
-            document.getElementById('imei-input').style.backgroundImage = "";
-            document.getElementById('submitVydej').style.backgroundColor = "transparent";
-            document.getElementById('vydejMsg').className = "hidden";
-        }
-    }
+//    function zbarveniVydej(imei) {
+//        if (imei != "") {
+//            var a = validateIMEI(imei);
+//            if (a) {
+//                document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
+//                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+//                document.getElementById('imei-input').style.backgroundPosition = "right";
+//                imeiOk = true;
+//                var b = checkImeiFromDb();
+//                if (b) {
+//                    document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
+//                    document.getElementById('vydejMsg').className = "hidden";
+//                    console.log("b");
+//                } else {
+//                    document.getElementById('submitVydej').style.backgroundColor = "red";
+//                    document.getElementById('vydejMsg').className = "show";
+//                    document.getElementById('vydejMsg').setAttribute("data-content", "Zkus misto tohodle druhe IMEI");
+//                    document.getElementById('vydejMsg').setAttribute("data-original-title", "Spatne zadane IMEI");
+//                }
+//
+//            } else {
+//                document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
+//                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
+//                document.getElementById('imei-input').style.backgroundPosition = "right";
+//                imeiOk = false;
+//            }
+//        } else {
+//            document.getElementById('imei-input').style.backgroundImage = "";
+//            document.getElementById('submitVydej').style.backgroundColor = "transparent";
+//            document.getElementById('vydejMsg').className = "hidden";
+//        }
+//    }
 </script>
 
 <?php
@@ -382,16 +435,34 @@ if (isset($this->vysledek)) {
 
 <div class="container formular pull-left" style="max-width: 300px;">
     <div class="row"style="max-width: 100%;">
-        <form  id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;" onsubmit="return validate()">
+        <form id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;" onsubmit="return validate()">
             <div class="form-group">
-                <input type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->text : "" ?>"  <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
+                <div class="row">
+                    <div class="col-sm-5" style="padding-right: 0px;">
+                        <select name="typyPohybu" class="form-control" id="sel1" style="padding: 0px;">
+                            <option value="" disabled="true" style="border-bottom: black dashed thin; background-color: grey; color: white;">VYDEJE</option>
+                            <option id="selProdej" value="PRODEJ">PRODEJ</option>
+                            <option id="selPrevodka" value="PREVODKA">PREVODKA</option>
+                            <option id="selInternet" value="INTERNET">INTERNET</option>
+                            <option id="selVystaveni" value="VYSTAVENI">VYSTAVENI</option>
+                            <option id="selVydejJine" value="JINE VYDEJ">JINY VYDEJ:</option>
+                            <option value="" disabled="true" style="border-bottom: black dashed thin; background-color: grey; color: white;">PRIJMY</option>
+                            <option id="selKamion" value="KAMION">KAMION</option>
+                            <option id="selNeprodano" value="NEPRODANO">NEPRODANO</option>
+                            <option id="selPrijemJine" value="JINE PRIJEM">JINY PRIJEM:</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-7" style="padding-left: 0px;">
+                        <input id="textPridejForm" type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->text : "" ?>"  <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-9" style="padding: 0;">
                     <input type="password" class="form-control" id="jmenoPridejForm" name="jmeno" value="<?= $this->zachovatHeslo ? $this->heslo : "" ?>" placeholder="HESLO" autocomplete="off" required>
                 </div>
                 <div class="col-sm-3 text-center" style="display: inline-block">
-                    <input type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> tabindex="-1"><abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje (vhodne pro prijem kamionu)">Zapamatuj</abbr>
+                    <input id="formZachovejHeslo" type="checkbox" name="formZachovejHeslo" <?= $this->zachovatHeslo ? "checked" : "" ?> tabindex="-1"><abbr title="nech zaskrtnute pro zachovani tveho hesla v kolonce i po provedeni prijmu/vydeje (vhodne pro prijem kamionu)">Zapamatuj</abbr>
                 </div>
             </div>
             <br/>
@@ -412,11 +483,11 @@ if (isset($this->vysledek)) {
 
             </div>
             <div class="form-group" style="padding-top: 15px;">
-                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()" onblur="checkImeiFromDb()">
+                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()" style="background-repeat: no-repeat; background-position: right;">
             </div>
             <p id="test"></p>
             <div class="form-group">
-                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> oninput="disableIt()" onchange="disableIt()" onblur="smazMezeryImei()" >
+                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> oninput="disableIt()" onchange="disableIt()" onblur="smazMezeryImei()" style="background-repeat: no-repeat; background-position: right;">
             </div>
 
             <div class="form-group">
@@ -428,7 +499,7 @@ if (isset($this->vysledek)) {
 
                 </span>
             </a>
-            <a id="vydejMsg" href="#" class="hidden" onclick="return false" class="" data-content="" data-original-title="" style="color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px;" data-toggle="popover" data-trigger="focus" tabindex="-1">
+            <a id="vydejMsg" href="#" onclick="return false" data-content="Zkus misto tohodle druhe IMEI" data-original-title="Spatne zadane IMEI" style="color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px; display: none;" data-toggle="popover" data-trigger="focus" tabindex="-1">
                 <span class="glyphicon glyphicon-remove"></span>
                 Proc je tlacitko VYDEJ rude?
                 <span class="glyphicon glyphicon-remove"></span>
@@ -468,17 +539,126 @@ if (isset($this->vysledek)) {
 </div>
 
 <script type="text/javascript">
+
+    function pohyb(pohyb) {
+        var t;
+        console.log(pohyb);
+        switch (pohyb) {
+            case "PRODEJ":
+                t = "selProdej";
+                $("#submitPrijem").prop("disabled", true);
+                $("#submitVydej").prop("disabled", false);
+                break;
+            case "INTERNET":
+                t = "selInternet";
+                $("#submitPrijem").prop("disabled", true);
+                $("#submitVydej").prop("disabled", false);
+                break;
+            case "PREVODKA":
+                t = "selPrevodka";
+                $("#submitPrijem").prop("disabled", true);
+                $("#submitVydej").prop("disabled", false);
+                break;
+            case "VYSTAVENI":
+                t = "selVystaveni";
+                $("#submitPrijem").prop("disabled", true);
+                $("#submitVydej").prop("disabled", false);
+                break;
+            case "JINE PRIJEM":
+                t = "selPrijemJine";
+                $("#submitPrijem").prop("disabled", false);
+                $("#submitVydej").prop("disabled", true);
+                break;
+            case "JINE VYDEJ":
+                t = "selVydejJine";
+                $("#submitPrijem").prop("disabled", true);
+                $("#submitVydej").prop("disabled", false);
+                break;
+            case "KAMION":
+                t = "selKamion";
+                $("#submitPrijem").prop("disabled", false);
+                $("#submitVydej").prop("disabled", true);
+                break;
+            case "NEPRODANO":
+                t = "selNeprodano";
+                $("#submitPrijem").prop("disabled", false);
+                $("#submitVydej").prop("disabled", true);
+                break;
+            default:
+                t = null;
+                $("#submitPrijem").prop("disabled", false);
+                $("#submitVydej").prop("disabled", false);
+                break;
+        }
+        if (t == "selVydejJine") {
+            $("#textPridejForm").prop("required", true);
+        } else {
+            $("#textPridejForm").prop("required", false);
+        }
+
+        if (t != null) {
+            document.getElementById(t).selected = "true";
+        }
+    }
+
+    $(document).ready(pohyb("<?= $this->pohyb ?>"));
+    $("#sel1").on('change', function () {
+        pohyb($("#sel1").val())
+    });
+
     $(document).ready(function () {
+
         $("#napoveda").text(function () {
             var arr = [
-                "Zaskrtavaci policko Zapamatuj ti pomuze prijmout vice veci, bez zbytecneho opakovani hesla.",
+                "Zaskrtavaci policko Zapamatuj ti pomuze prijmout vice veci, bez zbytecneho opakovani hesla a textu.",
                 "Kdyz potrebujes zadat EAN/IMEI rucne, odskrtni policko SKOK.",
                 "Krizek/Fajfka u IMEI kontroluje, zda nactene cislo je IMEI.",
                 "Cervene/Zelene tlacitko Vydej ti kontroluje dostupnost nacteneho IMEI pro vydej.",
-                "Zcervenani pole IMEI 2 a prepsani textu na DUALSIM ti pripomina povinnost skenovat pri prijmu obe IMEI."
+                "Zcervenani pole IMEI 2 a prepsani textu na DUALSIM ti pripomina povinnost skenovat pri prijmu obe IMEI.",
+                "Pri vypnuti skoku musis pro zobrazeni informaci o EANu kliknout mimo pole.",
+                "Po 3 minutach dojde automaticky k odhlaseni, pokud nahodou nechas zaskrtle Zapamatuj.",
+                "V pripade jakohokoliv problemu muzes bud nadavat, nebo mi dat vedet (kontakt je vpravo nahore)."
             ];
             var a = Math.floor((Math.random() * arr.length) + 1);
             return arr[a - 1];
         });
+
+
+        var stopTime;
+        if ($("#formZachovejHeslo").is(":checked")) {
+            var d = new Date();
+            stopTime = d.getTime();
+            console.log(stopTime);
+        }
+
+        $("#formZachovejHeslo").on("click", function () {
+            checkIt = $("#formZachovejHeslo").is(":checked");
+            if (checkIt) {
+                var d = new Date();
+                stopTime = d.getTime();
+                console.log(stopTime);
+            } else {
+                console.log("not checked");
+            }
+        });
+
+        $("#insert").on("submit", function (e) {
+            checkIt = $("#formZachovejHeslo").is(":checked");
+            if (checkIt) {
+                var d = new Date();
+                if ((stopTime + 180000) <= d.getTime()) {
+                    $("#jmenoPridejForm").val("");
+                    $("#formZachovejHeslo").prop('checked', false);
+                    e.preventDefault();
+                    console.log("stop");
+                } else {
+                    console.log("continue");
+                }
+
+            } else {
+                console.log("controll not checked");
+            }
+        });
+
     });
 </script>

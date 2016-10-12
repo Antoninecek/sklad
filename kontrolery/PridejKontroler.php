@@ -26,6 +26,7 @@ class PridejKontroler extends Kontroler {
     protected $vysledekUnda = FALSE;
     protected $vypisZnova = FALSE;
     protected $zmenaFocus;
+    protected $pohyb;
 
     public function zpracuj($params) {
         $spravceZaznamu = new SpravceZaznamu();
@@ -33,7 +34,8 @@ class PridejKontroler extends Kontroler {
         switch (isset($params[1]) ? $params[1] : FALSE) {
             case "pridano":
                 $this->heslo = $_POST['jmeno'];
-                $this->text = $_POST['text'];
+                $this->text = $_POST['typyPohybu'] . " " . filter_input(INPUT_POST, 'text');
+                $this->pohyb = $_POST['typyPohybu'];
                 $this->pokusPridat = TRUE;
                 if (isset($_POST['formZachovejHeslo']) && $_POST['formZachovejHeslo'] == TRUE) {
                     $this->zachovatHeslo = TRUE;
@@ -110,7 +112,7 @@ class PridejKontroler extends Kontroler {
                 } else {
                     //print_r($_POST);
                     $pridejOscislo = $spravceZaznamu->vratOscislo($this->heslo)[0];
-                    $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $_POST['imei'], $_POST['imei1'], $kusy, $pridejOscislo, $_POST['text']);
+                    $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $_POST['imei'], $_POST['imei1'], $kusy, $pridejOscislo, $this->text);
 
                     $this->message = $vraceni;
                     $this->uspesnePridani = TRUE;
