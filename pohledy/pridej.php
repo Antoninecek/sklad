@@ -245,55 +245,6 @@ if ($this->vypisZnova) {
         $('#submitVydej').css("backgroundColor", "transparent");
     }
 
-//    function checkImeiFromDb() {
-//        var ans;
-//        var reg = new RegExp("\s*true\s*");
-//        var str = document.getElementById('imei-input').value;
-//        if (str != "") {
-//            if (window.XMLHttpRequest) {
-//                // code for IE7+, Firefox, Chrome, Opera, Safari
-//                xmlhttp = new XMLHttpRequest();
-//            } else {
-//                // code for IE6, IE5
-//                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-//            }
-//            xmlhttp.onreadystatechange = function () {
-//                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-//                    ans = xmlhttp.responseText;
-//
-//                    var a = validateIMEI(str);
-//                    if (a) {
-//                        document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
-//                        document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-//                        document.getElementById('imei-input').style.backgroundPosition = "right";
-//                        imeiOk = true;
-//                        var b = reg.test(ans);
-//                        if (b) {
-//                            document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
-//                            document.getElementById('vydejMsg').className = "hidden";
-//                            console.log("b");
-//                        } else {
-//                            document.getElementById('submitVydej').style.backgroundColor = "red";
-//                            document.getElementById('vydejMsg').className = "show";
-//                        }
-//
-//                    } else {
-//                        document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
-//                        document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-//                        document.getElementById('imei-input').style.backgroundPosition = "right";
-//                        document.getElementById('submitVydej').style.backgroundColor = "transparent";
-//                        imeiOk = false;
-//                    }
-//
-//
-//                    //document.getElementById("testik").innerHTML
-//                }
-//            };
-//            xmlhttp.open("GET", "ZkontrolujImei/" + str, true);
-//            xmlhttp.send();
-//        }
-//    }
-
     function myTrim(x) {
         return x.replace(/^\s+|\s+$/gm, '');
     }
@@ -308,39 +259,6 @@ if ($this->vypisZnova) {
         smazMezery('imei-input');
         smazMezery('imei1-input');
     }
-
-//    function zbarveniVydej(imei) {
-//        if (imei != "") {
-//            var a = validateIMEI(imei);
-//            if (a) {
-//                document.getElementById('imei-input').style.backgroundImage = "url('pics/Apply.png')";
-//                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-//                document.getElementById('imei-input').style.backgroundPosition = "right";
-//                imeiOk = true;
-//                var b = checkImeiFromDb();
-//                if (b) {
-//                    document.getElementById('submitVydej').style.backgroundColor = "lightgreen";
-//                    document.getElementById('vydejMsg').className = "hidden";
-//                    console.log("b");
-//                } else {
-//                    document.getElementById('submitVydej').style.backgroundColor = "red";
-//                    document.getElementById('vydejMsg').className = "show";
-//                    document.getElementById('vydejMsg').setAttribute("data-content", "Zkus misto tohodle druhe IMEI");
-//                    document.getElementById('vydejMsg').setAttribute("data-original-title", "Spatne zadane IMEI");
-//                }
-//
-//            } else {
-//                document.getElementById('imei-input').style.backgroundImage = "url('pics/dialog-close.png')";
-//                document.getElementById('imei-input').style.backgroundRepeat = "no-repeat";
-//                document.getElementById('imei-input').style.backgroundPosition = "right";
-//                imeiOk = false;
-//            }
-//        } else {
-//            document.getElementById('imei-input').style.backgroundImage = "";
-//            document.getElementById('submitVydej').style.backgroundColor = "transparent";
-//            document.getElementById('vydejMsg').className = "hidden";
-//        }
-//    }
 </script>
 
 <?php
