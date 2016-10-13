@@ -145,7 +145,7 @@ input.file {
 }
 
 .vydej:hover, .prijem:hover {
-    background-color: darkgrey;
+    background-color: darkgrey !important;
     color:black;
     border-color: black;
 }

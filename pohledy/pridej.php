@@ -16,7 +16,6 @@ if ($this->vypisZnova) {
             setTimeout(function () {
                 $('#jmenoPridejForm').focus();
             }, 10);
-
             console.log("fcs");
         });
         var zmenaFocus = true;
@@ -84,17 +83,21 @@ if ($this->vypisZnova) {
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     ans = xmlhttp.responseText;
-
                     var reg = new RegExp("\s*true\s*");
                     console.log(reg.test(ans));
                     if (reg.test(ans)) {
-                        document.getElementById("imei1-input").placeholder = "DUAL SIM";
-                        document.getElementById("imei1-input").style.backgroundColor = "#ffb3b3";
+//                        document.getElementById("imei1-input").placeholder = "DUAL SIM";
+//                        document.getElementById("imei1-input").style.backgroundColor = "#ffb3b3";
+                        $("#imei1-input").css("border-color", "red");
+                        $('#zisk1Dualsim').css("display", "block");
                         return true;
                     } else {
-                        document.getElementById("imei1-input").placeholder = "IMEI 2";
+//                        document.getElementById("imei1-input").placeholder = "IMEI 2";
+//                        $("#imei1-input").css('background-color', 'transparent');
+                        $("#imei1-input").css("border-color", "grey");
                         if (document.getElementById("imei-input").value == "") {
-                            document.getElementById("imei1-input").style.backgroundColor = "lightgrey";
+                            $("imei1-input").prop("disabled", "true");
+//                            $("#imei1-input").css('background-color', '#EBEBE4');
                         }
                         return true;
                     }
@@ -107,7 +110,6 @@ if ($this->vypisZnova) {
 
     var imeiOk;
     var imei1Ok;
-
     $(document).ready(function () {
         $('#imei-input').on('input', function () {
             if (document.getElementById('imei-input').value != "") {
@@ -125,79 +127,28 @@ if ($this->vypisZnova) {
                 }, 1500);
             }
         });
-
         $('#imei1-input').on('input change', function () {
             if (document.getElementById('imei1-input').value != "") {
                 var a = validateIMEI(document.getElementById('imei1-input').value);
                 if (a) {
                     document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
-                    document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
-                    document.getElementById('imei1-input').style.backgroundPosition = "right";
                     imei1Ok = true;
                 } else {
                     document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
-                    document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
-                    document.getElementById('imei1-input').style.backgroundPosition = "right";
                     imei1Ok = false;
                 }
             }
         });
     });
-
-    function disableIt() {
-
-//        if (document.getElementById('imei-input').value != "") {
-//            document.getElementById('pocet-input').value = 1;
-//            document.getElementById("pocet-input").disabled = true;
-//            document.getElementById("imei1-input").disabled = false;
-//        } else {
-//            document.getElementById("pocet-input").disabled = false;
-//            document.getElementById("imei1-input").disabled = true;
-//            document.getElementById("imei1-input").value = '';
-//
-//        }
-
-//        if (document.getElementById('imei1-input').value != "") {
-//            var a = validateIMEI(document.getElementById('imei1-input').value);
-//            if (a) {
-//                document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
-//                document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
-//                document.getElementById('imei1-input').style.backgroundPosition = "right";
-//                imei1Ok = true;
-//            } else {
-//                document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
-//                document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
-//                document.getElementById('imei1-input').style.backgroundPosition = "right";
-//                imei1Ok = false;
-//            }
-//        }
-
-//        if (zmenaFocus) {
-//            document.getElementById('jmenoPridejForm').focus();
-//            zmenaFocus = false;
-//        } else {
-//            if (document.getElementById("skok").checked) {
-//                setTimeout(function () {
-//                    document.getElementById("imei1-input").focus();
-//                }, 1500);
-//            }
-//        }
-
-
-    }
-
     function validateIMEI(value) {
         if (/[^0-9-\s]+/.test(value))
             return false;
-
         // The Luhn Algorithm. It's so pretty.
         var nCheck = 0, nDigit = 0, bEven = false;
         value = value.replace(/\D/g, "");
-
         for (var n = value.length - 1; n >= 0; n--) {
             var cDigit = value.charAt(n),
                     nDigit = parseInt(cDigit, 10);
-
             if (bEven) {
                 if ((nDigit *= 2) > 9)
                     nDigit -= 9;
@@ -251,7 +202,6 @@ if ($this->vypisZnova) {
                 xmlhttp.onreadystatechange = function () {
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                         ans = xmlhttp.responseText;
-
                         var a = validateIMEI(str);
                         if (a) {
                             $('#imei-input').css('background-image', "url('pics/Apply.png')");
@@ -259,14 +209,17 @@ if ($this->vypisZnova) {
                             var b = reg.test(ans);
                             if (b) {
                                 $('#submitVydej').css('background-color', "lightgreen");
+                                $('#submitVydej').css("border-color", "lightgreen");
                                 $('#vydejMsg').css("display", "none");
                             } else {
                                 $('#submitVydej').css("background-color", "red");
+                                $('#submitVydej').css("border-color", "red");
                                 $('#vydejMsg').css("display", "block");
                             }
                         } else {
                             $('#imei-input').css("background-image", "url('pics/dialog-close.png')");
                             $('#submitVydej').css("background-color", "transparent");
+                            $('#submitVydej').css("border-color", "black");
                             $('#vydejMsg').css("display", "none");
                             imeiOk = false;
                         }
@@ -279,7 +232,6 @@ if ($this->vypisZnova) {
             }
         });
     });
-
     function resetImeiForm() {
         $('#imei-input').css('background-image', "none");
         $('#imei1-input').css('background-image', "none");
@@ -447,7 +399,7 @@ if (isset($this->vysledek)) {
             </div>
             <p id="test"></p>
             <div class="form-group">
-                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> oninput="disableIt()" onchange="disableIt()" onblur="smazMezeryImei()" style="background-repeat: no-repeat; background-position: right;">
+                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> onblur="smazMezeryImei()" style="background-repeat: no-repeat; background-position: right;">
             </div>
 
             <div class="form-group">
@@ -482,7 +434,7 @@ if (isset($this->vysledek)) {
     <h6 id="napoveda" class="napoveda"></h6>
     <table class="table table-hover">
         <?php
-        //print_r($this->seznamZaznamu);
+//print_r($this->seznamZaznamu);
         foreach ($this->seznamZaznamu as $a) {
             ?>
             <tr>
@@ -564,7 +516,6 @@ if (isset($this->vysledek)) {
     $("#sel1").on('change', function () {
         pohyb($("#sel1").val())
     });
-
     $(document).ready(function () {
 
         $("#napoveda").text(function () {
@@ -573,16 +524,15 @@ if (isset($this->vysledek)) {
                 "Kdyz potrebujes zadat EAN/IMEI rucne, odskrtni policko SKOK.",
                 "Krizek/Fajfka u IMEI kontroluje, zda nactene cislo je IMEI.",
                 "Cervene/Zelene tlacitko Vydej ti kontroluje dostupnost nacteneho IMEI pro vydej.",
-                "Zcervenani pole IMEI 2 a prepsani textu na DUALSIM ti pripomina povinnost skenovat pri prijmu obe IMEI.",
+                "Zcervenani ohraniceni IMEI 2 ti pripomina povinnost skenovat pri prijmu obe IMEI.",
                 "Pri vypnuti skoku musis pro zobrazeni informaci o EANu kliknout mimo pole.",
                 "Po 3 minutach dojde automaticky k odhlaseni, pokud nahodou nechas zaskrtle Zapamatuj.",
-                "V pripade jakohokoliv problemu muzes bud nadavat, nebo mi dat vedet (kontakt je vpravo nahore)."
+                "V pripade jakehokoliv problemu muzes bud nadavat, nebo mi dat vedet (kontakt je vpravo nahore).",
+                "Samsung telefony maji vetsinou na krabicce jen jedno IMEI, i kdyz jsou dualsimovy."
             ];
             var a = Math.floor((Math.random() * arr.length) + 1);
             return arr[a - 1];
         });
-
-
         var stopTime;
         if ($("#formZachovejHeslo").is(":checked")) {
             var d = new Date();
@@ -600,7 +550,6 @@ if (isset($this->vysledek)) {
                 console.log("not checked");
             }
         });
-
         $("#insert").on("submit", function (e) {
             checkIt = $("#formZachovejHeslo").is(":checked");
             if (checkIt) {
@@ -618,6 +567,5 @@ if (isset($this->vysledek)) {
                 console.log("controll not checked");
             }
         });
-
     });
 </script>

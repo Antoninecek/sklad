@@ -29,6 +29,9 @@ class ZiskejInfoKontroler extends Kontroler {
                     <label for="popis">ITEM </label>
                     <input type="text" class="form-control" name="" value="<?php echo(empty($row[0]) ? "se SAPem" : "$row[1]"); ?>" tabindex="-1" required readonly>
                 </div>
+                <div id="zisk1Dualsim" class="col-sm-6" style="display: none; width: 100%;">
+                    <h4>DUAL SIM - naskenuj obe IMEI !</h4>
+                </div>
             </div>
 
             <?php

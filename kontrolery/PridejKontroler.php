@@ -37,6 +37,7 @@ class PridejKontroler extends Kontroler {
                 $this->text = filter_input(INPUT_POST, 'text');
                 $this->pohyb = $_POST['typyPohybu'];
                 $this->pokusPridat = TRUE;
+                $textToDb = $this->pohyb . " " . $this->text;
                 if (isset($_POST['formZachovejHeslo']) && $_POST['formZachovejHeslo'] == TRUE) {
                     $this->zachovatHeslo = TRUE;
                 }
@@ -111,7 +112,7 @@ class PridejKontroler extends Kontroler {
                     $this->uspesnePridani = FALSE;
                 } else {
                     //print_r($_POST);
-                    $textToDb = $_POST['typyPohybu'] . " " . $this->text;
+                    
                     $pridejOscislo = $spravceZaznamu->vratOscislo($this->heslo)[0];
                     $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $_POST['imei'], $_POST['imei1'], $kusy, $pridejOscislo, $textToDb);
 
@@ -193,7 +194,7 @@ class PridejKontroler extends Kontroler {
 
     public function logujKusy($ean, $imei, $jmeno, $kusy) {
         $sz = new SpravceZaznamu();
-        $text = "ean: " . $ean . " imei: " . $imei . " kusy: " . $kusy . " jmeno: " . $jmeno;
+        $text = "ean: " . $ean . " imei: " . $imei . " kusy: " . $kusy . " jmeno: " . $sz->vratJmenoUzivatele($jmeno)[0];
         $sz->pridejLog($text);
         $this->logMsg = "Bylo vydano zbozi do minusu, zalogovano.";
     }
