@@ -119,6 +119,11 @@ if ($this->vypisZnova) {
                 document.getElementById("imei1-input").disabled = true;
                 document.getElementById("imei1-input").value = '';
             }
+            if (document.getElementById("skok").checked) {
+                setTimeout(function () {
+                    document.getElementById("imei1-input").focus();
+                }, 1500);
+            }
         });
 
         $('#imei1-input').on('input change', function () {
@@ -167,16 +172,16 @@ if ($this->vypisZnova) {
 //            }
 //        }
 
-        if (zmenaFocus) {
-            document.getElementById('jmenoPridejForm').focus();
-            zmenaFocus = false;
-        } else {
-            if (document.getElementById("skok").checked) {
-                setTimeout(function () {
-                    document.getElementById("imei1-input").focus();
-                }, 1500);
-            }
-        }
+//        if (zmenaFocus) {
+//            document.getElementById('jmenoPridejForm').focus();
+//            zmenaFocus = false;
+//        } else {
+//            if (document.getElementById("skok").checked) {
+//                setTimeout(function () {
+//                    document.getElementById("imei1-input").focus();
+//                }, 1500);
+//            }
+//        }
 
 
     }
