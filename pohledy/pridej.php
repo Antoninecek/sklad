@@ -10,7 +10,15 @@
 <?php
 if ($this->vypisZnova) {
     ?>
-        window.onload = disableIt;
+        //window.onload = disableIt;
+        $(document).ready(function () {
+            $("#imei-input").focus();
+            setTimeout(function () {
+                $('#jmenoPridejForm').focus();
+            }, 10);
+
+            console.log("fcs");
+        });
         var zmenaFocus = true;
     <?php
 } else {
@@ -100,36 +108,64 @@ if ($this->vypisZnova) {
     var imeiOk;
     var imei1Ok;
 
+    $(document).ready(function () {
+        $('#imei-input').on('input', function () {
+            if (document.getElementById('imei-input').value != "") {
+                document.getElementById('pocet-input').value = 1;
+                document.getElementById("pocet-input").disabled = true;
+                document.getElementById("imei1-input").disabled = false;
+            } else {
+                document.getElementById("pocet-input").disabled = false;
+                document.getElementById("imei1-input").disabled = true;
+                document.getElementById("imei1-input").value = '';
+            }
+        });
 
-
+        $('#imei1-input').on('input change', function () {
+            if (document.getElementById('imei1-input').value != "") {
+                var a = validateIMEI(document.getElementById('imei1-input').value);
+                if (a) {
+                    document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
+                    document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
+                    document.getElementById('imei1-input').style.backgroundPosition = "right";
+                    imei1Ok = true;
+                } else {
+                    document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
+                    document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
+                    document.getElementById('imei1-input').style.backgroundPosition = "right";
+                    imei1Ok = false;
+                }
+            }
+        });
+    });
 
     function disableIt() {
 
-        if (document.getElementById('imei-input').value != "") {
-            document.getElementById('pocet-input').value = 1;
-            document.getElementById("pocet-input").disabled = true;
-            document.getElementById("imei1-input").disabled = false;
-        } else {
-            document.getElementById("pocet-input").disabled = false;
-            document.getElementById("imei1-input").disabled = true;
-            document.getElementById("imei1-input").value = '';
+//        if (document.getElementById('imei-input').value != "") {
+//            document.getElementById('pocet-input').value = 1;
+//            document.getElementById("pocet-input").disabled = true;
+//            document.getElementById("imei1-input").disabled = false;
+//        } else {
+//            document.getElementById("pocet-input").disabled = false;
+//            document.getElementById("imei1-input").disabled = true;
+//            document.getElementById("imei1-input").value = '';
+//
+//        }
 
-        }
-
-        if (document.getElementById('imei1-input').value != "") {
-            var a = validateIMEI(document.getElementById('imei1-input').value);
-            if (a) {
-                document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
-                document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
-                document.getElementById('imei1-input').style.backgroundPosition = "right";
-                imei1Ok = true;
-            } else {
-                document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
-                document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
-                document.getElementById('imei1-input').style.backgroundPosition = "right";
-                imei1Ok = false;
-            }
-        }
+//        if (document.getElementById('imei1-input').value != "") {
+//            var a = validateIMEI(document.getElementById('imei1-input').value);
+//            if (a) {
+//                document.getElementById('imei1-input').style.backgroundImage = "url('pics/Apply.png')";
+//                document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
+//                document.getElementById('imei1-input').style.backgroundPosition = "right";
+//                imei1Ok = true;
+//            } else {
+//                document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
+//                document.getElementById('imei1-input').style.backgroundRepeat = "no-repeat";
+//                document.getElementById('imei1-input').style.backgroundPosition = "right";
+//                imei1Ok = false;
+//            }
+//        }
 
         if (zmenaFocus) {
             document.getElementById('jmenoPridejForm').focus();
@@ -194,7 +230,8 @@ if ($this->vypisZnova) {
     }
 
     $(document).ready(function () {
-        $("#imei-input").focusout(function () {
+        $("#imei-input").on('focusout', function () {
+            console.log("a");
             var ans;
             var reg = new RegExp("\s*true\s*");
             var str = $('#imei-input').val();
@@ -237,12 +274,12 @@ if ($this->vypisZnova) {
             }
         });
     });
-    
-    function resetImeiForm(){
+
+    function resetImeiForm() {
         $('#imei-input').css('background-image', "none");
         $('#imei1-input').css('background-image', "none");
         $('#vydejMsg').css("display", "none");
-        $('#submitVydej').css("backgroundColor", "transparent");
+        $('#submitVydej').css("background-color", "transparent");
     }
 
     function myTrim(x) {
@@ -458,7 +495,7 @@ if (isset($this->vysledek)) {
 
 <script type="text/javascript">
 
-    function pohyb(pohyb) {
+    var pohyb = function pohyba(pohyb) {
         var t;
         console.log(pohyb);
         switch (pohyb) {
@@ -503,12 +540,11 @@ if (isset($this->vysledek)) {
                 $("#submitVydej").prop("disabled", true);
                 break;
             default:
-                t = null;
-                $("#submitPrijem").prop("disabled", false);
-                $("#submitVydej").prop("disabled", false);
+                pohyba($("#sel1").val());
+                return true;
                 break;
         }
-        if (t == "selVydejJine") {
+        if (t == "selVydejJine" || t == "selPrijemJine") {
             $("#textPridejForm").prop("required", true);
         } else {
             $("#textPridejForm").prop("required", false);

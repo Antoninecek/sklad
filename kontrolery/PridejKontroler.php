@@ -34,7 +34,7 @@ class PridejKontroler extends Kontroler {
         switch (isset($params[1]) ? $params[1] : FALSE) {
             case "pridano":
                 $this->heslo = $_POST['jmeno'];
-                $this->text = $_POST['typyPohybu'] . " " . filter_input(INPUT_POST, 'text');
+                $this->text = filter_input(INPUT_POST, 'text');
                 $this->pohyb = $_POST['typyPohybu'];
                 $this->pokusPridat = TRUE;
                 if (isset($_POST['formZachovejHeslo']) && $_POST['formZachovejHeslo'] == TRUE) {
@@ -69,9 +69,9 @@ class PridejKontroler extends Kontroler {
                 if ($_POST['imei'] != "") {
                     $kusy = 1;
                 }
-                if(isset($_POST['imei1']) && $_POST['imei1'] == 0){
+                if (isset($_POST['imei1']) && $_POST['imei1'] == 0) {
                     $_POST['imei1'] = NULL;
-                } else if (isset ($_POST['imei1']) && $_POST['imei1'] == $_POST['imei']){
+                } else if (isset($_POST['imei1']) && $_POST['imei1'] == $_POST['imei']) {
                     $_POST['imei1'] = NULL;
                 }
             } else if (isset($_POST['kusy'])) {
@@ -111,8 +111,9 @@ class PridejKontroler extends Kontroler {
                     $this->uspesnePridani = FALSE;
                 } else {
                     //print_r($_POST);
+                    $textToDb = $_POST['typyPohybu'] . " " . $this->text;
                     $pridejOscislo = $spravceZaznamu->vratOscislo($this->heslo)[0];
-                    $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $_POST['imei'], $_POST['imei1'], $kusy, $pridejOscislo, $this->text);
+                    $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $_POST['imei'], $_POST['imei1'], $kusy, $pridejOscislo, $textToDb);
 
                     $this->message = $vraceni;
                     $this->uspesnePridani = TRUE;
