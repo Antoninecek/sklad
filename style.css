@@ -298,3 +298,15 @@ div#zk:active img {
 .napoveda:before {
     content: "TIP: ";
 }
+
+#pridejHlasky {
+    position: relative;
+    width: 300px; 
+    background-color: white; 
+    border: black solid thin;
+    padding-top: 10px; 
+    padding-bottom: 5px; 
+    bottom: 130px;
+    left: 243px;
+    display: none;
+}

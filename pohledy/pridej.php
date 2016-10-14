@@ -171,14 +171,16 @@ if ($this->vypisZnova) {
         if (document.getElementById('imei-input').value != "") {
             if (document.getElementById('imei1-input').value != "") {
                 if (imeiOk != true || imei1Ok != true) {
-                    document.getElementById('imeiMsg').className = "show";
+                    $('#pridejHlasky').css("display", "block");
+                    $('#imeiMsg').css("display", "block");
                     document.getElementById('imeiMsg').setAttribute("data-content", "V poli oznacenym krizkem neni IMEI");
                     document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
                 }
                 return imeiOk == true && imei1Ok == true;
             }
             if (imeiOk != true) {
-                document.getElementById('imeiMsg').className = "show";
+                $('#pridejHlasky').css("display", "block");
+                $('#imeiMsg').css("display", "block");
                 document.getElementById('imeiMsg').setAttribute("data-content", "V poli oznacenym krizkem neni IMEI");
                 document.getElementById('imeiMsg').setAttribute("data-original-title", "Nespravne IMEI");
             }
@@ -211,17 +213,24 @@ if ($this->vypisZnova) {
                             var b = reg.test(ans);
                             if (b) {
                                 $('#submitVydej').css('background-color', "lightgreen");
-                                $('#submitVydej').css("border-color", "lightgreen");
+                                $('#submitVydej').css("border-color", "darkgreen");
+                                if ($('#imeiMsg').css('display') == "none") {
+                                    $('#pridejHlasky').css("display", "none");
+                                }
                                 $('#vydejMsg').css("display", "none");
                             } else {
                                 $('#submitVydej').css("background-color", "red");
-                                $('#submitVydej').css("border-color", "red");
+                                $('#submitVydej').css("border-color", "darkred");
+                                $('#pridejHlasky').css("display", "block");
                                 $('#vydejMsg').css("display", "block");
                             }
                         } else {
                             $('#imei-input').css("background-image", "url('pics/dialog-close.png')");
                             $('#submitVydej').css("background-color", "transparent");
                             $('#submitVydej').css("border-color", "black");
+                            if ($('#imeiMsg').css('display') == "none") {
+                                $('#pridejHlasky').css("display", "none");
+                            }
                             $('#vydejMsg').css("display", "none");
                             imeiOk = false;
                         }
@@ -349,6 +358,7 @@ if (isset($this->vysledek)) {
 
 <div class="container formular pull-left" style="max-width: 300px;">
     <div class="row"style="max-width: 100%;">
+
         <form id="insert" role="form" method="post" action="pridej/pridano" style="max-width: 100%;" onsubmit="return validate()">
             <div class="form-group">
                 <div class="row">
@@ -407,7 +417,13 @@ if (isset($this->vysledek)) {
             <div class="form-group">
                 <input id="pocet-input" type="number" class="form-control" name="kusy" value="<?= $this->vypisZnova && isset($_POST['kusy']) ? $_POST['kusy'] : "1" ?>" min="1" required >
             </div>
-            <a id="imeiMsg" href="#" class="hidden" onclick="return false" class="" data-content="" data-original-title="" style="color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px;" data-toggle="popover" data-trigger="focus" tabindex="-1">
+
+            <button id="submitPrijem" type="submit" class="prijem btn btn-default" name="summ" value="prijem">Prijem</button>
+            <button id="submitVydej" type="submit" class="vydej btn btn-default" name="summ" value="vydej">Vydej</button>
+        </form>
+
+        <div id="pridejHlasky">
+            <a id="imeiMsg" href="#" onclick="return false" class="" data-content="" data-original-title="" style="display: none; color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px;" data-toggle="popover" data-trigger="focus" tabindex="-1">
                 <span class="glyphicon glyphicon-remove"></span>
                 Proc se mi nedari pridat/vydat?<span class="glyphicon glyphicon-remove">
 
@@ -418,14 +434,12 @@ if (isset($this->vysledek)) {
                 Proc je tlacitko VYDEJ rude?
                 <span class="glyphicon glyphicon-remove"></span>
             </a>
-            <script>
-                $(document).ready(function () {
-                    $('[data-toggle="popover"]').popover();
-                });
-            </script>
-            <button id="submitPrijem" type="submit" class="prijem btn btn-default" name="summ" value="prijem">Prijem</button>
-            <button id="submitVydej" type="submit" class="vydej btn btn-default" name="summ" value="vydej">Vydej</button>
-        </form>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('[data-toggle="popover"]').popover();
+            });
+        </script>
     </div>
 </div>
 
