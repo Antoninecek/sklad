@@ -4,7 +4,7 @@
     <div class="btn btn-default" onclick="zmenVyber('nevyreseno')">nevyreseno</div>
 </div>
 
-<div id="vsechny">
+<div id="vsechny" class="hidden">
     <table class="table table-hover">
         <thead><h2>vsechny</h2></thead>
         <tr>
@@ -61,7 +61,7 @@
 </div>
 
 
-<div id="nevyreseno" class="hidden">
+<div id="nevyreseno">
     <table id="nevyreseno" class="table table-hover">
         <thead><h2>nevyreseno</h2></thead>
         <tr>

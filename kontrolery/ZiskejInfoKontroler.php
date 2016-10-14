@@ -32,7 +32,7 @@ class ZiskejInfoKontroler extends Kontroler {
                 <div id="zisk1Dualsim" class="col-sm-6" style="display: none; width: 100%;">
                     <h4>DUAL SIM - naskenuj obe IMEI !</h4>
                 </div>
-            </div>
+                </div>
 
             <?php
         } else {
@@ -69,8 +69,8 @@ class ZiskejInfoKontroler extends Kontroler {
 ?>
 <script type="text/javascript">
 
-function closeIt(){
-    document.getElementById('zisk1').className="hidden";
-}
+    function closeIt() {
+        document.getElementById('zisk1').className = "hidden";
+    }
 
 </script>

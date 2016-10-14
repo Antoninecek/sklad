@@ -84,21 +84,7 @@ class PridejKontroler extends Kontroler {
 
             if (isset($_POST['ean'])) {
 
-                if (($this->summ = $_POST['summ']) == "vydej") {
-                    if (isset($_POST['imei']) && !empty($_POST['imei'])) {
-                        $this->zjistiImei($_POST['imei']);
-                    }
-                    $kusy = $kusy * (-1);
-                    if (isset($_POST['imei']) && !empty($_POST['imei'])) {
-                        if (($this->kontrolaVydeje($_POST['imei']) - 1) < 0) {
-                            $this->loguj($_POST['ean'], $_POST['imei'], $_POST['imei1'], $_POST['jmeno']);
-                        }
-                    } else {
-                        if (($this->kontrolaVydejeEAN($_POST['ean']) - 1) < 0) {
-                            $this->logujKusy($_POST['ean'], NULL, $_POST['jmeno'], $kusy);
-                        }
-                    }
-                }
+
 
                 //$oraItem = $spravceZaznamu->ziskejOra($_POST['ean']);
                 //print_r($oraItem);
@@ -106,23 +92,38 @@ class PridejKontroler extends Kontroler {
 
                 $sz = new SpravceZaznamu();
                 $v = $sz->vratSumuImei($_POST['imei']);
+                $posledniId;
                 //print_r($v);
+                //print_r($_POST['summ']);
                 if (($_POST['summ']) == "prijem" && $v[0] > 0) {
                     $this->message = "Tenhle imei uz je pridanej";
                     $this->uspesnePridani = FALSE;
                 } else {
+                    if (($_POST['summ']) == "vydej") {
+                        $kusy = $kusy * (-1);
+                    }
                     //print_r($_POST);
-                    
+
                     $pridejOscislo = $spravceZaznamu->vratOscislo($this->heslo)[0];
                     $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $_POST['imei'], $_POST['imei1'], $kusy, $pridejOscislo, $textToDb);
-
+                    $posledniId = $vraceni[0];
                     $this->message = $vraceni;
                     $this->uspesnePridani = TRUE;
+                }
 
-                    unset($_POST['ean']);
-                    unset($_POST['imei']);
-                    unset($_POST['imei1']);
-                    unset($_POST['kusy']);
+                if (($this->summ = $_POST['summ']) == "vydej") {
+                    if (isset($_POST['imei']) && !empty($_POST['imei'])) {
+                        $this->zjistiImei($_POST['imei']);
+                    }
+                    if (isset($_POST['imei']) && !empty($_POST['imei'])) {
+                        if (($this->kontrolaVydeje($_POST['imei']) - 1) < 0) {
+                            $this->loguj($posledniId, $_POST['ean'], $_POST['imei'], $_POST['imei1'], $_POST['jmeno']);
+                        }
+                    } else {
+                        if (($this->kontrolaVydejeEAN($_POST['ean']) - 1) < 0) {
+                            $this->logujKusy($posledniId, $_POST['ean'], NULL, $_POST['jmeno'], $kusy);
+                        }
+                    }
                 }
             }
         } else if ($this->pokusPridat) {
@@ -185,16 +186,16 @@ class PridejKontroler extends Kontroler {
         return $sz->vratSumuImei($imei)[0];
     }
 
-    public function loguj($ean, $imei, $imei1, $jmeno) {
+    public function loguj($id, $ean, $imei, $imei1, $jmeno) {
         $sz = new SpravceZaznamu();
-        $text = "ean: " . $ean . " imei: " . $imei . " imei1: " . $imei1 . " jmeno: " . $sz->vratJmenoUzivatele($jmeno)[0];
+        $text = "id: " . $id . " ean: " . $ean . " imei: " . $imei . " imei1: " . $imei1 . " jmeno: " . $sz->vratJmenoUzivatele($jmeno)[0];
         $sz->pridejLog($text);
         $this->logMsg = "Byl vydan telefon do minusu, zalogovano.";
     }
 
-    public function logujKusy($ean, $imei, $jmeno, $kusy) {
+    public function logujKusy($id, $ean, $imei, $jmeno, $kusy) {
         $sz = new SpravceZaznamu();
-        $text = "ean: " . $ean . " imei: " . $imei . " kusy: " . $kusy . " jmeno: " . $sz->vratJmenoUzivatele($jmeno)[0];
+        $text = "id: " . $id . " ean: " . $ean . " imei: " . $imei . " kusy: " . $kusy . " jmeno: " . $sz->vratJmenoUzivatele($jmeno)[0];
         $sz->pridejLog($text);
         $this->logMsg = "Bylo vydano zbozi do minusu, zalogovano.";
     }

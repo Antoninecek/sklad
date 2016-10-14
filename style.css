@@ -290,6 +290,7 @@ div#zk:active img {
 }
 
 .napoveda {
+    font-family: "Comic Sans MS";
     font-style: italic;
     color: blue;
 }

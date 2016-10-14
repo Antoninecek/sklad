@@ -12,32 +12,32 @@
  * @author F@nny
  */
 class SpravceZaznamu {
-    
-    public function jeDualsim($ora){
+
+    public function jeDualsim($ora) {
         return Db::dotazJeden('SELECT dualsim FROM dualsim WHERE zbozi = ?', array($ora));
     }
-    
-    public function vratJmenoUzivatele($heslo){
+
+    public function vratJmenoUzivatele($heslo) {
         return Db::dotazJeden('SELECT jmeno FROM uzivatele WHERE heslo = ?', array($heslo));
     }
-    
-    public function vratOscislo($heslo){
+
+    public function vratOscislo($heslo) {
         return Db::dotazJeden('SELECT oscislo FROM uzivatele WHERE heslo = ?', array($heslo));
     }
-    
-    public function jeImei1($imei){
+
+    public function jeImei1($imei) {
         return Db::dotazJeden('SELECT imei FROM zarizeni WHERE imei1 = ? AND imei IS NOT NULL', array($imei));
     }
-    
-    public function jeImei0($imei){
+
+    public function jeImei0($imei) {
         return Db::dotazJeden('SELECT imei1 FROM zarizeni WHERE imei = ? AND imei1 IS NOT NULL', array($imei));
     }
-    
-    public function zjistiHeslo($jmeno){
+
+    public function zjistiHeslo($jmeno) {
         return Db::dotazJeden('SELECT heslo FROM uzivatele WHERE jmeno = ?', array($jmeno));
     }
-    
-    public function posledniZaznamZarizeni(){
+
+    public function posledniZaznamZarizeni() {
         return Db::dotazJeden('SELECT * FROM zarizeni ORDER BY ID DESC LIMIT 1');
     }
 
@@ -45,14 +45,14 @@ class SpravceZaznamu {
         return Db::dotazJeden('INSERT INTO uzivatele (oscislo, jmeno, heslo, email) VALUES (?, ?, ?, ?)', array($udaje['oscislo'], $udaje['jmeno'], $udaje['heslo'], $udaje['email']));
     }
 
-    public function existujeAktivniHeslo($heslo){
+    public function existujeAktivniHeslo($heslo) {
         return Db::dotazJeden('SELECT jmeno FROM uzivatele WHERE heslo = ? AND aktivni = 1', $heslo);
     }
-    
+
     public function existenceJmenaUzivatele($jmeno) {
         return Db::dotazJeden('SELECT jmeno FROM uzivatele WHERE jmeno = ?', $jmeno);
     }
-    
+
     public function existenceHeslaUzivatele($heslo) {
         return Db::dotazJeden('SELECT oscislo FROM uzivatele WHERE heslo = ?', $heslo);
     }
@@ -98,9 +98,13 @@ class SpravceZaznamu {
     }
 
     public function pridejZaznam($ean, $imei, $imei1, $kusy, $jmeno, $text) {
-        return Db::vlozZaznam(
+        if (Db::vlozZaznam(
                         'INSERT INTO zarizeni (ean, imei, imei1, kusy, jmeno, text) VALUES(?,?,?,?,?,?)', array($ean, $imei, $imei1, $kusy, $jmeno, $text)
-        );
+                )) {
+            return Db::dotazJeden('SELECT max(id) FROM zarizeni');
+        } else {
+            return -1;
+        }
     }
 
     public function pridejDoInventura($ean, $kusy) {

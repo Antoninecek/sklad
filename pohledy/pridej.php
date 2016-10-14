@@ -137,6 +137,8 @@ if ($this->vypisZnova) {
                     document.getElementById('imei1-input').style.backgroundImage = "url('pics/dialog-close.png')";
                     imei1Ok = false;
                 }
+            } else {
+                $('#imei1-input').css("background-image", "none");
             }
         });
     });
@@ -395,7 +397,7 @@ if (isset($this->vysledek)) {
 
             </div>
             <div class="form-group" style="padding-top: 15px;">
-                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" oninput="disableIt()" style="background-repeat: no-repeat; background-position: right;">
+                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" style="background-repeat: no-repeat; background-position: right;">
             </div>
             <p id="test"></p>
             <div class="form-group">
