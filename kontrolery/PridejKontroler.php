@@ -87,11 +87,11 @@ class PridejKontroler extends Kontroler {
                     }
                     $kusy = $kusy * (-1);
                     if (isset($_POST['imei']) && !empty($_POST['imei'])) {
-                        if (($this->kontrolaVydeje($_POST['imei']) - 1) < 0) {
+                        if (($this->kontrolaVydeje($_POST['imei'])) < 0) {
                             $this->loguj($_POST['ean'], $_POST['imei'], $_POST['imei1'], $_POST['jmeno']);
                         }
                     } else {
-                        if (($this->kontrolaVydejeEAN($_POST['ean']) - 1) < 0) {
+                        if (($this->kontrolaVydejeEAN($_POST['ean'])) < 0) {
                             $this->logujKusy($_POST['ean'], NULL, $_POST['jmeno'], $kusy);
                         }
                     }
