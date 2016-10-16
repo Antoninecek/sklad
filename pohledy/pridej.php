@@ -247,7 +247,9 @@ if ($this->vypisZnova) {
         $('#imei-input').css('background-image', "none");
         $('#imei1-input').css('background-image', "none");
         $('#vydejMsg').css("display", "none");
+        $('#imeiMsg').css("display", "none");
         $('#submitVydej').css("background-color", "transparent");
+        $('#submitVydej').css("border-color", "black");
     }
 
     function myTrim(x) {
@@ -265,33 +267,46 @@ if ($this->vypisZnova) {
             $('#imei-input').val(smazMezery('imei-input'));
         });
     });
-
     function smazMezeryImei() {
         smazMezery('imei-input');
         smazMezery('imei1-input');
     }
-    
-    $(document).ready(function(){
-        $("#formZachovejHeslo").on("change",function(){
-            if($("#formZachovejHeslo").checked == false){
+
+    $(document).ready(function () {
+        $("#formZachovejHeslo").on("change", function () {
+            if ($("#formZachovejHeslo").prop("checked") == false) {
                 $("#jmenoPridejForm").val("");
                 $("#textPridejForm").val("");
             }
         });
-        
-        $("#smazEan").on("click", function(){
-           $("#eanPridejForm").val(""); 
+        $("#smazEan").click(function () {
+            if ($("#pridejEan").val() != "") {
+                $("#imei-input").val("");
+                $("#imei1-input").val("");
+                $("#imei1-input").prop("disabled", true);
+                $("#pridejEan").val("");
+                $("#pridejEan").focus();
+                resetImeiForm();
+            }
         });
-        
-        $("#smazImeiInput").on("click", function(){
-           $("#imei-input").val(""); 
+        $("#smazImeiInput").click(function () {
+            if ($("#imei-input").val() != "") {
+                $("#imei-input").val("");
+                $("#imei1-input").val("");
+                $("#imei1-input").prop("disabled", true);
+                $("#imei-input").focus();
+                resetImeiForm();
+            }
         });
-        
-        $("#smazImei1Input").on("click", function(){
-           $("#imei1-input").val(""); 
+        $("#smazImei1Input").click(function () {
+            if ($("#imei1-input").val() != "") {
+                $("#imei1-input").val("");
+                $("#imei1-input").prop("disabled", true);
+                $("#imei-input").focus();
+                resetImeiForm();
+            }
         });
-    });
-</script>
+    });</script>
 
 <?php
 if ($this->uspesnePridani) {
@@ -421,31 +436,52 @@ if (isset($this->vysledek)) {
             <br/>
 
             <div class="row">
-                <div class="col-sm-8" style="padding-top: 10px;">
-                    <input id="pridejEan" class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="jump()" onblur="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
-                    <span id="smazEan" class="glyphicon glyphicon-remove-sign" style="color: red; cursor: pointer;"></span>
+                <div class="col-sm-10" style="padding-top: 10px; padding-right: 0px;">
+                    <div class="row" style="width: 100%; margin-right: 0px;">
+                        <div class="col-sm-9" style="padding-right: 0px;">
+                            <input id="pridejEan" class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="jump()" onblur="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
+                        </div>
+                        <div class="col-sm-1" style="padding: 0px; text-align: right; vertical-align: middle; height: 34px; line-height: 34px;">
+                            
+                            <span title="smaz pole EAN a IMEI" id="smazEan" class="glyphicon glyphicon-remove-sign" style="color: black; cursor: pointer;"></span>
+                            
+                        </div>
+                        <div class="col-sm-2" style="padding: 0; text-align: right">
+
+                            <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> 
+                            <br>
+                            <abbr title="odskrtni pro zadani eanu/imei rucne">Skok</abbr>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-1" style="padding: 0;">
-                    <input id="skok" type="checkbox" name="skoc" tabindex="-1" checked> 
-                    <br>
-                    <abbr title="odskrtni pro zadani eanu/imei rucne">Skok</abbr>
-                </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div id="txtHint" class="col-sm-6">
                     </div>
                 </div>
 
             </div>
-            <div class="form-group" style="padding-top: 15px;">
-                <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" style="background-repeat: no-repeat; background-position: right;">
-                <span id="smazImeiInput" class="glyphicon glyphicon-remove-sign" style="color: red; cursor: pointer;"></span>
-            </div>
-            <p id="test"></p>
-            <div class="form-group">
-                <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> onblur="smazMezeryImei()" style="background-repeat: no-repeat; background-position: right;">
-                <span id="smazImei1Input" class="glyphicon glyphicon-remove-sign" style="color: red; cursor: pointer;"></span>
+            <div class="row" style="">
+                <div class="col-sm-11" style="padding-right: 10px;">
+                    <div class="form-group" style="padding-top: 15px;">
+                        <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" style="background-repeat: no-repeat; background-position: right;">
+
+                    </div>
+                </div>
+                <div class="col-sm-1" style="padding: 0px; text-align: left; vertical-align: bottom; line-height: 64px; height: 64px">
+                    <span title="smaz pole imei 1 a imei 2" id="smazImeiInput" class="glyphicon glyphicon-remove-sign" style="color: black; cursor: pointer;"></span>
+                </div>
             </div>
 
+            <div class="row">
+                <div class="col-sm-11" style="padding-right: 10px;">
+                    <div class="form-group">
+                        <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> onblur="smazMezeryImei()" style="background-repeat: no-repeat; background-position: right;">
+                    </div>
+                </div>
+                <div class="col-sm-1" style="padding: 0px; text-align: left; vertical-align: top; height: 30px; line-height: 30px;">
+                    <span id="smazImei1Input" class="glyphicon glyphicon-remove-sign" style="color: black; cursor: pointer;"></span>
+                </div>
+            </div>
             <div class="form-group">
                 <input id="pocet-input" type="number" class="form-control" name="kusy" value="<?= $this->vypisZnova && isset($_POST['kusy']) ? $_POST['kusy'] : "1" ?>" min="1" required >
             </div>
@@ -614,6 +650,7 @@ if (isset($this->vysledek)) {
                 var d = new Date();
                 if ((stopTime + 180000) <= d.getTime()) {
                     $("#jmenoPridejForm").val("");
+                    $("#textPridejForm").val("");
                     $("#formZachovejHeslo").prop('checked', false);
                     e.preventDefault();
                     console.log("stop");
