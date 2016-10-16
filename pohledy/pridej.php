@@ -270,6 +270,15 @@ if ($this->vypisZnova) {
         smazMezery('imei-input');
         smazMezery('imei1-input');
     }
+    
+    $(document).ready(function(){
+        $("#formZachovejHeslo").on("change",function(){
+            if($("#formZachovejHeslo").checked == false){
+                $("#jmenoPridejForm").val("");
+                $("#textPridejForm").val("");
+            }
+        });
+    });
 </script>
 
 <?php
