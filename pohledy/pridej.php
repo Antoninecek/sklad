@@ -260,6 +260,12 @@ if ($this->vypisZnova) {
         return document.getElementById(str).value;
     }
 
+    $(document).ready(function () {
+        $('#imei-input').focusout(function () {
+            $('#imei-input').val(smazMezery('imei-input'));
+        });
+    });
+
     function smazMezeryImei() {
         smazMezery('imei-input');
         smazMezery('imei1-input');
