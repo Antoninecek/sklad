@@ -479,7 +479,7 @@ if (isset($this->vysledek)) {
                     </div>
                 </div>
                 <div class="col-sm-1" style="padding: 0px; text-align: left; vertical-align: top; height: 30px; line-height: 30px;">
-                    <span id="smazImei1Input" class="glyphicon glyphicon-remove-sign" style="color: black; cursor: pointer;"></span>
+                    <span title="smaz pole imei 2" id="smazImei1Input" class="glyphicon glyphicon-remove-sign" style="color: black; cursor: pointer;"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -622,7 +622,8 @@ if (isset($this->vysledek)) {
                 "Pri vypnuti skoku musis pro zobrazeni informaci o EANu kliknout mimo pole.",
                 "Po 3 minutach dojde automaticky k odhlaseni, pokud nahodou nechas zaskrtle Zapamatuj.",
                 "V pripade jakehokoliv problemu muzes bud nadavat, nebo mi dat vedet (kontakt je vpravo nahore).",
-                "Samsung telefony maji vetsinou na krabicce jen jedno IMEI, i kdyz jsou dualsimovy."
+                "Samsung telefony maji vetsinou na krabicce jen jedno IMEI, i kdyz jsou dualsimovy.",
+                "Kdyz nevis, co jaky prvek dela, vetsinou staci najet na jeho nazev nebo primo na nej."
             ];
             var a = Math.floor((Math.random() * arr.length) + 1);
             return arr[a - 1];
