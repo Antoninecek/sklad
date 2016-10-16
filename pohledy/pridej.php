@@ -282,6 +282,14 @@ if ($this->vypisZnova) {
         $("#smazEan").on("click", function(){
            $("#eanPridejForm").val(""); 
         });
+        
+        $("#smazImeiInput").on("click", function(){
+           $("#imei-input").val(""); 
+        });
+        
+        $("#smazImei1Input").on("click", function(){
+           $("#imei1-input").val(""); 
+        });
     });
 </script>
 
@@ -430,10 +438,12 @@ if (isset($this->vysledek)) {
             </div>
             <div class="form-group" style="padding-top: 15px;">
                 <input id="imei-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei" value="<?= $this->vypisZnova ? $_POST['imei'] : "" ?>" placeholder="IMEI 1" style="background-repeat: no-repeat; background-position: right;">
+                <span id="smazImeiInput" class="glyphicon glyphicon-remove-sign" style="color: red; cursor: pointer;"></span>
             </div>
             <p id="test"></p>
             <div class="form-group">
                 <input id="imei1-input" pattern="[0-9]{14,15}" title="IMEI" class="form-control" name="imei1" value="<?= $this->vypisZnova && isset($_POST['imei1']) ? $_POST['imei1'] : "" ?>" placeholder="IMEI 2" <?php echo $this->vypisZnova ? "" : "disabled" ?> onblur="smazMezeryImei()" style="background-repeat: no-repeat; background-position: right;">
+                <span id="smazImei1Input" class="glyphicon glyphicon-remove-sign" style="color: red; cursor: pointer;"></span>
             </div>
 
             <div class="form-group">
