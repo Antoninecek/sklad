@@ -387,6 +387,8 @@ if (isset($this->vysledek)) {
                             <option id="selVydejJine" value="JINE VYDEJ">JINY VYDEJ:</option>
                             <option value="" disabled="true" style="border-bottom: black dashed thin; background-color: grey; color: white;">PRIJMY</option>
                             <option id="selKamion" value="KAMION">KAMION</option>
+                            <option id="selRefakt" value="REFAKT">KAMION</option>
+                            <option id="selPrijemInternet" value="INTERNET PRIJEM">KAMION</option>
                             <option id="selNeprodano" value="NEPRODANO">NEPRODANO</option>
                             <option id="selPrijemJine" value="JINE PRIJEM">JINY PRIJEM:</option>
                         </select>
@@ -519,6 +521,16 @@ if (isset($this->vysledek)) {
                 break;
             case "KAMION":
                 t = "selKamion";
+                $("#submitPrijem").prop("disabled", false);
+                $("#submitVydej").prop("disabled", true);
+                break;
+            case "REFAKT":
+                t = "selRefakt";
+                $("#submitPrijem").prop("disabled", false);
+                $("#submitVydej").prop("disabled", true);
+                break;
+            case "INTERNET PRIJEM":
+                t = "selPrijemInternet";
                 $("#submitPrijem").prop("disabled", false);
                 $("#submitVydej").prop("disabled", true);
                 break;
