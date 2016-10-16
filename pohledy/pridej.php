@@ -279,8 +279,9 @@ if ($this->vypisZnova) {
             }
         });
         
-        $("#smazEan").on("click", 
-        
+        $("#smazEan").on("click", function(){
+           $("#eanPridejForm").val(""); 
+        });
     });
 </script>
 
