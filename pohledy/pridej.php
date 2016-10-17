@@ -287,6 +287,8 @@ if ($this->vypisZnova) {
                 $("#pridejEan").val("");
                 $("#pridejEan").focus();
                 resetImeiForm();
+            } else {
+                $("#pridejEan").focus();
             }
         });
         $("#smazImeiInput").click(function () {
@@ -296,17 +298,53 @@ if ($this->vypisZnova) {
                 $("#imei1-input").prop("disabled", true);
                 $("#imei-input").focus();
                 resetImeiForm();
+            } else {
+                $("#imei-input").focus();
             }
         });
         $("#smazImei1Input").click(function () {
             if ($("#imei1-input").val() != "") {
                 $("#imei1-input").val("");
-                $("#imei1-input").prop("disabled", true);
                 $("#imei-input").focus();
                 resetImeiForm();
+            } else {
+                $("#imei1-input").focus();
             }
         });
-    });</script>
+        $("#submitVydej").on("mouseenter", function(){
+           if($("#submitVydej").is(":disabled") == true){
+               $("#sel1").css("border-color", "red");
+               $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+               $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+               $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+           } 
+        });
+        $("#submitVydej").on("mouseout", function(){
+           if($("#submitVydej").is(":disabled") == true){
+               $("#sel1").css("border-color", "black");
+               $("#sel1").css("-webkit-box-shadow", "none");
+               $("#sel1").css("box-shadow", "none");
+               $("#sel1").css("-moz-box-shadow", "none");
+           } 
+        });
+        $("#submitPrijem").on("mouseenter", function(){
+           if($("#submitPrijem").is(":disabled") == true){
+               $("#sel1").css("border-color", "red");
+               $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+               $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+               $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+           } 
+        });
+        $("#submitPrijem").on("mouseout", function(){
+           if($("#submitPrijem").is(":disabled") == true){
+               $("#sel1").css("border-color", "black");
+               $("#sel1").css("-webkit-box-shadow", "none");
+               $("#sel1").css("box-shadow", "none");
+               $("#sel1").css("-moz-box-shadow", "none");
+           } 
+        });
+    });
+</script>
 
 <?php
 if ($this->uspesnePridani) {
@@ -406,16 +444,16 @@ if (isset($this->vysledek)) {
                 <div class="row">
                     <div class="col-sm-5" style="padding-right: 0px;">
                         <select name="typyPohybu" class="form-control" id="sel1" style="padding: 0px;">
-                            <option value="" disabled="true" style="border-bottom: black dashed thin; background-color: grey; color: white;">VYDEJE</option>
+                            <option value="" disabled="true" style="border-bottom: black dashed thin; border-top: black dashed thin; background-color: grey; color: white;">VYBER VYDEJ</option>
                             <option id="selProdej" value="PRODEJ">PRODEJ</option>
                             <option id="selPrevodka" value="PREVODKA">PREVODKA</option>
                             <option id="selInternet" value="INTERNET">INTERNET</option>
                             <option id="selVystaveni" value="VYSTAVENI">VYSTAVENI</option>
                             <option id="selVydejJine" value="JINE VYDEJ">JINY VYDEJ:</option>
-                            <option value="" disabled="true" style="border-bottom: black dashed thin; background-color: grey; color: white;">PRIJMY</option>
+                            <option value="" disabled="true" style="border-top: black dashed thin; border-bottom: black dashed thin; background-color: grey; color: white;">VYBER PRIJEM</option>
                             <option id="selKamion" value="KAMION">KAMION</option>
-                            <option id="selRefakt" value="REFAKT">KAMION</option>
-                            <option id="selPrijemInternet" value="INTERNET PRIJEM">KAMION</option>
+                            <option id="selRefakt" value="REFAKT">REFAKT</option>
+                            <option id="selPrijemInternet" value="INTERNET PRIJEM">INTERNET</option>
                             <option id="selNeprodano" value="NEPRODANO">NEPRODANO</option>
                             <option id="selPrijemJine" value="JINE PRIJEM">JINY PRIJEM:</option>
                         </select>
@@ -490,7 +528,8 @@ if (isset($this->vysledek)) {
             <button id="submitVydej" type="submit" class="vydej btn btn-default" name="summ" value="vydej">Vydej</button>
         </form>
 
-        <div id="pridejHlasky">
+        <div id="pridejHlasky" style="text-align: center">
+            <h5 style="margin-top: 0px;">Klikni na hlasku pro napovedu.</h5>
             <a id="imeiMsg" href="#" onclick="return false" class="" data-content="" data-original-title="" style="display: none; color: red; cursor: pointer; border: red solid 1px; margin-bottom: 5px;" data-toggle="popover" data-trigger="focus" tabindex="-1">
                 <span class="glyphicon glyphicon-remove"></span>
                 Proc se mi nedari pridat/vydat?<span class="glyphicon glyphicon-remove">
