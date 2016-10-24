@@ -136,8 +136,8 @@ class InventuraKontroler extends Kontroler {
         $databasehost = "localhost";
         $databasename = DATABASE;
         $databasetable = "inventura";
-        $databaseusername = "root";
-        $databasepassword = "";
+        $databaseusername = DBUSER;
+        $databasepassword = DBPASS;
         $fieldseparator = "   ";
         $lineseparator = "\n";
         $csvfile = "up/trans.dat";
