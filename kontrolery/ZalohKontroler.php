@@ -19,7 +19,7 @@ class ZalohKontroler extends Kontroler {
     protected $directory;
 
     public function zpracuj($params) {
-        $this->message = @$this->backup_tables("localhost", "root", "", DATABASE, "zarizeni");
+        $this->message = @$this->backup_tables(DBHOST, DBUSER, DBPASS, DATABASE, "zarizeni");
         $this->pohled = "zaloha";
         $this->titulekS = "zaloha";
     }
