@@ -280,16 +280,14 @@ if ($this->vypisZnova) {
             }
         });
         $("#smazEan").click(function () {
-            if ($("#pridejEan").val() != "") {
+            
                 $("#imei-input").val("");
                 $("#imei1-input").val("");
                 $("#imei1-input").prop("disabled", true);
                 $("#pridejEan").val("");
                 $("#pridejEan").focus();
+                $("#pocet-input").prop("disabled", false);
                 resetImeiForm();
-            } else {
-                $("#pridejEan").focus();
-            }
         });
         $("#smazImeiInput").click(function () {
             if ($("#imei-input").val() != "") {
@@ -297,6 +295,7 @@ if ($this->vypisZnova) {
                 $("#imei1-input").val("");
                 $("#imei1-input").prop("disabled", true);
                 $("#imei-input").focus();
+                $("#pocet-input").prop("disabled", false);
                 resetImeiForm();
             } else {
                 $("#imei-input").focus();
