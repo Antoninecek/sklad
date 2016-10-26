@@ -65,33 +65,29 @@ class PridejKontroler extends Kontroler {
 
         if ($this->existujeAktivniHeslo($this->heslo)) {
 
+            $imei = empty($_POST['imei']) ? NULL : $_POST['imei'];
+            $imei1 = empty($_POST['imei1']) ? NULL : $_POST['imei1'];
 
-            if (isset($_POST['imei']) && !empty($_POST['imei'])) {
-                if ($_POST['imei'] != "") {
+            if (!empty($imei)) {
+                if ($imei != "") {
                     $kusy = 1;
                 }
-                if (isset($_POST['imei1']) && $_POST['imei1'] == 0) {
-                    $_POST['imei1'] = NULL;
-                } else if (isset($_POST['imei1']) && $_POST['imei1'] == $_POST['imei']) {
-                    $_POST['imei1'] = NULL;
+                if ($imei1 == "") {
+                    $imei1 = NULL;
+                } else if ($imei == $imei1) {
+                    $imei1 = NULL;
                 }
-            } else if (isset($_POST['kusy'])) {
-                $_POST['imei'] = NULL;
-                $_POST['imei1'] = NULL;
-                $kusy = $_POST['kusy'];
             }
 
 
             if (isset($_POST['ean'])) {
-
-
 
                 //$oraItem = $spravceZaznamu->ziskejOra($_POST['ean']);
                 //print_r($oraItem);
                 //print_r($_POST);
 
                 $sz = new SpravceZaznamu();
-                $v = $sz->vratSumuImei($_POST['imei']);
+                $v = $sz->vratSumuImei($imei);
                 $posledniId;
                 //print_r($v);
                 //print_r($_POST['summ']);
@@ -101,23 +97,27 @@ class PridejKontroler extends Kontroler {
                 } else {
                     if (($_POST['summ']) == "vydej") {
                         $kusy = $kusy * (-1);
+
+                        if ($imei != NULL) {
+                            $imeiArr = $this->zjistiImei($imei);
+                            $imei = $imeiArr[0];
+                            $imei1 = $imeiArr[1];
+                        }
                     }
                     //print_r($_POST);
 
                     $pridejOscislo = $spravceZaznamu->vratOscislo($this->heslo)[0];
-                    $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $_POST['imei'], $_POST['imei1'], $kusy, $pridejOscislo, $textToDb);
+                    $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $imei, $imei1, $kusy, $pridejOscislo, $textToDb);
                     $posledniId = $vraceni[0];
                     $this->message = $vraceni;
                     $this->uspesnePridani = TRUE;
                 }
 
                 if (($this->summ = $_POST['summ']) == "vydej") {
-                    if (isset($_POST['imei']) && !empty($_POST['imei'])) {
-                        $this->zjistiImei($_POST['imei']);
-                    }
-                    if (isset($_POST['imei']) && !empty($_POST['imei'])) {
-                        if (($this->kontrolaVydeje($_POST['imei']) ) < 0) {
-                            $this->loguj($posledniId, $_POST['ean'], $_POST['imei'], $_POST['imei1'], $_POST['jmeno']);
+
+                    if (!empty($imei)) {
+                        if (($this->kontrolaVydeje($imei) ) < 0) {
+                            $this->loguj($posledniId, $_POST['ean'], $imei, $imei1, $_POST['jmeno']);
                         }
                     } else {
                         if (($this->kontrolaVydejeEAN($_POST['ean']) ) < 0) {
@@ -138,20 +138,13 @@ class PridejKontroler extends Kontroler {
 
     private function zjistiImei($imei) {
         $sz = new SpravceZaznamu();
+
         if ($imei1 = $sz->jeImei0($imei)[0]) {
-            $_POST['imei'] = $imei;
-            $_POST['imei1'] = $imei1;
+            return [$imei, $imei1];
         } else if ($imei0 = $sz->jeImei1($imei)[0]) {
-            $_POST['imei'] = $imei0;
-            $_POST['imei1'] = $imei;
+            return [$imei0, $imei];
         } else {
-            $_POST['imei'] = $imei;
-            $_POST['imei1'] = NULL;
-        }
-        if ($_POST['imei'][0] == 0) {
-            $_POST['imei'] = NULL;
-        } else if (!isset($_POST['imei1'][0]) || $_POST['imei1'][0] == 0) {
-            $_POST['imei1'] = NULL;
+            return [$imei, NULL];
         }
     }
 
