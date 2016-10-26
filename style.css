@@ -59,7 +59,7 @@ header nav ul :hover{
 }
 
 #zaloha:hover:after {
-    content: " nebo ztrat";
+    content: " databazi";
 }
 
 #synchro:hover:after {
@@ -67,15 +67,15 @@ header nav ul :hover{
 }
 
 #inventura:hover:after {
-    content: " bez manka";
+    content: " skladu";
 }
 
 #vystav:hover:after {
-    content: " to";
+    content: " vse";
 }
 
-#uzivatel:hover:before{
-    content: "ne";
+#uzivatel:hover:after{
+    content: "ske rozhrani";
 }
 
 article {
@@ -145,7 +145,7 @@ input.file {
 }
 
 .vydej:hover, .prijem:hover {
-    background-color: darkgrey;
+    background-color: darkgrey !important;
     color:black;
     border-color: black;
 }
@@ -290,10 +290,23 @@ div#zk:active img {
 }
 
 .napoveda {
+    font-family: "Comic Sans MS";
     font-style: italic;
     color: blue;
 }
 
 .napoveda:before {
     content: "TIP: ";
+}
+
+#pridejHlasky {
+    position: relative;
+    width: 300px; 
+    background-color: white; 
+    border: black solid thin;
+    padding-top: 10px; 
+    padding-bottom: 5px; 
+    bottom: 130px;
+    left: 265px;
+    display: none;
 }
