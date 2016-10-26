@@ -15,7 +15,8 @@ class ZkontrolujImeiKontroler extends Kontroler {
     public function zpracuj($params) {
         $sz = new SpravceZaznamu();
         //print_r($params);
-        if ($sz->vratSumuImei($params[1])[0] > 0) {
+        $imei = $this->zjistiImei($params[1])[0];
+        if ($sz->vratSumuImei($imei)[0] > 0) {
             ?>
             true
             <?php
@@ -23,6 +24,18 @@ class ZkontrolujImeiKontroler extends Kontroler {
             ?>
             false
             <?php
+        }
+    }
+    
+    private function zjistiImei($imei) {
+        $sz = new SpravceZaznamu();
+
+        if ($imei1 = $sz->jeImei0($imei)[0]) {
+            return [$imei, $imei1];
+        } else if ($imei0 = $sz->jeImei1($imei)[0]) {
+            return [$imei0, $imei];
+        } else {
+            return [$imei, NULL];
         }
     }
 
