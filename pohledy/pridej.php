@@ -16,13 +16,24 @@ if ($this->vypisZnova) {
             setTimeout(function () {
                 $('#jmenoPridejForm').focus();
             }, 10);
-            console.log("fcs");
         });
         var zmenaFocus = true;
     <?php
 } else {
     ?>
         var zmenaFocus = false;
+
+    <?php
+    if (!$this->zachovatHeslo) {
+        ?>
+            $(document).ready(function () {
+                setTimeout(function () {
+                $('#textPridejForm').focus();
+            }, 10);
+            });
+        <?php
+    }
+    ?>
     <?php
 }
 ?>
@@ -458,7 +469,7 @@ if (isset($this->vysledek)) {
                         </select>
                     </div>
                     <div class="col-sm-7" style="padding-left: 0px;">
-                        <input id="textPridejForm" type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->text : "" ?>"  <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
+                        <input id="textPridejForm" type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->text : "" ?>"  >
                     </div>
                 </div>
             </div>
@@ -619,7 +630,26 @@ if (isset($this->vysledek)) {
             </p>
         </div>
         <div id="popisText" class="hidden">
-            <p>tohle je text</p>
+            <p>Do TEXTu napis pouze upresneni, uz sem nepis druh pohybu, ten vybiras vedle!
+                <br>
+                TEXT je nutny vyplnit, kdyz mas JINY PRIJEM/VYDEJ
+                <br>
+                TEXT je vhodne vyplnit, kdyz jde o:
+            <ul>
+                <li>
+                    prevodku (nazev pobocky)
+                </li>
+                <li>
+                    davas vec prodejci do ruky (jmeno prodejce)
+                </li>
+                <li>
+                    spravny pohyb, ale specialni udalost, ktera potrebuje blizsi specifikaci
+                </li>
+            </ul>
+            </p>
+        </div>
+        <div id="popisHeslo" class="hidden">
+            
         </div>
         <div id="popisEan" class="hidden">
             <p>fuck</p>
@@ -630,14 +660,20 @@ if (isset($this->vysledek)) {
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $("#sel1").hover(function(){
-           $("#popisPohyby").toggleClass("hidden"); 
+        $("#sel1").focus(function () {
+            $("#popisPohyby").toggleClass("hidden");
         });
-        $("#textPridejForm").focus(function(){
-           $("#popisText").toggleClass("hidden"); 
+        $("#sel1").focusout(function () {
+            $("#popisPohyby").toggleClass("hidden");
         });
-        $("#pridejEan").focus(function(){
-           $("#popisEan").toggleClass("hidden"); 
+        $("#textPridejForm").focus(function () {
+            $("#popisText").toggleClass("hidden");
+        });
+        $("#textPridejForm").focusout(function () {
+            $("#popisText").toggleClass("hidden");
+        });
+        $("#pridejEan").focus(function () {
+            $("#popisEan").toggleClass("hidden");
         });
     });
 
