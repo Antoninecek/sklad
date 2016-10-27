@@ -553,28 +553,95 @@ if (isset($this->vysledek)) {
 
 
 <div class="pull-right">
-    <div class="row" style="position: relative">
-        <h6 id="napoveda" class="napoveda pull-right"></h6>
+    <div>
+        <div class="row" style="position: relative">
+            <h4 class="pull-left">CO JE CO?</h4>
+            <h6 id="napoveda" class="napoveda pull-right"></h6>
 
-        <button id="zobrazPosledniZaznamy" class="btn btn-default pull-right" style="position: absolute; top: 30px"><</button>
-    </div>
-    <table id="posledniZaznamy" class="table table-hover" style="display: none; margin-right: 20px;">
-        <?php
+            <button id="zobrazPosledniZaznamy" class="btn btn-default pull-right" style="position: absolute; top: 30px"><</button>
+        </div>
+        <table id="posledniZaznamy" class="table table-hover" style="display: none; right: 20px; position: relative; background-color: white; border: black solid thin">
+            <?php
 //print_r($this->seznamZaznamu);
-        foreach ($this->seznamZaznamu as $a) {
-            ?>
-            <tr>
-                <td> <?php echo $a['ean'] ?></td>
-                <td> <?php echo $a['imei'] ?></td>
-                <td> <?php echo $a['imei1'] ?></td>
-                <td> <?php echo $a['kusy'] ?></td>
-                <td> <?php echo $a['jmeno'] ?></td>
-                <td style="max-width: 200px; word-wrap: break-word;"> <?php echo $a['text'] ?></td>
-                <td> <?php echo $a['datum'] ?></td>
-            </tr>
-        <?php } ?>
-    </table>
+            foreach ($this->seznamZaznamu as $a) {
+                ?>
+                <tr>
+                    <td> <?php echo $a['ean'] ?></td>
+                    <td> <?php echo $a['imei'] ?></td>
+                    <td> <?php echo $a['imei1'] ?></td>
+                    <td> <?php echo $a['kusy'] ?></td>
+                    <td> <?php echo $a['jmeno'] ?></td>
+                    <td style="max-width: 200px; word-wrap: break-word;"> <?php echo $a['text'] ?></td>
+                    <td> <?php echo $a['datum'] ?></td>
+                </tr>
+            <?php } ?>
+        </table>
+    </div>
+    <div id="popis" class="pull-left" style="width: 800px;">
+        <div id="popisPohyby" class="hidden">
+            <p>
+                SPRAVNY TYP POHYBU:
+            <ul>
+                VYDEJE
+                <li>
+                    PRODEJ -> prisel prodejce, ze chce neco prodat, nebo odbavujes zakaznika u kasy
+                </li>
+                <li>
+                    PREVODKA -> je potreba prevest zbozi na jinou prodejnu, vhodne uvest nazev prodejny do TEXTu
+                </li>
+                <li>
+                    INTERNET -> pripraveni internetove objednavky za kasu
+                </li>
+                <li>
+                    VYSTAVENI -> prodejce si bere zbozi za ucelem vystaveni
+                </li>
+                <li>
+                    JINY VYDEJ -> je nutne upresnit duvod vydeje do pole TEXT
+                </li>
+                <br>
+                PRIJMY
+                <li>
+                    KAMION -> prijem zbozi prevzateho z kamionu
+                </li>
+                <li>
+                    REFAKT -> prijem zbozi prevzateho z refaktu
+                </li>
+                <li>
+                    INTERNET -> vracena internetova objednavka (storno, vyprseni,...)
+                </li>
+                <li>
+                    NEPRODANO -> prodejce vraci zbozi zpet (opak vydeje PRODEJ)
+                </li>
+                <li>
+                    JINY PRIJEM -> je nutne upresnit duvod prijmu do pole TEXT
+                </li>
+            </ul>
+            </p>
+        </div>
+        <div id="popisText" class="hidden">
+            <p>tohle je text</p>
+        </div>
+        <div id="popisEan" class="hidden">
+            <p>fuck</p>
+        </div>
+    </div>
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#sel1").hover(function(){
+           $("#popisPohyby").toggleClass("hidden"); 
+        });
+        $("#textPridejForm").focus(function(){
+           $("#popisText").toggleClass("hidden"); 
+        });
+        $("#pridejEan").focus(function(){
+           $("#popisEan").toggleClass("hidden"); 
+        });
+    });
+
+</script>
 
 <script type="text/javascript">
 
@@ -583,13 +650,13 @@ if (isset($this->vysledek)) {
             $("#posledniZaznamy").toggleClass("vysun");
             if ($("#zobrazPosledniZaznamy").html() == "&lt;") {
                 $("#zobrazPosledniZaznamy").html(">");
+                $("#popis").css("display", "none");
             } else {
                 $("#zobrazPosledniZaznamy").html("<");
+                $("#popis").css("display", "block");
             }
         });
-    });
-
-</script>
+    });</script>
 
 <script type="text/javascript">
 
