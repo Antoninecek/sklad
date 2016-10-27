@@ -28,8 +28,8 @@ if ($this->vypisZnova) {
         ?>
             $(document).ready(function () {
                 setTimeout(function () {
-                $('#textPridejForm').focus();
-            }, 10);
+                    $('#textPridejForm').focus();
+                }, 10);
             });
         <?php
     }
@@ -649,10 +649,75 @@ if (isset($this->vysledek)) {
             </p>
         </div>
         <div id="popisHeslo" class="hidden">
-            
+            <p>
+                Tve heslo, ktere te chrani od zbytecnych problemu.
+                <br>
+                Pokud mas v planu prijimat/vydavat vice veci za sebou, muzes zaskrtnout Zapamatuj.
+                <br>
+                Pomoci Zapamatuj nebudes muset porad vyplnovat Text a Heslo. 
+                <br>
+                Po 3 minutach neaktivity system zabrani zneuziti tvych vepsanych udaju.
+            </p>
         </div>
         <div id="popisEan" class="hidden">
-            <p>fuck</p>
+            <p>
+                Po nacteni EANu a preskoceni na IMEI ti vyskoci tabulka, kde uvidis ORA a popis. 
+           <ul>
+                Co delat kdyz:
+                <li>
+                    se objevi hlaska "novy item, sparuj se sapem"?
+                    <ul>
+                        Hlaska znaci, ze tento kod FANDASOFT nezna.
+                        <li>
+                            Zkus se podivat na krabicku, jestli tam neni jinej EAN, zkus pipnout ten druhej.
+                        </li>
+                        <li>
+                            Pokud na krabicce jinej EAN neni, je toto zbozi nove zalistovano a jeste nebylo dohrano (muzez pokracovat).
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+                Vedle EANu je tlacitko s krizkem, kterym muzes jednoduse smazat nacteny EAN a nacist novy.
+                <br>
+                Vedlejsi zaskrtavaci pole urcuje, zda ti system bude pomahat pri nacitani.
+                <br>
+                V pripade zaskrtleho Skoku system po 1,5 vterine od zacatku nacitani automaticky preskoci na dalsi pole.
+                <br>
+                Proto kdyz potrebujes zadat EAN, IMEI 1 nebo IMEI 2 rucne, musis pole Skok odskrtnout.
+            </p>
+        </div>
+        <div id="popisImei" class="hidden">
+            <p>
+                U mobilnich telefonu je potreba zadat IMEI.
+                <br>
+                Pri Prijmu je nutne nacist obe IMEI! System te na to ve vetsine pripadu upozorni.
+                <br>
+                Pri Vydeji muzes nacist jen jedno IMEI, FANDASOFT si to druhe uz najde sam.
+                <br>
+                Po nacteni IMEI 1 a skoku na IMEI 2 se provede validace (zda nactene cislo je IMEI):
+            <ul>
+                <li>
+                    Zelena fajfka, tlacitko Vydej je zelene - vse v poradku, telefon je pripraven na vydej
+                </li>
+                <li>
+                    Zelena fajfka, tlacitko Vydej je cervene - nactene cislo je v poradku ( je to IMEI)
+                    <ul>
+                        <li>
+                            Pro Prijem je vse v poradku
+                        </li>
+                        <li>
+                            Pro Vydej nastal problem - MT s timto IMEI neni naprijmovan, pokud je MT DUALSIM, zkus nacist druhe IMEI
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+                Vedle poli IMEI jsou tlacitka pro smazani nacteneho IMEI
+            </p>
+        </div>
+        <div id="popisKusy" class="hidden">
+            <p>
+                Kdyz na 100% vis, ze zbozi, ktere se chystas pridat/vydat je stejne, muzes zadat pocet kusu (NEPLATI PRO MT!)
+            </p>
         </div>
     </div>
 </div>
@@ -674,6 +739,33 @@ if (isset($this->vysledek)) {
         });
         $("#pridejEan").focus(function () {
             $("#popisEan").toggleClass("hidden");
+        });
+        $("#pridejEan").focusout(function () {
+            $("#popisEan").toggleClass("hidden");
+        });
+        $("#jmenoPridejForm").focus(function () {
+            $("#popisHeslo").toggleClass("hidden");
+        });
+        $("#jmenoPridejForm").focusout(function () {
+            $("#popisHeslo").toggleClass("hidden");
+        });
+        $("#imei-input").focus(function () {
+            $("#popisImei").toggleClass("hidden");
+        });
+        $("#imei-input").focusout(function () {
+            $("#popisImei").toggleClass("hidden");
+        });
+        $("#imei1-input").focus(function () {
+            $("#popisImei").toggleClass("hidden");
+        });
+        $("#imei1-input").focusout(function () {
+            $("#popisImei").toggleClass("hidden");
+        });
+        $("#pocet-input").focus(function () {
+            $("#popisKusy").toggleClass("hidden");
+        });
+        $("#pocet-input").focusout(function () {
+            $("#popisKusy").toggleClass("hidden");
         });
     });
 
