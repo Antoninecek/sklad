@@ -280,14 +280,14 @@ if ($this->vypisZnova) {
             }
         });
         $("#smazEan").click(function () {
-            
-                $("#imei-input").val("");
-                $("#imei1-input").val("");
-                $("#imei1-input").prop("disabled", true);
-                $("#pridejEan").val("");
-                $("#pridejEan").focus();
-                $("#pocet-input").prop("disabled", false);
-                resetImeiForm();
+
+            $("#imei-input").val("");
+            $("#imei1-input").val("");
+            $("#imei1-input").prop("disabled", true);
+            $("#pridejEan").val("");
+            $("#pridejEan").focus();
+            $("#pocet-input").prop("disabled", false);
+            resetImeiForm();
         });
         $("#smazImeiInput").click(function () {
             if ($("#imei-input").val() != "") {
@@ -310,37 +310,37 @@ if ($this->vypisZnova) {
                 $("#imei1-input").focus();
             }
         });
-        $("#submitVydej").on("mouseenter", function(){
-           if($("#submitVydej").is(":disabled") == true){
-               $("#sel1").css("border-color", "red");
-               $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-               $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-               $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-           } 
+        $("#submitVydej").on("mouseenter", function () {
+            if ($("#submitVydej").is(":disabled") == true) {
+                $("#sel1").css("border-color", "red");
+                $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+                $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+                $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+            }
         });
-        $("#submitVydej").on("mouseout", function(){
-           if($("#submitVydej").is(":disabled") == true){
-               $("#sel1").css("border-color", "black");
-               $("#sel1").css("-webkit-box-shadow", "none");
-               $("#sel1").css("box-shadow", "none");
-               $("#sel1").css("-moz-box-shadow", "none");
-           } 
+        $("#submitVydej").on("mouseout", function () {
+            if ($("#submitVydej").is(":disabled") == true) {
+                $("#sel1").css("border-color", "black");
+                $("#sel1").css("-webkit-box-shadow", "none");
+                $("#sel1").css("box-shadow", "none");
+                $("#sel1").css("-moz-box-shadow", "none");
+            }
         });
-        $("#submitPrijem").on("mouseenter", function(){
-           if($("#submitPrijem").is(":disabled") == true){
-               $("#sel1").css("border-color", "red");
-               $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-               $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-               $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-           } 
+        $("#submitPrijem").on("mouseenter", function () {
+            if ($("#submitPrijem").is(":disabled") == true) {
+                $("#sel1").css("border-color", "red");
+                $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+                $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+                $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+            }
         });
-        $("#submitPrijem").on("mouseout", function(){
-           if($("#submitPrijem").is(":disabled") == true){
-               $("#sel1").css("border-color", "black");
-               $("#sel1").css("-webkit-box-shadow", "none");
-               $("#sel1").css("box-shadow", "none");
-               $("#sel1").css("-moz-box-shadow", "none");
-           } 
+        $("#submitPrijem").on("mouseout", function () {
+            if ($("#submitPrijem").is(":disabled") == true) {
+                $("#sel1").css("border-color", "black");
+                $("#sel1").css("-webkit-box-shadow", "none");
+                $("#sel1").css("box-shadow", "none");
+                $("#sel1").css("-moz-box-shadow", "none");
+            }
         });
     });
 </script>
@@ -479,9 +479,9 @@ if (isset($this->vysledek)) {
                             <input id="pridejEan" class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="jump()" onblur="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
                         </div>
                         <div class="col-sm-1" style="padding: 0px; text-align: right; vertical-align: middle; height: 34px; line-height: 34px;">
-                            
+
                             <span title="smaz pole EAN a IMEI" id="smazEan" class="glyphicon glyphicon-remove-sign" style="color: black; cursor: pointer;"></span>
-                            
+
                         </div>
                         <div class="col-sm-2" style="padding: 0; text-align: right">
 
@@ -553,8 +553,12 @@ if (isset($this->vysledek)) {
 
 
 <div class="pull-right">
-    <h6 id="napoveda" class="napoveda"></h6>
-    <table class="table table-hover">
+    <div class="row" style="position: relative">
+        <h6 id="napoveda" class="napoveda pull-right"></h6>
+
+        <button id="zobrazPosledniZaznamy" class="btn btn-default pull-right" style="position: absolute; top: 30px"><</button>
+    </div>
+    <table id="posledniZaznamy" class="table table-hover" style="display: none; margin-right: 20px;">
         <?php
 //print_r($this->seznamZaznamu);
         foreach ($this->seznamZaznamu as $a) {
@@ -571,6 +575,21 @@ if (isset($this->vysledek)) {
         <?php } ?>
     </table>
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#zobrazPosledniZaznamy").click(function () {
+            $("#posledniZaznamy").toggleClass("vysun");
+            if ($("#zobrazPosledniZaznamy").html() == "&lt;") {
+                $("#zobrazPosledniZaznamy").html(">");
+            } else {
+                $("#zobrazPosledniZaznamy").html("<");
+            }
+        });
+    });
+
+</script>
 
 <script type="text/javascript">
 
