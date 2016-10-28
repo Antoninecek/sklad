@@ -134,7 +134,7 @@ class SpravceZaznamu {
     }
 
     public function zmenZarizeni($ean, $kusy) {
-        return Db::dotazJeden('INSERT INTO zarizeni (ean, imei, kusy, jmeno) VALUES(?, NULL, ?, "inventura")', array($ean, $kusy));
+        return Db::dotazJeden('INSERT INTO zarizeni (ean, imei, kusy, jmeno) VALUES(?, NULL, ?, "1")', array($ean, $kusy));
     }
 
     public function ziskejOra($ean) {
@@ -160,6 +160,10 @@ class SpravceZaznamu {
 
     public function vratSumu($ean) {
         return Db::dotazJeden('SELECT SUM(kusy) FROM zarizeni WHERE ean = ?', array($ean));
+    }
+    
+    public function vratSumuDatum($ean, $datum){
+        return Db::dotazJeden('SELECT SUM(kusy) FROM zarizeni WHERE ean = ? AND datum < ?', array($ean, $datum));
     }
 
     public function vratSumuORA($ora) {

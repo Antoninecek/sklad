@@ -23,6 +23,8 @@ class InventuraKontroler extends Kontroler {
     private $opravaBezpecak;
     protected $stav;
     protected $zobrazitNuly;
+    protected $zmenenePolozky = [];
+    private $inventuraDatum;
     
     public function zpracuj($params) {
 
@@ -32,10 +34,14 @@ class InventuraKontroler extends Kontroler {
                 $this->zobrazitNuly = "hidden";
                 break;
             case "aktualizace":
-
+                $file = fopen("inventura.txt", "r");
+                $this->inventuraDatum = fread($file,filesize("inventura.txt"));
+                fclose($file);
+                print_r($this->inventuraDatum);
                 $this->zmenvDB($this->opravaNacteno = $_POST['opravaNacteno'], $this->opravaBezpecak = $_POST['opravaBezpecak']);
                 $this->uploaded = true;
                 $this->zobrazitNuly = "hidden";
+                file_put_contents("inventura.txt", date("Y-m-d g:i:s"));
                 break;
             case "zahaj":
                 $this->uploaded = $this->upload();
@@ -92,9 +98,14 @@ class InventuraKontroler extends Kontroler {
             }
         }
 
+
+        
         foreach ($list2 as $var => $val) {
+            $sumaDatum = $sz->vratSumuDatum($var, $this->inventuraDatum);
             $suma = $sz->vratSumu($var);
-            if (($val - $suma[0]) != 0) {
+            if($sumaDatum[0] != $suma[0]){
+                $this->zmenenePolozky[$var] = ($suma[0] - $sumaDatum[0]);
+            } else {
                 $sz->zmenZarizeni($var, $val - $suma[0]);
             }
         }

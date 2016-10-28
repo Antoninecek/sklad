@@ -3,7 +3,7 @@
         <strong>Soubor byl nahran</strong>
     </div>
     <?php
-} else if ($this->uploaded === FALSE){
+} else if ($this->uploaded === FALSE) {
     ?>
     <div class = "alert alert-danger">
         <strong>Soubor nebyl nahran</strong>
@@ -72,7 +72,7 @@
                     <td><?php echo $a['popis'] ?></td> 
                     <td>0</td> <!-- inventura kusy -->
                     <td><?php echo $a['zarKusy'] ?></td>
-                    <td><?php echo "-" . $a['zarKusy'] ?></td>
+                    <td><?php echo 0 - $a['zarKusy'] ?></td>
                     <td><?php echo $a['sapKusy'] ?></td>
                     <td><input type="number" value="0" name="opravaNacteno[<?php echo $a['ean'] ?>]"></td>
                     <td><input type="number" value="<?php echo $a['zarKusy'] ?>" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
@@ -83,9 +83,10 @@
 
 
             <?php
+            print_r($this->zmenenePolozky);
             foreach ($this->vysledek2 as $a) {
                 ?>
-                <tbody  <?php echo (($a['invKusy'] - $a['zarKusy']) == 0) ? "class='".$this->zobrazitNuly."'" : "class='visible'"?> >
+                <tbody <?php echo (($a['invKusy'] - $a['zarKusy']) == 0) ? "class='" . $this->zobrazitNuly . "'" : "class='visible'" ?>>
                     <tr>
                         <td><?php echo $a['ean'] ?></td>
                         <td><?php echo $a['zbozi'] ?></td>
@@ -119,4 +120,5 @@
 <!--
 <?= print_r($this->vysledek) ?>
 <?= print_r($this->vysledek1) ?>
-<?= print_r($this->vysledek2) ?>-->
+<?= print_r($this->vysledek2) ?>
+-->
