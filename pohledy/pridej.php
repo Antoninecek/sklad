@@ -648,6 +648,11 @@ if (isset($this->vysledek)) {
             </ul>
             </p>
         </div>
+        <div id="popisHlavni">
+            <p>
+                Tohle je FANDASOFT, kontakt na tvurce a spravce zaroveni vpravo v menu.
+            </p>
+        </div>
         <div id="popisHeslo" class="hidden">
             <p>
                 Tve heslo, ktere te chrani od zbytecnych problemu.
@@ -725,50 +730,36 @@ if (isset($this->vysledek)) {
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $("#sel1").focus(function () {
+        $("#sel1").on('focus focusout', function () {
             $("#popisPohyby").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
         });
-        $("#sel1").focusout(function () {
-            $("#popisPohyby").toggleClass("hidden");
-        });
-        $("#textPridejForm").focus(function () {
+        $("#textPridejForm").on('focus focusout', function () {
             $("#popisText").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
         });
-        $("#textPridejForm").focusout(function () {
-            $("#popisText").toggleClass("hidden");
-        });
-        $("#pridejEan").focus(function () {
+        $("#pridejEan").on('focus focusout', function () {
             $("#popisEan").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
         });
-        $("#pridejEan").focusout(function () {
-            $("#popisEan").toggleClass("hidden");
-        });
-        $("#jmenoPridejForm").focus(function () {
+        $("#jmenoPridejForm").on('focus focusout', function () {
             $("#popisHeslo").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
         });
-        $("#jmenoPridejForm").focusout(function () {
-            $("#popisHeslo").toggleClass("hidden");
-        });
-        $("#imei-input").focus(function () {
+        $("#imei-input").on('focus focusout', function () {
             $("#popisImei").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
         });
-        $("#imei-input").focusout(function () {
+        $("#imei1-input").on('focus focusout', function () {
             $("#popisImei").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
         });
-        $("#imei1-input").focus(function () {
-            $("#popisImei").toggleClass("hidden");
-        });
-        $("#imei1-input").focusout(function () {
-            $("#popisImei").toggleClass("hidden");
-        });
-        $("#pocet-input").focus(function () {
+        $("#pocet-input").on('focus focusout', function () {
             $("#popisKusy").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
         });
-        $("#pocet-input").focusout(function () {
-            $("#popisKusy").toggleClass("hidden");
-        });
+        
     });
-
 </script>
 
 <script type="text/javascript">
