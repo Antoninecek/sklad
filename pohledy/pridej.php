@@ -16,13 +16,24 @@ if ($this->vypisZnova) {
             setTimeout(function () {
                 $('#jmenoPridejForm').focus();
             }, 10);
-            console.log("fcs");
         });
         var zmenaFocus = true;
     <?php
 } else {
     ?>
         var zmenaFocus = false;
+
+    <?php
+    if (!$this->zachovatHeslo) {
+        ?>
+            $(document).ready(function () {
+                setTimeout(function () {
+                    $('#textPridejForm').focus();
+                }, 10);
+            });
+        <?php
+    }
+    ?>
     <?php
 }
 ?>
@@ -280,14 +291,14 @@ if ($this->vypisZnova) {
             }
         });
         $("#smazEan").click(function () {
-            
-                $("#imei-input").val("");
-                $("#imei1-input").val("");
-                $("#imei1-input").prop("disabled", true);
-                $("#pridejEan").val("");
-                $("#pridejEan").focus();
-                $("#pocet-input").prop("disabled", false);
-                resetImeiForm();
+
+            $("#imei-input").val("");
+            $("#imei1-input").val("");
+            $("#imei1-input").prop("disabled", true);
+            $("#pridejEan").val("");
+            $("#pridejEan").focus();
+            $("#pocet-input").prop("disabled", false);
+            resetImeiForm();
         });
         $("#smazImeiInput").click(function () {
             if ($("#imei-input").val() != "") {
@@ -310,37 +321,37 @@ if ($this->vypisZnova) {
                 $("#imei1-input").focus();
             }
         });
-        $("#submitVydej").on("mouseenter", function(){
-           if($("#submitVydej").is(":disabled") == true){
-               $("#sel1").css("border-color", "red");
-               $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-               $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-               $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-           } 
+        $("#submitVydej").on("mouseenter", function () {
+            if ($("#submitVydej").is(":disabled") == true) {
+                $("#sel1").css("border-color", "red");
+                $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+                $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+                $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+            }
         });
-        $("#submitVydej").on("mouseout", function(){
-           if($("#submitVydej").is(":disabled") == true){
-               $("#sel1").css("border-color", "black");
-               $("#sel1").css("-webkit-box-shadow", "none");
-               $("#sel1").css("box-shadow", "none");
-               $("#sel1").css("-moz-box-shadow", "none");
-           } 
+        $("#submitVydej").on("mouseout", function () {
+            if ($("#submitVydej").is(":disabled") == true) {
+                $("#sel1").css("border-color", "black");
+                $("#sel1").css("-webkit-box-shadow", "none");
+                $("#sel1").css("box-shadow", "none");
+                $("#sel1").css("-moz-box-shadow", "none");
+            }
         });
-        $("#submitPrijem").on("mouseenter", function(){
-           if($("#submitPrijem").is(":disabled") == true){
-               $("#sel1").css("border-color", "red");
-               $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-               $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-               $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
-           } 
+        $("#submitPrijem").on("mouseenter", function () {
+            if ($("#submitPrijem").is(":disabled") == true) {
+                $("#sel1").css("border-color", "red");
+                $("#sel1").css("-webkit-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+                $("#sel1").css("box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+                $("#sel1").css("-moz-box-shadow", "1px -1px 53px 1px rgba(252,3,3,1)");
+            }
         });
-        $("#submitPrijem").on("mouseout", function(){
-           if($("#submitPrijem").is(":disabled") == true){
-               $("#sel1").css("border-color", "black");
-               $("#sel1").css("-webkit-box-shadow", "none");
-               $("#sel1").css("box-shadow", "none");
-               $("#sel1").css("-moz-box-shadow", "none");
-           } 
+        $("#submitPrijem").on("mouseout", function () {
+            if ($("#submitPrijem").is(":disabled") == true) {
+                $("#sel1").css("border-color", "black");
+                $("#sel1").css("-webkit-box-shadow", "none");
+                $("#sel1").css("box-shadow", "none");
+                $("#sel1").css("-moz-box-shadow", "none");
+            }
         });
     });
 </script>
@@ -458,7 +469,7 @@ if (isset($this->vysledek)) {
                         </select>
                     </div>
                     <div class="col-sm-7" style="padding-left: 0px;">
-                        <input id="textPridejForm" type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->text : "" ?>"  <?php echo $this->zachovatHeslo ? "" : "autofocus" ?>>
+                        <input id="textPridejForm" type="text" class="form-control" name="text" placeholder="TEXT" value="<?= $this->zachovatHeslo || $this->vypisZnova ? $this->text : "" ?>"  >
                     </div>
                 </div>
             </div>
@@ -479,9 +490,9 @@ if (isset($this->vysledek)) {
                             <input id="pridejEan" class="form-control" pattern="[0-9]{11,13}" name="ean" title="EAN" value="<?= $this->vypisZnova ? $_POST['ean'] : "" ?>" oninput="jump()" onblur="showIt(this.value)" placeholder="EAN" required <?php echo $this->zachovatHeslo ? "autofocus" : "" ?>>
                         </div>
                         <div class="col-sm-1" style="padding: 0px; text-align: right; vertical-align: middle; height: 34px; line-height: 34px;">
-                            
+
                             <span title="smaz pole EAN a IMEI" id="smazEan" class="glyphicon glyphicon-remove-sign" style="color: black; cursor: pointer;"></span>
-                            
+
                         </div>
                         <div class="col-sm-2" style="padding: 0; text-align: right">
 
@@ -553,24 +564,218 @@ if (isset($this->vysledek)) {
 
 
 <div class="pull-right">
-    <h6 id="napoveda" class="napoveda"></h6>
-    <table class="table table-hover">
-        <?php
+    <div>
+        <div class="row" style="position: relative">
+            <h4 class="pull-left">CO JE CO?</h4>
+            <h6 id="napoveda" class="napoveda pull-right"></h6>
+
+            <button id="zobrazPosledniZaznamy" class="btn btn-default pull-right" style="position: absolute; top: 30px"><</button>
+        </div>
+        <table id="posledniZaznamy" class="table table-hover" style="display: none; right: 20px; position: relative; background-color: white; border: black solid thin">
+            <?php
 //print_r($this->seznamZaznamu);
-        foreach ($this->seznamZaznamu as $a) {
-            ?>
-            <tr>
-                <td> <?php echo $a['ean'] ?></td>
-                <td> <?php echo $a['imei'] ?></td>
-                <td> <?php echo $a['imei1'] ?></td>
-                <td> <?php echo $a['kusy'] ?></td>
-                <td> <?php echo $a['jmeno'] ?></td>
-                <td style="max-width: 200px; word-wrap: break-word;"> <?php echo $a['text'] ?></td>
-                <td> <?php echo $a['datum'] ?></td>
-            </tr>
-        <?php } ?>
-    </table>
+            foreach ($this->seznamZaznamu as $a) {
+                ?>
+                <tr>
+                    <td> <?php echo $a['ean'] ?></td>
+                    <td> <?php echo $a['imei'] ?></td>
+                    <td> <?php echo $a['imei1'] ?></td>
+                    <td> <?php echo $a['kusy'] ?></td>
+                    <td> <?php echo $a['jmeno'] ?></td>
+                    <td style="max-width: 200px; word-wrap: break-word;"> <?php echo $a['text'] ?></td>
+                    <td> <?php echo $a['datum'] ?></td>
+                </tr>
+            <?php } ?>
+        </table>
+    </div>
+    <div id="popis" class="pull-left" style="width: 800px;">
+        <div id="popisPohyby" class="hidden">
+            <p>
+                SPRAVNY TYP POHYBU:
+            <ul>
+                VYDEJE
+                <li>
+                    PRODEJ -> prisel prodejce, ze chce neco prodat, nebo odbavujes zakaznika u kasy
+                </li>
+                <li>
+                    PREVODKA -> je potreba prevest zbozi na jinou prodejnu, vhodne uvest nazev prodejny do TEXTu
+                </li>
+                <li>
+                    INTERNET -> pripraveni internetove objednavky za kasu
+                </li>
+                <li>
+                    VYSTAVENI -> prodejce si bere zbozi za ucelem vystaveni
+                </li>
+                <li>
+                    JINY VYDEJ -> je nutne upresnit duvod vydeje do pole TEXT
+                </li>
+                <br>
+                PRIJMY
+                <li>
+                    KAMION -> prijem zbozi prevzateho z kamionu
+                </li>
+                <li>
+                    REFAKT -> prijem zbozi prevzateho z refaktu
+                </li>
+                <li>
+                    INTERNET -> vracena internetova objednavka (storno, vyprseni,...)
+                </li>
+                <li>
+                    NEPRODANO -> prodejce vraci zbozi zpet (opak vydeje PRODEJ)
+                </li>
+                <li>
+                    JINY PRIJEM -> je nutne upresnit duvod prijmu do pole TEXT
+                </li>
+            </ul>
+            </p>
+        </div>
+        <div id="popisText" class="hidden">
+            <p>Do TEXTu napis pouze upresneni, uz sem nepis druh pohybu, ten vybiras vedle!
+                <br>
+                TEXT je nutny vyplnit, kdyz mas JINY PRIJEM/VYDEJ
+                <br>
+                TEXT je vhodne vyplnit, kdyz jde o:
+            <ul>
+                <li>
+                    prevodku (nazev pobocky)
+                </li>
+                <li>
+                    davas vec prodejci do ruky (jmeno prodejce)
+                </li>
+                <li>
+                    spravny pohyb, ale specialni udalost, ktera potrebuje blizsi specifikaci
+                </li>
+            </ul>
+            </p>
+        </div>
+        <div id="popisHlavni">
+            <p>
+                Tohle je FANDASOFT, kontakt na tvurce a spravce zaroven vpravo v menu.
+            </p>
+        </div>
+        <div id="popisHeslo" class="hidden">
+            <p>
+                Tve heslo, ktere te chrani od zbytecnych problemu.
+                <br>
+                Pokud mas v planu prijimat/vydavat vice veci za sebou, muzes zaskrtnout Zapamatuj.
+                <br>
+                Pomoci Zapamatuj nebudes muset porad vyplnovat Text a Heslo. 
+                <br>
+                Po 3 minutach neaktivity system zabrani zneuziti tvych vepsanych udaju.
+            </p>
+        </div>
+        <div id="popisEan" class="hidden">
+            <p>
+                Po nacteni EANu a preskoceni na IMEI ti vyskoci tabulka, kde uvidis ORA a popis. 
+           <ul>
+                Co delat kdyz:
+                <li>
+                    se objevi hlaska "novy item, sparuj se sapem"?
+                    <ul>
+                        Hlaska znaci, ze tento kod FANDASOFT nezna.
+                        <li>
+                            Zkus se podivat na krabicku, jestli tam neni jinej EAN, zkus pipnout ten druhej.
+                        </li>
+                        <li>
+                            Pokud na krabicce jinej EAN neni, je toto zbozi nove zalistovano a jeste nebylo dohrano (muzez pokracovat).
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+                Vedle EANu je tlacitko s krizkem, kterym muzes jednoduse smazat nacteny EAN a nacist novy.
+                <br>
+                Vedlejsi zaskrtavaci pole urcuje, zda ti system bude pomahat pri nacitani.
+                <br>
+                V pripade zaskrtleho Skoku system po 1,5 vterine od zacatku nacitani automaticky preskoci na dalsi pole.
+                <br>
+                Proto kdyz potrebujes zadat EAN, IMEI 1 nebo IMEI 2 rucne, musis pole Skok odskrtnout.
+            </p>
+        </div>
+        <div id="popisImei" class="hidden">
+            <p>
+                U mobilnich telefonu je potreba zadat IMEI.
+                <br>
+                Pri Prijmu je nutne nacist obe IMEI! System te na to ve vetsine pripadu upozorni.
+                <br>
+                Pri Vydeji muzes nacist jen jedno IMEI, FANDASOFT si to druhe uz najde sam.
+                <br>
+                Po nacteni IMEI 1 a skoku na IMEI 2 se provede validace (zda nactene cislo je IMEI):
+            <ul>
+                <li>
+                    Zelena fajfka, tlacitko Vydej je zelene - vse v poradku, telefon je pripraven na vydej
+                </li>
+                <li>
+                    Zelena fajfka, tlacitko Vydej je cervene - nactene cislo je v poradku ( je to IMEI)
+                    <ul>
+                        <li>
+                            Pro Prijem je vse v poradku
+                        </li>
+                        <li>
+                            Pro Vydej nastal problem - MT s timto IMEI neni naprijmovan, pokud je MT DUALSIM, zkus nacist druhe IMEI
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+                Vedle poli IMEI jsou tlacitka pro smazani nacteneho IMEI
+            </p>
+        </div>
+        <div id="popisKusy" class="hidden">
+            <p>
+                Kdyz na 100% vis, ze zbozi, ktere se chystas pridat/vydat je stejne, muzes zadat pocet kusu (NEPLATI PRO MT!)
+            </p>
+        </div>
+    </div>
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#sel1").on('focus focusout', function () {
+            $("#popisPohyby").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
+        });
+        $("#textPridejForm").on('focus focusout', function () {
+            $("#popisText").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
+        });
+        $("#pridejEan").on('focus focusout', function () {
+            $("#popisEan").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
+        });
+        $("#jmenoPridejForm").on('focus focusout', function () {
+            $("#popisHeslo").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
+        });
+        $("#imei-input").on('focus focusout', function () {
+            $("#popisImei").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
+        });
+        $("#imei1-input").on('focus focusout', function () {
+            $("#popisImei").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
+        });
+        $("#pocet-input").on('focus focusout', function () {
+            $("#popisKusy").toggleClass("hidden");
+            $('#popisHlavni').toggleClass("hidden");
+        });
+        
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#zobrazPosledniZaznamy").click(function () {
+            $("#posledniZaznamy").toggleClass("vysun");
+            if ($("#zobrazPosledniZaznamy").html() == "&lt;") {
+                $("#zobrazPosledniZaznamy").html(">");
+                $("#popis").css("display", "none");
+            } else {
+                $("#zobrazPosledniZaznamy").html("<");
+                $("#popis").css("display", "block");
+            }
+        });
+    });</script>
 
 <script type="text/javascript">
 

@@ -310,3 +310,26 @@ div#zk:active img {
     left: 265px;
     display: none;
 }
+
+#wrapPosledniZaznamy {
+    
+}
+
+#posledniZaznamy {
+    
+}
+
+#wrapPosledniZaznamy:hover {
+    
+}
+
+#zobrazPosledniZaznamy {
+    position: relative;
+    right: 0;
+    height: 100px;
+}
+
+.vysun {
+    display: block !important;
+}
+
