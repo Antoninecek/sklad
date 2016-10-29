@@ -650,7 +650,7 @@ if (isset($this->vysledek)) {
         </div>
         <div id="popisHlavni">
             <p>
-                Tohle je FANDASOFT, kontakt na tvurce a spravce zaroveni vpravo v menu.
+                Tohle je FANDASOFT, kontakt na tvurce a spravce zaroven vpravo v menu.
             </p>
         </div>
         <div id="popisHeslo" class="hidden">
