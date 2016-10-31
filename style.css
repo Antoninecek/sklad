@@ -262,6 +262,23 @@ div#zk:active img {
 
 }
 
+@media screen and (max-width:1200px) {
+    .rightHalf {width: 600px !important;}
+    #napoveda {font-size: x-small}
+}
+
+@media screen and (max-width:1000px) {
+    .rightHalf {width: 460px !important;}
+    #napoveda {font-size: 10px}
+}
+
+@media screen and (max-width:1000px) {
+    .rightHalf {width: 460px !important;}
+    #napoveda {font-size: 10px}
+    #popis {font-size: 10px}
+    .rightHalf h4 {font-size: 15px}
+}
+
 .ziskejInfo {
     width: 300px; 
     background-color: white; 
@@ -316,7 +333,7 @@ div#zk:active img {
 }
 
 #posledniZaznamy {
-    
+    font-size: 12px;
 }
 
 #wrapPosledniZaznamy:hover {

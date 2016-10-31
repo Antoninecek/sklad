@@ -37,6 +37,12 @@ if ($this->vypisZnova) {
     <?php
 }
 ?>
+    $(document).ready(function () {
+        $("#pridejEan").on("focus", function () {
+            scrollBy(0, 100);
+        });
+    });
+
     function showIt(str) {
         str = smazMezery("pridejEan");
         fce1(str);
@@ -562,8 +568,28 @@ if (isset($this->vysledek)) {
 
 
 
-
-<div class="pull-right">
+<div id="posledniZaznamy" style="z-index: 10; background-color: white; display: none; right: 60px; position: absolute; background-color: white; border: black solid thin; width: 900px !important;"> 
+    <table class="table table-hover">
+        <tbody>
+            <?php
+//print_r($this->seznamZaznamu);
+            foreach ($this->seznamZaznamu as $a) {
+                ?>
+                <tr>
+                    <td style="width: 12%"> <?php echo $a['ean'] ?></td>
+                    <td style="width: 8%"> <?php echo!is_null($a['zbozi']) ? $a['zbozi'] : "---------" ?></td>
+                    <td style="width: 14%"> <?php echo!is_null($a['imei']) ? $a['imei'] : "---------" ?></td>
+                    <td style="width: 14%"> <?php echo!is_null($a['imei1']) ? $a['imei1'] : "---------" ?></td>
+                    <td style="width: 3%"> <?php echo $a['kusy'] ?></td>
+                    <td style="width: 11%"> <?php echo $a['jmeno'] ?></td>
+                    <td style="width: 18%; max-width: 200px; word-wrap: break-word;"> <?php echo $a['text'] ?></td>
+                    <td style="width: 20%"> <?php echo $a['datum'] ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
+<div class="pull-right rightHalf" style="width: 800px;">
     <div>
         <div class="row" style="position: relative">
             <h4 class="pull-left">CO JE CO?</h4>
@@ -571,24 +597,9 @@ if (isset($this->vysledek)) {
 
             <button id="zobrazPosledniZaznamy" class="btn btn-default pull-right" style="position: absolute; top: 30px"><</button>
         </div>
-        <table id="posledniZaznamy" class="table table-hover" style="display: none; right: 20px; position: relative; background-color: white; border: black solid thin">
-            <?php
-//print_r($this->seznamZaznamu);
-            foreach ($this->seznamZaznamu as $a) {
-                ?>
-                <tr>
-                    <td> <?php echo $a['ean'] ?></td>
-                    <td> <?php echo $a['imei'] ?></td>
-                    <td> <?php echo $a['imei1'] ?></td>
-                    <td> <?php echo $a['kusy'] ?></td>
-                    <td> <?php echo $a['jmeno'] ?></td>
-                    <td style="max-width: 200px; word-wrap: break-word;"> <?php echo $a['text'] ?></td>
-                    <td> <?php echo $a['datum'] ?></td>
-                </tr>
-            <?php } ?>
-        </table>
+        <!-- insert table here -->
     </div>
-    <div id="popis" class="pull-left" style="width: 800px;">
+    <div id="popis" class="pull-left">
         <div id="popisPohyby" class="hidden">
             <p>
                 SPRAVNY TYP POHYBU:
@@ -651,6 +662,8 @@ if (isset($this->vysledek)) {
         <div id="popisHlavni">
             <p>
                 Tohle je FANDASOFT, kontakt na tvurce a spravce zaroven vpravo v menu.
+                <br>
+                Pro zobrazeni a skryti poslednich pohybu slouzi tlacitko vpravo
             </p>
         </div>
         <div id="popisHeslo" class="hidden">
@@ -667,7 +680,7 @@ if (isset($this->vysledek)) {
         <div id="popisEan" class="hidden">
             <p>
                 Po nacteni EANu a preskoceni na IMEI ti vyskoci tabulka, kde uvidis ORA a popis. 
-           <ul>
+            <ul>
                 Co delat kdyz:
                 <li>
                     se objevi hlaska "novy item, sparuj se sapem"?
@@ -682,13 +695,13 @@ if (isset($this->vysledek)) {
                     </ul>
                 </li>
             </ul>
-                Vedle EANu je tlacitko s krizkem, kterym muzes jednoduse smazat nacteny EAN a nacist novy.
-                <br>
-                Vedlejsi zaskrtavaci pole urcuje, zda ti system bude pomahat pri nacitani.
-                <br>
-                V pripade zaskrtleho Skoku system po 1,5 vterine od zacatku nacitani automaticky preskoci na dalsi pole.
-                <br>
-                Proto kdyz potrebujes zadat EAN, IMEI 1 nebo IMEI 2 rucne, musis pole Skok odskrtnout.
+            Vedle EANu je tlacitko s krizkem, kterym muzes jednoduse smazat nacteny EAN a nacist novy.
+            <br>
+            Vedlejsi zaskrtavaci pole urcuje, zda ti system bude pomahat pri nacitani.
+            <br>
+            V pripade zaskrtleho Skoku system po 1,5 vterine od zacatku nacitani automaticky preskoci na dalsi pole.
+            <br>
+            Proto kdyz potrebujes zadat EAN, IMEI 1 nebo IMEI 2 rucne, musis pole Skok odskrtnout.
             </p>
         </div>
         <div id="popisImei" class="hidden">
@@ -716,7 +729,7 @@ if (isset($this->vysledek)) {
                     </ul>
                 </li>
             </ul>
-                Vedle poli IMEI jsou tlacitka pro smazani nacteneho IMEI
+            Vedle poli IMEI jsou tlacitka pro smazani nacteneho IMEI
             </p>
         </div>
         <div id="popisKusy" class="hidden">
@@ -758,7 +771,7 @@ if (isset($this->vysledek)) {
             $("#popisKusy").toggleClass("hidden");
             $('#popisHlavni').toggleClass("hidden");
         });
-        
+
     });
 </script>
 
@@ -775,7 +788,9 @@ if (isset($this->vysledek)) {
                 $("#popis").css("display", "block");
             }
         });
-    });</script>
+    });
+        
+</script>
 
 <script type="text/javascript">
 
@@ -892,7 +907,7 @@ if (isset($this->vysledek)) {
             checkIt = $("#formZachovejHeslo").is(":checked");
             if (checkIt) {
                 var d = new Date();
-                if ((stopTime + 180000) <= d.getTime()) {
+                if ((stopTime + 360000) <= d.getTime()) {
                     $("#jmenoPridejForm").val("");
                     $("#textPridejForm").val("");
                     $("#formZachovejHeslo").prop('checked', false);
