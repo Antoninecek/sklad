@@ -25,43 +25,54 @@ class InventuraKontroler extends Kontroler {
     protected $zobrazitNuly;
     protected $zmenenePolozky = [];
     private $inventuraDatum;
-    
+    protected $iAktivni;
+
     public function zpracuj($params) {
 
-        switch (isset($params[1]) ? $params[1] : false) {
-            case "znovu":
-                $this->uploaded = true;
-                $this->zobrazitNuly = "hidden";
+        $parametr = empty($params[1]) ? NULL : $params[1];
+
+        $iArray = parse_ini_file("inventura.ini");
+        if (empty($iArray['iStop'])) {
+            $this->iAktivni = TRUE;
+        } else {
+            $this->iAktivni = FALSE;
+        }
+
+        switch ($this->iAktivni ? $parametr : false) {
+//            case "znovu":
+//                $this->uploaded = true;
+//                $this->zobrazitNuly = "hidden";
+//                break;
+            case "ukonci":
+                $this->endInventuraConfig();
+                $this->iAktivni = FALSE;
                 break;
             case "aktualizace":
-                $file = fopen("inventura.txt", "r");
-                $this->inventuraDatum = fread($file,filesize("inventura.txt"));
-                fclose($file);
-                print_r($this->inventuraDatum);
-                $this->zmenvDB($this->opravaNacteno = $_POST['opravaNacteno'], $this->opravaBezpecak = $_POST['opravaBezpecak']);
-                $this->uploaded = true;
-                $this->zobrazitNuly = "hidden";
-                file_put_contents("inventura.txt", date("Y-m-d g:i:s"));
-                break;
-            case "zahaj":
-                $this->uploaded = $this->upload();
-                if ($this->uploaded) {
-                    $this->synchronizuj();
-                }
+                $this->zmenenePolozky = $this->zmenvDB($this->opravaNacteno = $_POST['opravaNacteno'], $this->opravaBezpecak = $_POST['opravaBezpecak']);
                 $this->zobrazitNuly = "hidden";
                 break;
             case "zobraznuly":
-                if($params[2] == "hidden"){
+                if ($params[2] == "hidden") {
                     $this->zobrazitNuly = "visible";
-                }
-                else {
+                } else {
                     $this->zobrazitNuly = "hidden";
                 }
-                $this->uploaded = true;
+
                 break;
+            default :
         }
 
-        if ($this->uploaded) {
+        if (!$this->iAktivni && $parametr == "zahaj") {
+            $this->uploaded = $this->upload();
+            if ($this->uploaded) {
+                $this->synchronizuj();
+                $this->initInventuraConfig();
+                $this->iAktivni = TRUE;
+            }
+            $this->zobrazitNuly = "hidden";
+        }
+
+        if ($this->iAktivni) {
 
             $spravceZaznamu = new SpravceZaznamu();
 
@@ -71,21 +82,40 @@ class InventuraKontroler extends Kontroler {
             //$vInZ = "select inventura.ean, inventura.kusy, sap.model, sap.zbozi, sap.popis, sap.kusy from inventura left join sap on inventura.ean = sap.ean having inventura.ean not in (select ean from zarizeni) ";
             $vInZ = "select R.ean, model, zbozi, popis, sap.kusy as sapKusy, R.kusy as invKusy from (select ean, kusy from inventura where ean not in (select ean from zarizeni)) as R left join sap on R.ean = sap.ean having invKusy != 0";
             $this->vysledek = $spravceZaznamu->vratVsechno($vInZ);
-
+            
 // // je v zarizeni, neni v inventure
 // select Z.ean, Z.kusy from zarizeni as Z, inventura as I where Z.ean not in (select ean from inventura) group by Z.ean 
             //$vZnI = "select zarizeni.ean, SUM(zarizeni.kusy) as zarKusy, sap.model, sap.zbozi as zbozi, sap.popis, sap.kusy as sapKusy from zarizeni, sap where zarizeni.ean not in (select ean from inventura) group by zarizeni.ean";
             $vZnI = "select R.ean, model, zbozi, popis, sap.kusy as sapKusy, R.kusy as zarKusy from (select ean, sum(kusy)as kusy from zarizeni where ean not in (select ean from inventura) group by ean) as R left join sap on R.ean = sap.ean having zarKusy != 0";
             $this->vysledek1 = $spravceZaznamu->vratVsechno($vZnI);
-
+            
 // rozdily inventura a zarizeni
 //select Z.ean, (I.kusy - Z.kus) as rozdil from (select ean, sum(kusy) as kus from zarizeni group by ean) as Z, inventura as I where Z.ean = I.ean having rozdil != 0 
             //$rozdily = "select Z.ean, I.kusy as invKusy, Z.kus as zarKusy, S.model, S.zbozi, S.popis, S.kusy as sapKusy from (select ean, sum(kusy) as kus from zarizeni group by ean) as Z, inventura as I, sap as S where Z.ean = S.ean and Z.ean = I.ean having I.kusy != Z.kus ";
             $rozdily = "select R.invEan as ean, sap.zbozi, sap.popis, sap.model, sap.kusy as sapKusy, R.invKusy, R.zarKusy from (select inventura.ean as invEan, inventura.kusy as invKusy, Z.zarKusy as zarKusy from inventura join (select ean, sum(kusy) as zarKusy from zarizeni group by ean) as Z on inventura.ean = Z.ean) as R left join sap on R.invEan = sap.ean ";
             $this->vysledek2 = $spravceZaznamu->vratVsechno($rozdily);
+            
+            //print_r($this->vysledek);
+//            print_r($this->vysledek1);
+//            print_r($this->vysledek2);
+            $exper = $this->vysledek1;
+            foreach ($this->vysledek1 as $a){
+                print_r($a['ean']);
+                print_r($spravceZaznamu->vratVsechnaImei($a['ean']));
+                print("<br>");
+            }
+            print_r($exper);
         }
         $this->pohled = "inventura";
         $this->titulekS = "inventura";
+    }
+
+    private function endInventuraConfig() {
+        file_put_contents("inventura.ini", 'iStop = "' . date("Y-m-d g:i:s") . '"', FILE_APPEND);
+    }
+
+    private function initInventuraConfig() {
+        file_put_contents("inventura.ini", 'iStart = "' . date("Y-m-d g:i:s") . "\"\n");
     }
 
     private function zmenvDB($list1, $list2) {
@@ -98,17 +128,17 @@ class InventuraKontroler extends Kontroler {
             }
         }
 
-
-        
         foreach ($list2 as $var => $val) {
             $sumaDatum = $sz->vratSumuDatum($var, $this->inventuraDatum);
             $suma = $sz->vratSumu($var);
-            if($sumaDatum[0] != $suma[0]){
-                $this->zmenenePolozky[$var] = ($suma[0] - $sumaDatum[0]);
+            if ($sumaDatum[0] != $suma[0]) {
+                $zmenenePolozky[$var] = ($suma[0] - $sumaDatum[0]);
             } else {
                 $sz->zmenZarizeni($var, $val - $suma[0]);
             }
         }
+
+        return $zmenenePolozky;
     }
 
     private function upload() {
@@ -144,7 +174,7 @@ class InventuraKontroler extends Kontroler {
 
     private function synchronizuj() {
 // nacist do db z csv
-        $databasehost = "localhost";
+        $databasehost = DBHOST;
         $databasename = DATABASE;
         $databasetable = "inventura";
         $databaseusername = DBUSER;

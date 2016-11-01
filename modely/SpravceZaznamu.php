@@ -12,6 +12,10 @@
  * @author F@nny
  */
 class SpravceZaznamu {
+    
+    public function vratVsechnaImei($ean){
+        return Db::dotazVsechny('SELECT imei, imei1 FROM zarizeni WHERE ean = ? AND imei1 is not NULL', array($ean));
+    }
 
     public function jeDualsim($ora) {
         return Db::dotazJeden('SELECT dualsim FROM dualsim WHERE zbozi = ?', array($ora));

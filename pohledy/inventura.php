@@ -1,28 +1,59 @@
-<?php if ($this->uploaded) { ?>
+<!--<?php if ($this->uploaded) { ?>
     <div class = "alert alert-success">
         <strong>Soubor byl nahran</strong>
     </div>
     <?php
 } else if ($this->uploaded === FALSE) {
     ?>
-    <div class = "alert alert-danger">
-        <strong>Soubor nebyl nahran</strong>
-    </div>
+                <div class = "alert alert-danger">
+                    <strong>Soubor nebyl nahran</strong>
+                </div>
     <?php
 }
-?>
+?>-->
 
-<form action = "inventura/zahaj" method = "post" enctype = "multipart/form-data">
-    <h4>Nahraj soubor <code style="font-size: small;">trans.dat</code></h4>
-    <input style="cursor:pointer" type = "file" name = "fileToUpload" id = "fileToUpload" class="btn btn-default"> 
-    <button type = "submit" value = "zahaj" name = "submit" class="btn btn-default" style="margin-top: 20px;">Posli a zahaj inventuru</button>
+<?php
+if (!$this->iAktivni) {
+    ?>
+    <form action = "inventura/zahaj" method = "post" enctype = "multipart/form-data">
+        <h4>Nahraj soubor <code style="font-size: small;">trans.dat</code></h4>
+        <input style="cursor:pointer" type = "file" name = "fileToUpload" id = "fileToUpload" class="btn btn-default"> 
+        <button type = "submit" value = "zahaj" name = "submit" class="btn btn-default" style="margin-top: 20px;">Posli a zahaj inventuru</button>
 
-</form>
-<br>
-<a class="btn btn-default" href="inventura/znovu">Znova se stejnym souborem</a>
-<form action="inventura/aktualizace" method="post">
+    </form>
     <?php
-    if ($this->vysledek != "") {
+} else {
+    ?>
+    <h1>inventura aktivni</h1>
+    <a href="inventura/ukonci">ukonci inventuru</a>
+    <?php
+    ?>
+    <br>
+    <table>
+        <thead>zmenene polozky behem dohledavani</thead>
+        <tr>
+            <?php
+            foreach ($this->zmenenePolozky as $a) {
+                ?>
+                <td><?php echo $a['ean'] ?></td>
+                <td><?php echo $a['zbozi'] ?></td>
+                <td><?php echo $a['model'] ?></td>            
+                <td><?php echo $a['popis'] ?></td>            
+                <td><?php echo $a['invKusy'] ?></td>
+                <td><?php echo $a['zarKusy'] ?></td>
+                <td><?php echo $a['invKusy'] ?></td>
+                <td><?php echo $a['sapKusy'] ?></td>
+                <?php
+            }
+            ?>
+        </tr>
+    </table>
+    <?php
+    ?>
+
+    <!--<a class="btn btn-default" href="inventura/znovu">Znova se stejnym souborem</a>-->
+    <form action="inventura/aktualizace" method="post">
+        <?php
         ?>
         <button class="btn btn-default pull-right">Aktualizuj</button>
         <a class="btn btn-default pull-right" href="inventura/zobraznuly/<?php echo $this->zobrazitNuly ?>">Zobraz nuly</a>
@@ -83,7 +114,6 @@
 
 
             <?php
-            print_r($this->zmenenePolozky);
             foreach ($this->vysledek2 as $a) {
                 ?>
                 <tbody <?php echo (($a['invKusy'] - $a['zarKusy']) == 0) ? "class='" . $this->zobrazitNuly . "'" : "class='visible'" ?>>
@@ -112,10 +142,13 @@
                 </tbody>
                 <?php
             }
-        }
-        ?>
-    </table>
-</form>
+            ?>
+        </table>
+    </form>
+
+    <?php
+}
+?>
 
 <!--
 <?= print_r($this->vysledek) ?>
