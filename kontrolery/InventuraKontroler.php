@@ -101,7 +101,7 @@ class InventuraKontroler extends Kontroler {
             $exper = $this->vysledek1;
             foreach ($this->vysledek1 as $a){
                 print_r($a['ean']);
-                print_r($spravceZaznamu->vratVsechnaImei($a['ean']));
+                print_r($spravceZaznamu->vratVsechnaImei($a['ean'][0]));
                 print("<br>");
             }
             print_r($exper);
