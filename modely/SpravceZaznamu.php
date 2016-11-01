@@ -12,6 +12,10 @@
  * @author F@nny
  */
 class SpravceZaznamu {
+    
+    public function vratVsechnaImei($ean){
+        return Db::dotazVsechny('SELECT imei, imei1 FROM zarizeni WHERE ean = ? AND imei1 not NULL', array($ean));
+    }
 
     public function jeDualsim($ora) {
         return Db::dotazJeden('SELECT dualsim FROM dualsim WHERE zbozi = ?', array($ora));
@@ -134,7 +138,7 @@ class SpravceZaznamu {
     }
 
     public function zmenZarizeni($ean, $kusy) {
-        return Db::dotazJeden('INSERT INTO zarizeni (ean, imei, kusy, jmeno) VALUES(?, NULL, ?, "inventura")', array($ean, $kusy));
+        return Db::dotazJeden('INSERT INTO zarizeni (ean, imei, kusy, jmeno) VALUES(?, NULL, ?, "1")', array($ean, $kusy));
     }
 
     public function ziskejOra($ean) {
@@ -160,6 +164,10 @@ class SpravceZaznamu {
 
     public function vratSumu($ean) {
         return Db::dotazJeden('SELECT SUM(kusy) FROM zarizeni WHERE ean = ?', array($ean));
+    }
+    
+    public function vratSumuDatum($ean, $datum){
+        return Db::dotazJeden('SELECT SUM(kusy) FROM zarizeni WHERE ean = ? AND datum < ?', array($ean, $datum));
     }
 
     public function vratSumuORA($ora) {

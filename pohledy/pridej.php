@@ -907,7 +907,7 @@ if (isset($this->vysledek)) {
             checkIt = $("#formZachovejHeslo").is(":checked");
             if (checkIt) {
                 var d = new Date();
-                if ((stopTime + 360000) <= d.getTime()) {
+                if ((stopTime + 180000) <= d.getTime()) {
                     $("#jmenoPridejForm").val("");
                     $("#textPridejForm").val("");
                     $("#formZachovejHeslo").prop('checked', false);
