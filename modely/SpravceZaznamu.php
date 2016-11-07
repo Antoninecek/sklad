@@ -14,7 +14,7 @@
 class SpravceZaznamu {
     
     public function vratVsechnaImei($ean){
-        return Db::dotazVsechny('SELECT imei, imei1 FROM zarizeni WHERE ean = ? AND imei1 is not NULL', array($ean));
+        return Db::dotazVsechny('SELECT imei, imei1 FROM zarizeni WHERE ean = ? AND imei is not NULL', array($ean));
     }
 
     public function jeDualsim($ora) {

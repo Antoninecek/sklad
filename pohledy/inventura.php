@@ -5,9 +5,9 @@
     <?php
 } else if ($this->uploaded === FALSE) {
     ?>
-                <div class = "alert alert-danger">
-                    <strong>Soubor nebyl nahran</strong>
-                </div>
+                                        <div class = "alert alert-danger">
+                                            <strong>Soubor nebyl nahran</strong>
+                                        </div>
     <?php
 }
 ?>-->
@@ -85,7 +85,7 @@ if (!$this->iAktivni) {
                     <td>0</td> <!-- zarizeni kusy -->
                     <td><?php echo $a['invKusy'] ?></td>
                     <td><?php echo $a['sapKusy'] ?></td>
-                    <td><input type="number" value="<?php echo $a['invKusy'] ?>" name="opravaNacteno[<?php echo $a['ean'] ?>]"></td>
+                    <td><input type="number" value="<?php echo $a['invKusy'] ?>" name="opravaNacteno[<?php echo $a['ean'] ?>]" ></td>
                     <td><input type="number" value="0" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
                 </tr>
                 <?php
@@ -105,10 +105,20 @@ if (!$this->iAktivni) {
                     <td><?php echo $a['zarKusy'] ?></td>
                     <td><?php echo 0 - $a['zarKusy'] ?></td>
                     <td><?php echo $a['sapKusy'] ?></td>
-                    <td><input type="number" value="0" name="opravaNacteno[<?php echo $a['ean'] ?>]"></td>
+                    <td><input type="number" value="0" name="opravaNacteno[<?= $a['ean'] ?>]" <?= !empty($a['imei']) ? "disabled" : "" ?>></td>
                     <td><input type="number" value="<?php echo $a['zarKusy'] ?>" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
+                    <td><input type="button" class="btn btn-default" data-ean="<?= $a['ean'] ?>"></td>
                 </tr>
                 <?php
+                for ($i = 0; $i < sizeof($a['imei']); $i++) {
+                    ?>
+                    <tr>
+                        <td><?= $a['imei'][$i] ?></td>
+                        <td><?= $a['imei1'][$i] ?></td>
+                        <td><input name=""></td>
+                    </tr>
+                    <?php
+                }
             }
             ?>
 
@@ -149,9 +159,39 @@ if (!$this->iAktivni) {
     <?php
 }
 ?>
+<div id="imeika" style="background-color: white; border: black solid thin; display: none; ">
+    fadsfa
 
+</div>
 <!--
 <?= print_r($this->vysledek) ?>
 <?= print_r($this->vysledek1) ?>
 <?= print_r($this->vysledek2) ?>
 -->
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        jQuery.fn.center = function () {
+            this.css("display", "block");
+            this.css("position", "absolute");
+            this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
+                    $(window).scrollTop()) + "px");
+            this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
+                    $(window).scrollLeft()) + "px");
+            //this.css("position", "fixed");
+            return this;
+        }
+
+        $('#inventuraVysledek tr td input[type="button"]').click(function () {
+            var id = $(this).attr('data-ean');
+            console.log(id);
+            $("#imeika").center();
+            $("#imeika").attr('data-ean', id);
+            $("#imeika").html(vsechno);
+        });
+    });
+
+</script>
