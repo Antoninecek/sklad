@@ -5,9 +5,9 @@
     <?php
 } else if ($this->uploaded === FALSE) {
     ?>
-                                        <div class = "alert alert-danger">
-                                            <strong>Soubor nebyl nahran</strong>
-                                        </div>
+                                                                                    <div class = "alert alert-danger">
+                                                                                        <strong>Soubor nebyl nahran</strong>
+                                                                                    </div>
     <?php
 }
 ?>-->
@@ -55,7 +55,7 @@ if (!$this->iAktivni) {
     <form action="inventura/aktualizace" method="post">
         <?php
         ?>
-        <button class="btn btn-default pull-right">Aktualizuj</button>
+        <button id="inventuraAktualizace" class="btn btn-default pull-right">Aktualizuj</button>
         <a class="btn btn-default pull-right" href="inventura/zobraznuly/<?php echo $this->zobrazitNuly ?>">Zobraz nuly</a>
 
 
@@ -66,93 +66,94 @@ if (!$this->iAktivni) {
                 <td>ora</td>
                 <td>item</td>
                 <td>popis</td>
+                <td>imei</td>
+                <td>imei1</td>
                 <td>nacteno</td>
                 <td>bezpecak</td>
                 <td>rozdil</td>
+
                 <td>SAP</td>
                 <td>O. nacteno</td>
                 <td>O. bezpecak</td>
+                <td>IMEI</td>
             </tr>
             <?php
-            foreach ($this->vysledek as $a) {
-                ?>
-                <tr>
-                    <td><?php echo $a['ean'] ?></td>
-                    <td><?php echo $a['zbozi'] ?></td>
-                    <td><?php echo $a['model'] ?></td>            
-                    <td><?php echo $a['popis'] ?></td>            
-                    <td><?php echo $a['invKusy'] ?></td>
-                    <td>0</td> <!-- zarizeni kusy -->
-                    <td><?php echo $a['invKusy'] ?></td>
-                    <td><?php echo $a['sapKusy'] ?></td>
-                    <td><input type="number" value="<?php echo $a['invKusy'] ?>" name="opravaNacteno[<?php echo $a['ean'] ?>]" ></td>
-                    <td><input type="number" value="0" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
-                </tr>
-                <?php
-            }
-            ?>
+            //$a = $this->vysledek0;
+            // TODO for loop, zjisteni dalsiho prvku, smrstit eany, zobrazovat jen imei
+            $posledniEan = NULL;
+            foreach ($this->vysledek0 as $a) {
+                $pocet = $a['celkem'];
 
-
-            <?php
-            foreach ($this->vysledek1 as $a) {
-                ?>
-                <tr>
-                    <td><?php echo $a['ean'] ?></td>
-                    <td><?php echo $a['zbozi'] ?></td>
-                    <td><?php echo $a['model'] ?></td>            
-                    <td><?php echo $a['popis'] ?></td> 
-                    <td>0</td> <!-- inventura kusy -->
-                    <td><?php echo $a['zarKusy'] ?></td>
-                    <td><?php echo 0 - $a['zarKusy'] ?></td>
-                    <td><?php echo $a['sapKusy'] ?></td>
-                    <td><input type="number" value="0" name="opravaNacteno[<?= $a['ean'] ?>]" <?= !empty($a['imei']) ? "disabled" : "" ?>></td>
-                    <td><input type="number" value="<?php echo $a['zarKusy'] ?>" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
-                    <td><input type="button" class="btn btn-default" data-ean="<?= $a['ean'] ?>"></td>
-                </tr>
-                <?php
-                for ($i = 0; $i < sizeof($a['imei']); $i++) {
+                if ($pocet == NULL) {
+                    if ($a['invKusy'] - $a['zarKusy'] == 0) {
+                        continue;
+                    }
+                    $posledniEan = $a['ean'];
                     ?>
-                    <tr>
-                        <td><?= $a['imei'][$i] ?></td>
-                        <td><?= $a['imei1'][$i] ?></td>
-                        <td><input name=""></td>
-                    </tr>
-                    <?php
-                }
-            }
-            ?>
-
-
-            <?php
-            foreach ($this->vysledek2 as $a) {
-                ?>
-                <tbody <?php echo (($a['invKusy'] - $a['zarKusy']) == 0) ? "class='" . $this->zobrazitNuly . "'" : "class='visible'" ?>>
                     <tr>
                         <td><?php echo $a['ean'] ?></td>
                         <td><?php echo $a['zbozi'] ?></td>
-                        <td><?php echo $a['model'] ?></td>
-                        <td><?php echo $a['popis'] ?></td>
-                        <td><?php echo $a['invKusy'] ?></td>
-                        <td><?php echo $a['zarKusy'] ?></td>
-                        <?php
-                        if ($a['zarKusy'] < 0) {
-                            ?>
-                            <td><?php echo $a['invKusy'] - $a['zarKusy'] ?></td>
-                            <?php
-                        } else {
-                            ?>
-                            <td><?php echo $a['invKusy'] - $a['zarKusy'] ?></td>
-                            <?php
-                        }
-                        ?>
+                        <td><?php echo $a['model'] ?></td>            
+                        <td><?php echo $a['popis'] ?></td>   
+                        <td><?php echo $a['imei'] ?></td>
+                        <td><?php echo $a['imei1'] ?></td>
+                        <td><?php echo empty($a['invKusy']) ? 0 : $a['invKusy'] ?></td>
+                        <td><?php echo empty($a['zarKusy']) ? 0 : $a['zarKusy'] ?></td>
+                        <td><?php echo $a['invKusy'] - $a['zarKusy'] ?></td>
+
                         <td><?php echo $a['sapKusy'] ?></td>
-                        <td><input type="number" value="<?php echo $a['invKusy'] ?>" name="opravaNacteno[<?php echo $a['ean'] ?>]"></td>
-                        <td><input type="number" value="<?php echo $a['zarKusy'] ?>" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
+                        <td><input type="number" value="<?php echo empty($a['invKusy']) ? 0 : $a['invKusy'] ?>" name="opravaNacteno[<?php echo $a['ean'] ?>]" ></td>
+                        <td><input type="number" value="<?php echo empty($a['zarKusy']) ? 0 : $a['zarKusy'] ?>" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
+
                     </tr>
-                </tbody>
-                <?php
+                    <?php
+                } else {
+                    if ($a['invKusy'] - $a['celkem'] == 0) {
+                        continue;
+                    }
+                    if ($posledniEan != $a['ean']) {
+                        $posledniEan = $a['ean'];
+                        ?>
+
+                        <tr>
+                            <td><?php echo $a['ean'] ?></td>
+                            <td><?php echo $a['zbozi'] ?></td>
+                            <td><?php echo $a['model'] ?></td>            
+                            <td><?php echo $a['popis'] ?></td>   
+                            <td><?php echo $a['imei'] ?></td>
+                            <td><?php echo $a['imei1'] ?></td>
+                            <td><?php echo empty($a['invKusy']) ? 0 : $a['invKusy'] ?></td>
+                            <td><?php echo $a['celkem'] ?></td>
+                            <td><?php echo $a['invKusy'] - $a['celkem'] ?></td>
+                            <td><?php echo $a['sapKusy'] ?></td>
+                            <!--<td><input type="number" value="<?= $a['invKusy'] ?>" name="opravaNacteno[<?= $a['ean'] ?>]"</td>
+                            <td><input type="number" value="<?= $a['zarKusy'] ?>" name="opravaBezpecak[<?= $a['ean'] ?>]"></td>-->
+                            <td><a onclick="inventuraVymaz(<?= $a['ean'] ?>)">aa</a></td>
+                        </tr>
+                        <?php
+                    } else {
+                        $posledniEan = $a['ean'];
+                        ?>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>            
+                            <td></td>   
+                            <td><?php echo $a['imei'] ?></td>
+                            <td><?php echo $a['imei1'] ?></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><?php echo $a['sapKusy'] ?></td>
+                            <!--<td><input type="number" value="<?= $a['invKusy'] ?>" name="opravaNacteno[<?= $a['ean'] ?>]"</td>
+                            <td><input type="number" value="<?= $a['zarKusy'] ?>" name="opravaBezpecak[<?= $a['ean'] ?>]"></td>-->
+                        </tr>
+                        <?php
+                    }
+                }
             }
             ?>
+            </tbody>
         </table>
     </form>
 
@@ -171,6 +172,20 @@ if (!$this->iAktivni) {
 
 
 <script type="text/javascript">
+
+    function inventuraVymaz(ean) {
+        var wina = window.open("spravaimei/" + ean, "popupWindow", "width=1000,height=500");
+        console.log(wina);
+        while (!wina.closed) {
+            alert("Zavri okno se spravou imei, pak potvrd!");
+            if (wina.closed) {
+                console.log("a");
+            } else {
+                console.log("b");
+            }
+        }
+        document.getElementById('inventuraAktualizace').click();
+    }
 
     $(document).ready(function () {
 
