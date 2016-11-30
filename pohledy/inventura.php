@@ -5,9 +5,9 @@
     <?php
 } else if ($this->uploaded === FALSE) {
     ?>
-                                                                                    <div class = "alert alert-danger">
-                                                                                        <strong>Soubor nebyl nahran</strong>
-                                                                                    </div>
+                                                                                            <div class = "alert alert-danger">
+                                                                                                <strong>Soubor nebyl nahran</strong>
+                                                                                            </div>
     <?php
 }
 ?>-->
@@ -25,42 +25,49 @@ if (!$this->iAktivni) {
 } else {
     ?>
     <h1>inventura aktivni</h1>
-    <a href="inventura/ukonci">ukonci inventuru</a>
+    <a id="inventuraKonec" class="btn btn-warning" href="inventura/ukonci">ukonci inventuru</a>
     <?php
     ?>
     <br>
+    <br>
+    <br>
+    <!--
     <table>
         <thead>zmenene polozky behem dohledavani</thead>
         <tr>
-            <?php
-            foreach ($this->zmenenePolozky as $a) {
-                ?>
-                <td><?php echo $a['ean'] ?></td>
-                <td><?php echo $a['zbozi'] ?></td>
-                <td><?php echo $a['model'] ?></td>            
-                <td><?php echo $a['popis'] ?></td>            
-                <td><?php echo $a['invKusy'] ?></td>
-                <td><?php echo $a['zarKusy'] ?></td>
-                <td><?php echo $a['invKusy'] ?></td>
-                <td><?php echo $a['sapKusy'] ?></td>
-                <?php
-            }
-            ?>
+    <?php
+    foreach ($this->zmenenePolozky as $a) {
+        ?>
+                        <td><?php echo $a['ean'] ?></td>
+                        <td><?php echo $a['zbozi'] ?></td>
+                        <td><?php echo $a['model'] ?></td>            
+                        <td><?php echo $a['popis'] ?></td>            
+                        <td><?php echo $a['invKusy'] ?></td>
+                        <td><?php echo $a['zarKusy'] ?></td>
+                        <td><?php echo $a['invKusy'] ?></td>
+                        <td><?php echo $a['sapKusy'] ?></td>
+        <?php
+    }
+    ?>
         </tr>
-    </table>
+    </table>-->
     <?php
     ?>
 
     <!--<a class="btn btn-default" href="inventura/znovu">Znova se stejnym souborem</a>-->
-    <form action="inventura/aktualizace" method="post">
+    <form action="inventura/aktualizace" method="post" style="width: 1200px">
         <?php
         ?>
-        <button id="inventuraAktualizace" class="btn btn-default pull-right">Aktualizuj</button>
-        <a class="btn btn-default pull-right" href="inventura/zobraznuly/<?php echo $this->zobrazitNuly ?>">Zobraz nuly</a>
+        <button id="inventuraAktualizace" class="btn btn-info pull-right">Aktualizuj</button>
+        <!--<a class="btn btn-default pull-right" href="inventura/zobraznuly/<?php echo $this->zobrazitNuly ?>">Zobraz nuly</a>-->
+
+        <a class="btn btn-default" id="inventuraPridejImei" onclick="inventuraPridejImei()">pridej polozku s Imei</a>
+        <table id="inventuraVysledek" class="table" style="width: 1301px">
 
 
-        <table id="inventuraVysledek">
-            <thead><h3>rozdily</h3></thead>
+
+            <thead><h3>rozdily</h3></thead><col width=10%>
+
             <tr>
                 <td>ean</td>
                 <td>ora</td>
@@ -68,14 +75,12 @@ if (!$this->iAktivni) {
                 <td>popis</td>
                 <td>imei</td>
                 <td>imei1</td>
-                <td>nacteno</td>
-                <td>bezpecak</td>
+                <td>scan</td>
+                <td>bezp.</td>
                 <td>rozdil</td>
-
                 <td>SAP</td>
                 <td>O. nacteno</td>
                 <td>O. bezpecak</td>
-                <td>IMEI</td>
             </tr>
             <?php
             //$a = $this->vysledek0;
@@ -97,13 +102,13 @@ if (!$this->iAktivni) {
                         <td><?php echo $a['popis'] ?></td>   
                         <td><?php echo $a['imei'] ?></td>
                         <td><?php echo $a['imei1'] ?></td>
-                        <td><?php echo empty($a['invKusy']) ? 0 : $a['invKusy'] ?></td>
-                        <td><?php echo empty($a['zarKusy']) ? 0 : $a['zarKusy'] ?></td>
-                        <td><?php echo $a['invKusy'] - $a['zarKusy'] ?></td>
+                        <td style="width: 50px"><?php echo empty($a['invKusy']) ? 0 : $a['invKusy'] ?></td>
+                        <td style="width: 50px"><?php echo empty($a['zarKusy']) ? 0 : $a['zarKusy'] ?></td>
+                        <td style="width: 50px"><?php echo $a['invKusy'] - $a['zarKusy'] ?></td>
 
                         <td><?php echo $a['sapKusy'] ?></td>
-                        <td><input type="number" value="<?php echo empty($a['invKusy']) ? 0 : $a['invKusy'] ?>" name="opravaNacteno[<?php echo $a['ean'] ?>]" ></td>
-                        <td><input type="number" value="<?php echo empty($a['zarKusy']) ? 0 : $a['zarKusy'] ?>" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
+                        <td><input style="width: 50px;" type="number" value="<?php echo empty($a['invKusy']) ? 0 : $a['invKusy'] ?>" name="opravaNacteno[<?php echo $a['ean'] ?>]" ></td>
+                        <td><input style="width: 50px;" type="number" value="<?php echo empty($a['zarKusy']) ? 0 : $a['zarKusy'] ?>" name="opravaBezpecak[<?php echo $a['ean'] ?>]"></td>
 
                     </tr>
                     <?php
@@ -128,7 +133,7 @@ if (!$this->iAktivni) {
                             <td><?php echo $a['sapKusy'] ?></td>
                             <!--<td><input type="number" value="<?= $a['invKusy'] ?>" name="opravaNacteno[<?= $a['ean'] ?>]"</td>
                             <td><input type="number" value="<?= $a['zarKusy'] ?>" name="opravaBezpecak[<?= $a['ean'] ?>]"></td>-->
-                            <td><a onclick="inventuraVymaz(<?= $a['ean'] ?>)">aa</a></td>
+                            <td colspan="2"><a class="btn btn-default btn-block" onclick="inventuraVymaz(<?= $a['ean'] ?>)"><center>oprav</center></a></td>
                         </tr>
                         <?php
                     } else {
@@ -173,8 +178,22 @@ if (!$this->iAktivni) {
 
 <script type="text/javascript">
 
+    function inventuraPridejImei() {
+        var winb = window.open("spravaimei/pridej", "popupWindow", "width=1000,height=500");
+        console.log(winb);
+        while (!winb.closed) {
+            alert("Zavri okno se spravou imei, pak potvrd!");
+            if (winb.closed) {
+                console.log("a1");
+            } else {
+                console.log("b1");
+            }
+        }
+        document.getElementById('inventuraAktualizace').click();
+    }
+
     function inventuraVymaz(ean) {
-        var wina = window.open("spravaimei/" + ean, "popupWindow", "width=1000,height=500");
+        var wina = window.open("spravaimei/zobraz/" + ean, "popupWindow", "width=1000,height=500");
         console.log(wina);
         while (!wina.closed) {
             alert("Zavri okno se spravou imei, pak potvrd!");
@@ -206,6 +225,13 @@ if (!$this->iAktivni) {
             $("#imeika").center();
             $("#imeika").attr('data-ean', id);
             $("#imeika").html(vsechno);
+        });
+        
+        $('#inventuraKonec').click(function(event){
+           var ans = confirm("Opravdu ukoncit inventuru?");
+           if(ans != true){
+               event.preventDefault();
+           }
         });
     });
 
