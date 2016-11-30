@@ -13,8 +13,12 @@
  */
 class SpravceZaznamu {
     
+    public function ziskejVsechnaImei($ean){
+        return Db::dotazVsechny("select imei, imei1, sum(kusy) from zarizeni where ean = ? group by imei having sum(kusy) != 0", array($ean));
+    }
+    
     public function vratVsechnaImei($ean){
-        return Db::dotazVsechny('SELECT imei, imei1 FROM zarizeni WHERE ean = ? AND imei1 not NULL', array($ean));
+        return Db::dotazVsechny('SELECT imei, imei1 FROM zarizeni WHERE ean = ? AND imei is not NULL', array($ean));
     }
 
     public function jeDualsim($ora) {
