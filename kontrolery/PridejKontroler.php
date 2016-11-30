@@ -74,7 +74,6 @@ class PridejKontroler extends Kontroler {
                 $kusy = $_POST['kusy'];
             }
 
-
             if (isset($_POST['ean'])) {
 
                 //$oraItem = $spravceZaznamu->ziskejOra($_POST['ean']);

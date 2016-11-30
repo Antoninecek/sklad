@@ -1,6 +1,7 @@
 <?php
 
 if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    define("SERVERURL", "127.0.0.1:8080");
     define("DATABASE", "sklad_db_jednodussi_n");
     define("DBHOST", "127.0.0.1");
     define("DBUSER", "root");
@@ -11,11 +12,14 @@ if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
     $phpver = phpversion();
 } else {
     $phpver = phpversion();
-   
+    define("SERVERURL", "nay2.sk");
+    define("DATABASE", "nay2");
+    define("DBHOST", "mysql5.nic.sk");
+    define("DBUSER", "nay2");
+    define("DBPASS", "cNe874p");
     define("PATHBASE", "/sklad_new/sklad/");
     define("PATHEMPTYURL", "sklad_new/sklad/pridej");
     define("PATHERR", "sklad_new/sklad/chyba");
-    print_r($phpver);
 }
 
 function parseVersion($phpver) {
@@ -56,6 +60,7 @@ if (parseVersion($phpver)) {
     $smerovac->zpracuj(array($_SERVER['REQUEST_URI']));
     $smerovac->vypisPohled();
 } else {
+    print_r($phpver);
     echo "<br>";
     echo "must have 5.5.8 or higher";
 }
