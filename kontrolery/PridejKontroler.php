@@ -125,7 +125,6 @@ class PridejKontroler extends Kontroler {
             $this->message = "spatne heslo, neaktivni uzivatel";
         }
         $this->seznamZaznamu = $spravceZaznamu->vratVsechno('SELECT E.id, E.ean, E.imei, E.imei1, E.kusy, E.jmeno, E.text, E.datum, sap.zbozi FROM (SELECT Z.id as id, Z.ean as ean, Z.imei as imei, Z.imei1 as imei1, Z.kusy as kusy, U.jmeno as jmeno, Z.text as text, Z.datum as datum FROM zarizeni as Z, uzivatele as U WHERE Z.jmeno = U.oscislo order by Z.id desc LIMIT 10) as E LEFT JOIN sap on sap.ean = E.ean order by E.id desc');
-
         $this->titulekS = "pridej";
         $this->pohled = "pridej";
     }
