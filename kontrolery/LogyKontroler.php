@@ -25,7 +25,7 @@ class LogyKontroler extends Kontroler {
                 break;
         }
 
-        $this->logy = $sz->vratVsechno('select * from logy');
+        $this->logy = $sz->vratLogy($_COOKIE[COOKIENAME]);
         //print_r($this->logy);
 
         $this->pohled = "logy";

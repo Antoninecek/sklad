@@ -32,7 +32,7 @@ class UzivatelKontroler extends Kontroler {
                     break;
                 case "odeber":
 
-                    $this->vsichniUzivatele = $sz->vypisAktivniUzivatele();
+                    $this->vsichniUzivatele = $sz->vypisAktivniUzivatele($_COOKIE[COOKIENAME]);
                     $this->pohled = "uzivatel-odeber";
                     break;
                 case "odebrano":
@@ -43,7 +43,7 @@ class UzivatelKontroler extends Kontroler {
                         $this->errmsg = "neni vybranej clovek";
                     }
 
-                    $this->vsichniUzivatele = $sz->vypisAktivniUzivatele();
+                    $this->vsichniUzivatele = $sz->vypisAktivniUzivatele($_COOKIE[COOKIENAME]);
                     $this->pohled = "uzivatel-odeber";
                     break;
                 case "heslo":
@@ -58,7 +58,7 @@ class UzivatelKontroler extends Kontroler {
                     break;
                 case "aktivuj":
                     if (!$this->existenceHesla(array($_SESSION['udaje']['heslo']))) {
-                        $sz->zmenAktivujUzivatele($_SESSION['udaje']['oscislo'], $_SESSION['udaje']['jmeno'], $_SESSION['udaje']['heslo'], $_SESSION['udaje']['email']);
+                        $sz->zmenAktivujUzivatele($_SESSION['udaje']['oscislo'], $_SESSION['udaje']['jmeno'], $_SESSION['udaje']['heslo'], $_SESSION['udaje']['email'], $_COOKIE[COOKIENAME]);
                         $this->errmsg = "uzivatel aktivovan";
                     } else {
                         $this->errmsg = "toto heslo jiz existuje, zadejte jine";
@@ -108,7 +108,7 @@ class UzivatelKontroler extends Kontroler {
 
     private function pridejUzivatele($oscislo, $jmeno, $heslo, $email) {
         $sz = new SpravceZaznamu();
-        $_SESSION['udaje'] = array("oscislo" => $oscislo, "jmeno" => $jmeno, "heslo" => $heslo, "email" => $email);
+        $_SESSION['udaje'] = array("oscislo" => $oscislo, "jmeno" => $jmeno, "heslo" => $heslo, "email" => $email, "pobocka" => $_COOKIE[COOKIENAME]);
 
         $existuje = $this->existenceUzivatele($oscislo);
         $existHeslo = $this->existenceHesla(array($heslo));

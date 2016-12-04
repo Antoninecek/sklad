@@ -13,11 +13,15 @@ class ZiskejInfoKontroler extends Kontroler {
         mysqli_select_db($con, DATABASE);
         //print_r($parametry);
         if (@$parametry[2] == "pridej" || @$parametry[2] == "ean") {
-            $sql = "SELECT * FROM sap WHERE ean = " . $parametry[1] . "";
-            $result = mysqli_query($con, $sql);
+            
+            $sz = new SpravceZaznamu;
+            $row = $sz->vratInfoSapEan($parametry[1]);
+            
+            //$sql = "SELECT * FROM sap WHERE ean = " . $parametry[1] . "";
+            //$result = mysqli_query($con, $sql);
             //echo $sql;
 
-            $row = @mysqli_fetch_row($result);
+            //$row = @mysqli_fetch_row($result);
             ?>
 
             <div id="zisk1" class="ziskejInfo <?= $parametry[2] == "pridej" ? "styla" : "stylb" ?>" >
@@ -36,11 +40,8 @@ class ZiskejInfoKontroler extends Kontroler {
 
             <?php
         } else {
-            $sql = "SELECT * FROM sap WHERE zbozi = " . $parametry[1] . "";
-            $result = mysqli_query($con, $sql);
-            //echo $sql;
-
-            $row = @mysqli_fetch_row($result);
+            
+            $row = $sz->vratInfoSapOra($parametry[1]);
 
             //print_r($row);
             ?>

@@ -44,13 +44,10 @@ class PridejKontroler extends Kontroler {
                 break;
             case "undo":
                 $this->pokusUnda = TRUE;
-                $posledni = $this->zjistiPosledniZaznam();
-                if (isset($_POST['formUndoHeslo'])) {
-                    $heslo = $this->zjistiHeslo($_POST['formUndoHeslo']);
-                } else {
-                    $heslo = FALSE;
-                }
-                $heslo1 = $this->zjistiHeslo($posledni['jmeno']);
+                $posledniId = isset($_SESSION['posledniId']) ? $_SESSION['posledniId'] : '';
+                $posledni = $this->zjistiPosledniZaznam($posledniId);
+                $heslo = isset($_POST['formUndoHeslo']) ? $_POST['formUndoHeslo'] : FALSE;
+                $heslo1 = $this->zjistiHeslo($posledni['jmeno'])[0];
                 if ($heslo == $heslo1) {
                     $sz = new SpravceZaznamu();
                     if ($posledni['text'] == "") {
@@ -58,7 +55,7 @@ class PridejKontroler extends Kontroler {
                     } else {
                         $posledni['text'] = $posledni['text'] . " oprava zaznamu";
                     }
-                    $this->vysledekUnda = $sz->pridejZaznam($posledni['ean'], $posledni['imei'], $posledni['imei1'], $posledni['kusy'] * (-1), $posledni['jmeno'], $posledni['text']);
+                    $this->vysledekUnda = $sz->pridejZaznam($posledni['ean'], $posledni['imei'], $posledni['imei1'], $posledni['kusy'] * (-1), $posledni['jmeno'], $posledni['text'], $posledni['pobocka']);
                 }
                 break;
         }
@@ -101,8 +98,9 @@ class PridejKontroler extends Kontroler {
                     //print_r($_POST);
 
                     $pridejOscislo = $spravceZaznamu->vratOscislo($this->heslo)[0];
-                    $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $imei, $imei1, $kusy, $pridejOscislo, $textToDb);
+                    $vraceni = $spravceZaznamu->pridejZaznam($_POST['ean'], $imei, $imei1, $kusy, $pridejOscislo, $textToDb, $_COOKIE[COOKIENAME]);
                     $posledniId = $vraceni[0];
+                    $_SESSION['posledniId'] = $vraceni[0]; // kvuli undu
                     $this->message = $vraceni;
                     $this->uspesnePridani = TRUE;
                 }
@@ -124,7 +122,7 @@ class PridejKontroler extends Kontroler {
             $this->vypisZnova = TRUE;
             $this->message = "spatne heslo, neaktivni uzivatel";
         }
-        $this->seznamZaznamu = $spravceZaznamu->vratVsechno('SELECT E.id, E.ean, E.imei, E.imei1, E.kusy, E.jmeno, E.text, E.datum, sap.zbozi FROM (SELECT Z.id as id, Z.ean as ean, Z.imei as imei, Z.imei1 as imei1, Z.kusy as kusy, U.jmeno as jmeno, Z.text as text, Z.datum as datum FROM zarizeni as Z, uzivatele as U WHERE Z.jmeno = U.oscislo order by Z.id desc LIMIT 10) as E LEFT JOIN sap on sap.ean = E.ean order by E.id desc');
+        $this->seznamZaznamu = $spravceZaznamu->vratPosledniZaznamy($_COOKIE[COOKIENAME]);
         $this->titulekS = "pridej";
         $this->pohled = "pridej";
     }
@@ -132,9 +130,9 @@ class PridejKontroler extends Kontroler {
     private function zjistiImei($imei) {
         $sz = new SpravceZaznamu();
 
-        if ($imei1 = $sz->jeImei0($imei)[0]) {
+        if ($imei1 = $sz->jeImei0($imei, $_COOKIE[COOKIENAME])[0]) {
             return [$imei, $imei1];
-        } else if ($imei0 = $sz->jeImei1($imei)[0]) {
+        } else if ($imei0 = $sz->jeImei1($imei, $_COOKIE[COOKIENAME])[0]) {
             return [$imei0, $imei];
         } else {
             return [$imei, NULL];
@@ -146,9 +144,9 @@ class PridejKontroler extends Kontroler {
         return $sz->zjistiHeslo($jmeno);
     }
 
-    private function zjistiPosledniZaznam() {
+    private function zjistiPosledniZaznam($id) {
         $sz = new SpravceZaznamu();
-        $posledni = $sz->posledniZaznamZarizeni();
+        $posledni = $sz->celyZaznamZarizeni($id);
         return $posledni;
     }
 

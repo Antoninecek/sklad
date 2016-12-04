@@ -16,12 +16,15 @@ class SmerovacKontroler extends Kontroler {
     public function zpracuj($parametry) {
 
         $naparsovanaURL = $this->parsujURL($parametry[0]);
-
-
+        
+        if (!isset($_COOKIE[COOKIENAME]) && $naparsovanaURL[0] != COOKIENAME) {
+            $this->presmeruj(PATHSETPOBOCKA);
+        }
 
         if (empty($naparsovanaURL[0])) {
             $this->presmeruj(PATHEMPTYURL);
         }
+        
         $tridaKontroleru = $this->pomlckyDoVelbloudiNotace($naparsovanaURL[0]) . "Kontroler";
 
 
@@ -30,8 +33,6 @@ class SmerovacKontroler extends Kontroler {
         } else {
             $this->presmeruj(PATHERR);
         }
-
-
 
         $this->kontroler->zpracuj($naparsovanaURL);
         $this->data['titulek'] = $this->kontroler->titulekS;

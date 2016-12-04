@@ -27,12 +27,18 @@ class ZkontrolujImeiKontroler extends Kontroler {
         }
     }
     
+    /**
+     * fucking tricky, nenech se zmast prirazenim misto porovnani
+     * dotaz vraci bud druhy imei, nebo null, v pripade null if je false
+     * @param type $imei
+     * @return type
+     */
     private function zjistiImei($imei) {
         $sz = new SpravceZaznamu();
 
-        if ($imei1 = $sz->jeImei0($imei)[0]) {
+        if ($imei1 = $sz->jeImei0($imei, $_COOKIE[COOKIENAME])[0]) {
             return [$imei, $imei1];
-        } else if ($imei0 = $sz->jeImei1($imei)[0]) {
+        } else if ($imei0 = $sz->jeImei1($imei, $_COOKIE[COOKIENAME])[0]) {
             return [$imei0, $imei];
         } else {
             return [$imei, NULL];

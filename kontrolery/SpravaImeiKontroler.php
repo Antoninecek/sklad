@@ -32,8 +32,8 @@ class SpravaImeiKontroler extends Kontroler {
                 $imei = empty($params[3]) ? NULL : $params[3];
                 $imei1 = empty($params[4]) ? NULL : $params[4];
 
-                $sz->pridejZaznam($this->inventuraEan, $imei, $imei1, -1, "1", "inventura");
-                $this->listImei = $sz->ziskejVsechnaImei($params[2]);
+                $sz->pridejZaznam($this->inventuraEan, $imei, $imei1, -1, "1", "inventura", $_COOKIE[COOKIENAME]);
+                $this->listImei = $sz->ziskejVsechnaImei($params[2], $_COOKIE[COOKIENAME]);
                 $this->zobraz = TRUE;
                 $this->akce = "zobraz";
                 break;
@@ -47,7 +47,7 @@ class SpravaImeiKontroler extends Kontroler {
                     
 
 
-                    $sz->pridejZaznam($ean, $imei, $imei1, 1, "1", "inventura");
+                    $sz->pridejZaznam($ean, $imei, $imei1, 1, "1", "inventura", $_COOKIE[COOKIENAME]);
                 }
                 break;
             case "zobraz":
@@ -55,7 +55,7 @@ class SpravaImeiKontroler extends Kontroler {
                 $this->akce = "zobraz";
                 $this->zobraz = TRUE;
                 $this->inventuraEan = $params[2];
-                $this->listImei = $sz->ziskejVsechnaImei($params[2]);
+                $this->listImei = $sz->ziskejVsechnaImei($params[2], $_COOKIE[COOKIENAME]);
                 break;
         }
 

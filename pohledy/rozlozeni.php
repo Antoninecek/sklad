@@ -54,7 +54,6 @@ and open the template in the editor.
                                     <ul class="nav navbar-nav">
                                         <li><a id="pridej" href="pridej">pridej</a></li>
                                         <li><a id="prehled" href="prehled">prehled</a></li>
-                                        <li><a id="synchro" href="synchro">synchronizuj</a></li>
                                         <li><a id="vystav" href="vystav">vystav</a></li>
                                         <li><a id="inventura" href="inventura">inventura</a></li>
                                     </ul>
@@ -66,7 +65,6 @@ and open the template in the editor.
 
                                     <ul class="nav navbar-nav">
                                         <li><a id="logy" href="logy">zaznamy</a></li>
-                                        <li><a id="zaloha" href="zaloh">zalohuj</a></li>
                                         <li><a id="navod" href="navod">navod</a></li>
                                         <?php
                                         if ((!isset($_SESSION['prihlasen']) || !$_SESSION['prihlasen'])) {
@@ -82,12 +80,15 @@ and open the template in the editor.
                                                 <ul class = "dropdown-menu">
                                                     <li><a href = "uzivatel/pridej">pridej</a></li>
                                                     <li><a href = "uzivatel/odeber">odeber</a></li>
+                                                    <li><a id="synchro" href="synchro">synchronizuj</a></li>
+                                                    <li><a id="zaloha" href="zaloh">zalohuj</a></li>
                                                     <li><a href = "uzivatel/odhlasit">logout</a></li>
                                                 </ul>
                                             </li>
                                             <?php
                                         }
                                         ?>
+                                            <li><a <?php echo(isset($_COOKIE[COOKIENAME]) ? 'style="color:green"' : '') ?> id="pobocka" href="pobocka"><?php echo(isset($_COOKIE['pobockaJmeno']) ? $_COOKIE['pobockaJmeno'] : "pobocka") ?></a></li>
                                     </ul>
 
                                 </div>

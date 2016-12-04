@@ -8,7 +8,7 @@
 
 /**
  * Description of TestKontroler
- *
+ * WTF?! PROC JSEM TOHLE DELAL?
  * @author František
  */
 class TestKontroler extends Kontroler {

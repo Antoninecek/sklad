@@ -6,7 +6,7 @@ from (
     from (  
           select ean, imei, imei1, sum(kusy) as kusy 
           from 
-              zarizeni where imei is null 
+              zarizeni where pobocka = 2017 and imei is null 
               group by ean 
               having sum(kusy) != 0 
               
@@ -15,7 +15,7 @@ from (
               select ean, imei, imei1, kusy 
               from 
                   zarizeni 
-                  where imei is not null 
+                  where pobocka = 2017 and imei is not null 
                   group by imei 
                   having sum(kusy) != 0 
           ) as A 
@@ -28,7 +28,7 @@ from (
           select ean, imei, imei1, sum(kusy) as kusy 
           from 
               zarizeni 
-              where imei is null 
+              where pobocka = 2017 and imei is null 
               group by ean 
               having sum(kusy) != 0 
               
@@ -37,7 +37,7 @@ from (
               select ean, imei, imei1, kusy 
                     from 
                         zarizeni 
-                        where imei is not null 
+                        where pobocka = 2017 and imei is not null 
                         group by imei 
                         having sum(kusy) != 0 
           ) as A
