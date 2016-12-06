@@ -31,8 +31,8 @@ class InventuraKontroler extends Kontroler {
 
         $parametr = empty($params[1]) ? NULL : $params[1];
 
-        $iArray = parse_ini_file("inventura.ini");
-        if (empty($iArray['iStop'])) {
+        //$iArray = parse_ini_file("inventura.ini");
+        if (isset($_COOKIE['inventura']) ? $_COOKIE['inventura'] == "TRUE" : FALSE) {
             $this->iAktivni = TRUE;
         } else {
             $this->iAktivni = FALSE;
@@ -136,41 +136,46 @@ class InventuraKontroler extends Kontroler {
             }
             //print_r($exper[0]['imei']);
             //$this->vysledek1 = $exper;
-            $this->vysledek0 = $spravceZaznamu->vratVysledekInventura();
+            $this->vysledek0 = $spravceZaznamu->vratVysledekInventura($_COOKIE[COOKIENAME]);
         }
         $this->pohled = "inventura";
         $this->titulekS = "inventura";
     }
 
     private function endInventuraConfig() {
-        file_put_contents("inventura.ini", 'iStop = "' . date("Y-m-d g:i:s") . '"', FILE_APPEND);
+        setcookie("inventura", "FALSE", time() + (365 * 24 * 60 * 60), "/");
     }
 
     private function initInventuraConfig() {
-        file_put_contents("inventura.ini", 'iStart = "' . date("Y-m-d g:i:s") . "\"\n");
+        setcookie("inventura", "TRUE", time() + (365 * 24 * 60 * 60), "/");
     }
 
     private function zmenvDB($list1, $list2) {
         $sz = new SpravceZaznamu();
         foreach ($list1 as $var => $val) {
-            if ($sz->jeVInventura($var)) {
-                $sz->zmenInventuru($var, $val);
+            if ($sz->jeVInventura($var, $_COOKIE[COOKIENAME])) {
+                //print_r($var . " ". $val);
+                //print_r("<br>");
+                $sz->zmenInventuru($var, $val, $_COOKIE[COOKIENAME]);
             } else {
-                $sz->pridejDoInventura($var, $val);
+                $sz->pridejDoInventura($var, $val, $_COOKIE[COOKIENAME]);
             }
         }
 
         foreach ($list2 as $var => $val) {
-            $sumaDatum = $sz->vratSumuDatum($var, $this->inventuraDatum);
-            $suma = $sz->vratSumu($var);
-            if ($sumaDatum[0] != $suma[0]) {
-                $zmenenePolozky[$var] = ($suma[0] - $sumaDatum[0]);
-            } else {
-                $sz->zmenZarizeni($var, $val - $suma[0]);
+            //$sumaDatum = $sz->vratSumuDatum($var, $_COOKIE[COOKIENAME], $this->inventuraDatum);
+            //print_r($this->inventuraDatum);
+            $suma = $sz->vratSumu($var, $_COOKIE[COOKIENAME]);
+            //if ($sumaDatum[0] != $suma[0]) {
+            //  $zmenenePolozky[$var] = ($suma[0] - $sumaDatum[0]);
+            //print_r($var."<br>");
+            //} else {
+            if ($suma[0] != $val) {
+                $sz->zmenZarizeni($var, $val - $suma[0], $_COOKIE[COOKIENAME]);
             }
         }
 
-        return $zmenenePolozky;
+        return NULL;
     }
 
     private function upload() {
@@ -211,6 +216,7 @@ class InventuraKontroler extends Kontroler {
         $databasetable = "inventura";
         $databaseusername = DBUSER;
         $databasepassword = DBPASS;
+        $pobocka = $_COOKIE[COOKIENAME];
         $fieldseparator = "   ";
         $lineseparator = "\n";
         $csvfile = "up/trans.dat";
@@ -230,13 +236,14 @@ class InventuraKontroler extends Kontroler {
             die("database connection failed: " . $e->getMessage());
         }
 
-        $pdo->exec("TRUNCATE TABLE inventura");
+        $pdo->exec("DELETE FROM inventura WHERE pobocka = " . $_COOKIE[COOKIENAME]);
 
         $affectedRows = $pdo->exec("
-      LOAD DATA LOCAL INFILE " . $pdo->quote($csvfile) . " INTO TABLE `$databasetable`
+      LOAD DATA LOCAL INFILE " . $pdo->quote($csvfile) . " INTO TABLE `$databasetable` 
       FIELDS TERMINATED BY " . $pdo->quote($fieldseparator) . "
-      LINES TERMINATED BY " . $pdo->quote($lineseparator));
-
+      LINES TERMINATED BY " . $pdo->quote($lineseparator) . " (ean, kusy, @pobocka) SET pobocka = " . $_COOKIE[COOKIENAME]);
+//nacpat tam id, menit pobocku pro ids
+        //print_r($affectedRows);
         return $affectedRows;
     }
 

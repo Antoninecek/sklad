@@ -8,10 +8,10 @@ if ($this->errmsg) {
 }
 if ($this->aktivovatUzivatele) {
     ?>
-<div>
+<!--<div>
     <a type="button" class="btn btn-default" href="uzivatel/aktivuj/<?= $_SESSION['udaje']['oscislo'] ?>">Aktualizovat uzivatele <?= $this->udaje['oscislo'] ?> s nove zadanyma hodnotama!</a>
     
-</div>
+</div>-->
     <?php
 }
 ?>

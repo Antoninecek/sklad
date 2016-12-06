@@ -78,7 +78,7 @@ class PridejKontroler extends Kontroler {
                 //print_r($_POST);
 
                 $sz = new SpravceZaznamu();
-                $v = $sz->vratSumuImei($imei);
+                $v = $sz->vratSumuImei($imei, $_COOKIE[COOKIENAME]);
                 $posledniId;
                 //print_r($v);
                 //print_r($_POST['summ']);
@@ -162,25 +162,25 @@ class PridejKontroler extends Kontroler {
 
     public function kontrolaVydejeEAN($ean) {
         $sz = new SpravceZaznamu();
-        return $sz->vratSumu($ean)[0];
+        return $sz->vratSumu($ean, $_COOKIE[COOKIENAME])[0];
     }
 
     public function kontrolaVydeje($imei) {
         $sz = new SpravceZaznamu();
-        return $sz->vratSumuImei($imei)[0];
+        return $sz->vratSumuImei($imei, $_COOKIE[COOKIENAME])[0];
     }
 
     public function loguj($id, $ean, $imei, $imei1, $jmeno) {
         $sz = new SpravceZaznamu();
         $text = "id: " . $id . " ean: " . $ean . " imei: " . $imei . " imei1: " . $imei1 . " jmeno: " . $sz->vratJmenoUzivatele($jmeno)[0];
-        $sz->pridejLog($text);
+        $sz->pridejLog($text, $_COOKIE[COOKIENAME]);
         $this->logMsg = "Byl vydan telefon do minusu, zalogovano.";
     }
 
     public function logujKusy($id, $ean, $imei, $jmeno, $kusy) {
         $sz = new SpravceZaznamu();
         $text = "id: " . $id . " ean: " . $ean . " imei: " . $imei . " kusy: " . $kusy . " jmeno: " . $sz->vratJmenoUzivatele($jmeno)[0];
-        $sz->pridejLog($text);
+        $sz->pridejLog($text, $_COOKIE[COOKIENAME]);
         $this->logMsg = "Bylo vydano zbozi do minusu, zalogovano.";
     }
 

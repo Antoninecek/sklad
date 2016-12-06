@@ -16,7 +16,7 @@ class ZkontrolujImeiKontroler extends Kontroler {
         $sz = new SpravceZaznamu();
         //print_r($params);
         $imei = $this->zjistiImei($params[1])[0];
-        if ($sz->vratSumuImei($imei)[0] > 0) {
+        if ($sz->vratSumuImei($imei, $_COOKIE[COOKIENAME])[0] > 0) {
             ?>
             true
             <?php

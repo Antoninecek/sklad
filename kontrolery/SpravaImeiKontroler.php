@@ -19,6 +19,7 @@ class SpravaImeiKontroler extends Kontroler {
     protected $zobraz = FALSE;
     protected $smaz = FALSE;
     protected $akce = "";
+    protected $msg = "";
 
     public function zpracuj($params) {
 
@@ -44,14 +45,18 @@ class SpravaImeiKontroler extends Kontroler {
                     $ean = empty($_POST['ean']) ? NULL : $_POST['ean'];
                     $imei = empty($_POST['imei']) ? NULL : $_POST['imei'];
                     $imei1 = empty($_POST['imei1']) ? NULL : $_POST['imei1'];
-                    
 
-
-                    $sz->pridejZaznam($ean, $imei, $imei1, 1, "1", "inventura", $_COOKIE[COOKIENAME]);
+                    $v = $sz->vratSumuImei($imei, $_COOKIE[COOKIENAME]);
+                    if ($v[0] > 0) {
+                        $this->msg += "Imei je uz pridanej, ";
+                    } else {
+                        $this->msg += "Pridano, ";
+                        $sz->pridejZaznam($ean, $imei, $imei1, 1, "1", "inventura", $_COOKIE[COOKIENAME]);
+                    }
                 }
                 break;
             case "zobraz":
-                
+
                 $this->akce = "zobraz";
                 $this->zobraz = TRUE;
                 $this->inventuraEan = $params[2];

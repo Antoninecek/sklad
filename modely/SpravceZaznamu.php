@@ -13,6 +13,22 @@
  */
 class SpravceZaznamu {
     
+    public function zmenHeslo($oscislo, $heslo){
+        return Db::dotazJeden("update uzivatele set heslo = ? where oscislo = ?", array($heslo, $oscislo));
+    }
+    
+    public function vratEmail($oscislo){
+        return Db::dotazJeden("select email from uzivatele where oscislo = ?", array($oscislo));
+    }
+    
+    public function vratUzivatele($id){
+        return Db::dotazJeden("select * from uzivatele where id = ?", array($id));
+    }
+
+    public function zmenUzivatele($id, $jmeno, $email, $aktivni, $admin){
+        return Db::dotazJeden("update uzivatele set jmeno = ?, email = ?, aktivni = ?, admin = ? where id = ?", array($jmeno, $email, $aktivni, $admin, $id));
+    }
+
     public function vratInfoSapEan($ean){
         return Db::dotazJeden("SELECT * FROM sap WHERE ean = ?", array($ean));
     }
@@ -29,8 +45,8 @@ class SpravceZaznamu {
         return Db::dotazVsechny("select * from logy where pobocka = ?", array($pobocka));
     }
     
-    public function vratVysledekInventura(){
-        return Db::dotazVsechny("select D.ean, imei, imei1, zarKusy, invKusy, zbozi, model, popis, sapKusy, C.celkem from (  select B.ean, B.imei, B.imei1, B.zarKusy, B.invKusy, zbozi, model, popis, sap.kusy as sapKusy from ( select coalesce(A.ean, inventura.ean) as ean, imei, imei1, A.kusy as zarKusy, inventura.kusy as invKusy from ( select ean, imei, imei1, sum(kusy) as kusy from zarizeni where pobocka = 2017 and imei is null group by ean having sum(kusy) != 0  union  select ean, imei, imei1, kusy from zarizeni where pobocka = 2017 and imei is not null group by imei having sum(kusy) != 0 ) as A left join inventura on A.ean = inventura.ean  union  select coalesce(A.ean, inventura.ean) as ean, imei, imei1, A.kusy as zarKusy, inventura.kusy as invKusy from ( select ean, imei, imei1, sum(kusy) as kusy from zarizeni where pobocka = 2017 and imei is null group by ean having sum(kusy) != 0  union  select ean, imei, imei1, kusy from zarizeni where pobocka = 2017 and imei is not null group by imei having sum(kusy) != 0 ) as A right join inventura on A.ean = inventura.ean ) as B     left join sap on B.ean = sap.ean order by ean  ) as D  left join (select sum(kusy) as celkem, ean from zarizeni where imei is not null group by ean having sum(kusy) != 0) as C on D.ean = C.ean ");
+    public function vratVysledekInventura($pobocka){
+        return Db::dotazVsechny("select D.ean, imei, imei1, zarKusy, invKusy, zbozi, model, popis, sapKusy, C.celkem, D.pobocka from (  select B.ean, B.imei, B.imei1, B.zarKusy, B.invKusy, zbozi, model, popis, sap.kusy as sapKusy, B.pobocka from ( select coalesce(A.ean, inventura.ean) as ean, imei, imei1, A.kusy as zarKusy, inventura.kusy as invKusy, A.pobocka from ( select ean, imei, imei1, sum(kusy) as kusy, pobocka from zarizeni where pobocka = ? and imei is null group by ean having sum(kusy) != 0  union  select ean, imei, imei1, kusy, pobocka from zarizeni where pobocka = ? and imei is not null group by imei having sum(kusy) != 0 ) as A left join inventura on A.ean = inventura.ean and A.pobocka = inventura.pobocka  union  select coalesce(A.ean, inventura.ean) as ean, imei, imei1, A.kusy as zarKusy, inventura.kusy as invKusy, A.pobocka from ( select ean, imei, imei1, sum(kusy) as kusy, pobocka from zarizeni where pobocka = ? and imei is null group by ean having sum(kusy) != 0  union  select ean, imei, imei1, kusy, pobocka from zarizeni where pobocka = ? and imei is not null group by imei having sum(kusy) != 0 ) as A right join inventura on A.ean = inventura.ean and A.pobocka = inventura.pobocka ) as B     left join sap on B.ean = sap.ean order by ean  ) as D  left join (select sum(kusy) as celkem, ean from zarizeni where imei is not null group by ean having sum(kusy) != 0) as C on D.ean = C.ean having D.pobocka = ?", array($pobocka, $pobocka, $pobocka, $pobocka, $pobocka));
     }
     
     public function ziskejNazevPobocky($pobocka){
@@ -94,7 +110,7 @@ class SpravceZaznamu {
     }
 
     public function existenceHeslaUzivatele($heslo) {
-        return Db::dotazJeden('SELECT oscislo FROM uzivatele WHERE heslo = ?', $heslo);
+        return Db::dotazJeden('SELECT oscislo FROM uzivatele WHERE heslo = ?', array($heslo));
     }
 
     public function existenceEmailuUzivatele($email) {
@@ -109,6 +125,10 @@ class SpravceZaznamu {
         return Db::dotazJeden('Select * FROM uzivatele WHERE oscislo = ? AND heslo = ? AND admin = 1', $udaje);
     }
 
+    public function vypisVsechnyUzivatele($pobocka){
+        return Db::dotazJeden('SELECT * FROM uzivatele WHERE pobocka = ? order by oscislo', array($pobocka));
+    }
+    
     public function vypisAktivniUzivatele($pobocka) {
         return Db::dotazVsechny('SELECT * FROM uzivatele WHERE aktivni = 1 AND pobocka = ?', array($pobocka));
     }
@@ -148,11 +168,9 @@ class SpravceZaznamu {
         }
     }
 
-    
-    // opravit select z inventury na fucking pobocku
-    public function pridejDoInventura($ean, $kusy) {
+    public function pridejDoInventura($ean, $kusy, $pobocka) {
         return Db::vlozZaznam(
-                        'INSERT INTO inventura (ean, kusy) VALUES(?,?)', array($ean, $kusy)
+                        'INSERT INTO inventura (ean, kusy, pobocka) VALUES(?,?,?)', array($ean, $kusy, $pobocka)
         );
     }
 
@@ -160,24 +178,24 @@ class SpravceZaznamu {
         return Db::dotazJeden('update logy set vyreseno = ? where ID = ?', array($hodnota, $id));
     }
 
-    public function pridejLog($text) {
-        return Db::dotazJeden('INSERT into logy (text) values (?)', array($text));
+    public function pridejLog($text, $pobocka) {
+        return Db::dotazJeden('INSERT into logy (text, pobocka) values (?, ?)', array($text, $pobocka));
     }
 
-    public function vratSumuImei($imei) {
-        return Db::dotazJeden('select sum(kusy) from zarizeni where imei = ? OR imei1 = ?', array($imei, $imei));
+    public function vratSumuImei($imei, $pobocka) {
+        return Db::dotazJeden('select sum(kusy) from zarizeni where imei = ? OR imei1 = ? AND pobocka = ?', array($imei, $imei, $pobocka));
     }
 
-    public function jeVInventura($ean) {
-        return Db::dotazJeden('select 1 from inventura where ? in (select ean from inventura)', array($ean));
+    public function jeVInventura($ean, $pobocka) {
+        return Db::dotazJeden('select 1 from inventura where ? in (select ean from inventura where pobocka = ?)', array($ean, $pobocka));
     }
 
-    public function zmenInventuru($ean, $hodnota) {
-        return Db::dotazJeden('UPDATE inventura SET kusy = ? WHERE ean = ?', array($hodnota, $ean));
+    public function zmenInventuru($ean, $hodnota, $pobocka) {
+        return Db::dotazJeden('UPDATE inventura SET kusy = ? WHERE ean = ? AND pobocka = ?', array($hodnota, $ean, $pobocka));
     }
 
-    public function zmenZarizeni($ean, $kusy) {
-        return Db::dotazJeden('INSERT INTO zarizeni (ean, imei, kusy, jmeno) VALUES(?, NULL, ?, "1")', array($ean, $kusy));
+    public function zmenZarizeni($ean, $kusy, $pobocka) {
+        return Db::dotazJeden('INSERT INTO zarizeni (ean, imei, kusy, jmeno, pobocka) VALUES(?, NULL, ?, "1", ?)', array($ean, $kusy, $pobocka));
     }
 
     public function ziskejOra($ean) {
@@ -188,36 +206,38 @@ class SpravceZaznamu {
         return Db::dotazJeden('SELECT ean from sap WHERE zbozi = ?', array($ora));
     }
 
-    public function zobrazZaznamyEAN($ean) {
-        return Db::dotazVsechny('SELECT zarizeni.ID, imei, imei1, kusy, uzivatele.jmeno, zarizeni.text, zarizeni.datum FROM zarizeni, uzivatele WHERE ean = ? AND uzivatele.oscislo = zarizeni.jmeno', array($ean));
+    public function zobrazZaznamyEAN($ean, $pobocka) {
+        return Db::dotazVsechny('SELECT zarizeni.ID, imei, imei1, kusy, uzivatele.jmeno, zarizeni.text, zarizeni.datum FROM zarizeni, uzivatele WHERE ean = ? AND pobocka = ? AND uzivatele.oscislo = zarizeni.jmeno', array($ean, $pobocka));
     }
 
-    public function zobrazZaznamyORA($ora) {
+    public function zobrazZaznamyORA($ora, $pobocka) {
         $a = $this->ziskejEan($ora);
-        return $this->zobrazZaznamyEAN($a['ean']);
+        return $this->zobrazZaznamyEAN($a['ean'], $pobocka);
     }
 
-    public function zobrazInfo($ean) {
+    /*public function zobrazInfo($ean) {
         return Db::dotazVsechny('SELECT * FROM zarizeni, sap WHERE zarizeni.? = sap.?', array($ean));
-    }
+    }*/
 
-    public function vratSumu($ean) {
-        return Db::dotazJeden('SELECT SUM(kusy) FROM zarizeni WHERE ean = ?', array($ean));
+    public function vratSumu($ean, $pobocka) {
+        return Db::dotazJeden('SELECT SUM(kusy) FROM zarizeni WHERE ean = ? AND pobocka = ?', array($ean, $pobocka));
     }
     
-    public function vratSumuDatum($ean, $datum){
-        return Db::dotazJeden('SELECT SUM(kusy) FROM zarizeni WHERE ean = ? AND datum < ?', array($ean, $datum));
+    public function vratSumuDatum($ean, $pobocka, $datum){
+        return Db::dotazJeden('SELECT SUM(kusy) FROM zarizeni WHERE ean = ? AND pobocka = ? AND datum < ?', array($ean, $pobocka, $datum));
     }
 
-    public function vratSumuORA($ora) {
+    public function vratSumuORA($ora, $pobocka) {
         $a = $this->ziskejEan($ora);
-        return $this->vratSumu($a[0]);
+        return $this->vratSumu($a[0], $pobocka);
     }
 
     public function vratVsechno($dotaz) {
         return Db::dotazVsechny($dotaz);
     }
 
+    
+    // lepsi zamereni, zatim neupravene na pobocku!
     public function zobrazNevystavene() {
         return Db::dotazVsechny('select R.ean, R.zbozi, R.popis, R.model as item, R.zarKusy, R.sapKusy as sapKusy, vystav.kusy as vysKusy, vystav.skup from ( select sap.ean, model, zbozi, popis, sum(zarizeni.kusy) as zarKusy, sap.kusy as sapKusy from zarizeni left join sap on sap.ean = zarizeni.ean group by sap.ean ) as R left join vystav on R.zbozi = vystav.ora group by zbozi having vystav.kusy = 0');
     }

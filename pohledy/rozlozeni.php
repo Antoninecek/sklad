@@ -50,20 +50,22 @@ and open the template in the editor.
 
                             <div class="row">
                                 <div class="col-lg-12">
-
-                                    <ul class="nav navbar-nav">
+ 
+                                    <ul class="nav navbar-nav <?php echo strpos($_SERVER['REQUEST_URI'], "spravaimei")? "hidden" : "" ?>">
                                         <li><a id="pridej" href="pridej">pridej</a></li>
                                         <li><a id="prehled" href="prehled">prehled</a></li>
                                         <li><a id="vystav" href="vystav">vystav</a></li>
                                         <li><a id="inventura" href="inventura">inventura</a></li>
                                     </ul>
 
+                                    <?php echo strpos($_SERVER['REQUEST_URI'], "spravaimei")? "<center>zavri toto okno pro pokracovani v inventure</center>" : "" ?>
+                                    
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
 
-                                    <ul class="nav navbar-nav">
+                                    <ul class="nav navbar-nav <?php echo strpos($_SERVER['REQUEST_URI'], "spravaimei")? "hidden" : "" ?>">
                                         <li><a id="logy" href="logy">zaznamy</a></li>
                                         <li><a id="navod" href="navod">navod</a></li>
                                         <?php
@@ -79,7 +81,7 @@ and open the template in the editor.
                                                     <span class = "caret"> </span> uzivatel</a>
                                                 <ul class = "dropdown-menu">
                                                     <li><a href = "uzivatel/pridej">pridej</a></li>
-                                                    <li><a href = "uzivatel/odeber">odeber</a></li>
+                                                    <li><a href = "uzivatel/zobraz">zobraz</a></li>
                                                     <li><a id="synchro" href="synchro">synchronizuj</a></li>
                                                     <li><a id="zaloha" href="zaloh">zalohuj</a></li>
                                                     <li><a href = "uzivatel/odhlasit">logout</a></li>

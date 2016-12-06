@@ -52,12 +52,14 @@ class PobockaKontroler extends Kontroler {
 
     private function nastavCookie($id, $jmeno) {
         setcookie(COOKIENAME, $id, time() + (365 * 24 * 60 * 60), "/");
+        setcookie("inventura", "FALSE", time() + (365 * 24 * 60 * 60), "/");
         return setcookie("pobockaJmeno", $jmeno, time() + (365 * 24 * 60 * 60), "/");
     }
 
     private function zrusCookie($id, $jmeno) {
-        setcookie(COOKIENAME, $id, time() - (365 * 24 * 60 * 60), "/");
-        return setcookie("pobockaJmeno", $jmeno, time() - (365 * 24 * 60 * 60), "/");
+        setcookie("pobockaJmeno", $jmeno, time() - (365 * 24 * 60 * 60), "/");
+        setcookie("inventura", "", time() - (365 * 24 * 60 * 60), "/");
+        return setcookie(COOKIENAME, $id, time() - (365 * 24 * 60 * 60), "/");
     }
 
 }

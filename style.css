@@ -59,11 +59,11 @@ header nav ul :hover{
 }
 
 #zaloha:hover:after {
-    content: " databazi";
+    content: "";
 }
 
 #synchro:hover:after {
-    content: " se SAP";
+    content: "";
 }
 
 #inventura:hover:after {

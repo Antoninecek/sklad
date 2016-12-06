@@ -13,6 +13,7 @@
 ?>-->
 
 <?php
+//print_r($_COOKIE);
 if (!$this->iAktivni) {
     ?>
     <form action = "inventura/zahaj" method = "post" enctype = "multipart/form-data">
@@ -31,8 +32,8 @@ if (!$this->iAktivni) {
     <br>
     <br>
     <br>
-    <!--
-    <table>
+    
+    <!--<table>
         <thead>zmenene polozky behem dohledavani</thead>
         <tr>
     <?php

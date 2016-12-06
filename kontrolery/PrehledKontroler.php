@@ -27,15 +27,15 @@ class PrehledKontroler extends Kontroler {
             
             $this->ean = $_POST['eankod'];
             
-            $this->vysledek = $spravceZaznamu->zobrazZaznamyEAN($this->ean);
-            $this->suma = $spravceZaznamu->vratSumu($this->ean);
+            $this->vysledek = $spravceZaznamu->zobrazZaznamyEAN($this->ean,$_COOKIE[COOKIENAME]);
+            $this->suma = $spravceZaznamu->vratSumu($this->ean, $_COOKIE[COOKIENAME]);
         }
         else if (isset ($_POST['submit']) && $_POST['submit'] == 'oraKodSubmit'){
             $this->ora = $_POST['orakod'];
             
-            $this->vysledek = $spravceZaznamu->zobrazZaznamyORA($this->ora);
+            $this->vysledek = $spravceZaznamu->zobrazZaznamyORA($this->ora, $_COOKIE[COOKIENAME]);
             
-            $this->suma = $spravceZaznamu->vratSumuORA($this->ora);
+            $this->suma = $spravceZaznamu->vratSumuORA($this->ora, $_COOKIE[COOKIENAME]);
         }
         
         /*if (isset($_POST['ean'])) {

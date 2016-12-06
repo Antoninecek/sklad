@@ -18,6 +18,8 @@ class UzivatelKontroler extends Kontroler {
     protected $aktivovatUzivatele = FALSE;
     protected $udaje;
     protected $vypsatUdaje = FALSE;
+    protected $uzivatel;
+    protected $upraveno;
 
     public function zpracuj($params) {
         $sz = new SpravceZaznamu();
@@ -30,8 +32,20 @@ class UzivatelKontroler extends Kontroler {
                     $this->pridejUzivatele($_POST['pridejFormOscislo'], $_POST['pridejFormJmeno'], $_POST['pridejFormHeslo'], $_POST['pridejFormEmail']);
                     $this->pohled = "uzivatel-pridej";
                     break;
+                case "uprav":
+                    $this->uzivatel = $sz->vratUzivatele($params[2]);
+                    $this->pohled = "uzivatel-uprav";
+                    break;
+                case "upraveno":
+                    $this->upraveno = "zavri tohle okno";
+                    $sz->zmenUzivatele($_POST['id'], $_POST['jmeno'], $_POST['email'], $_POST['aktivni'], $_POST['admin']);
+                    $this->pohled = "uzivatel-uprav";
+                    break;
+                case "zobraz":
+                    $this->vsichniUzivatele = $sz->vypisAktivniUzivatele($_COOKIE[COOKIENAME]);
+                    $this->pohled = "uzivatel-zobraz";
+                    break;
                 case "odeber":
-
                     $this->vsichniUzivatele = $sz->vypisAktivniUzivatele($_COOKIE[COOKIENAME]);
                     $this->pohled = "uzivatel-odeber";
                     break;
@@ -45,9 +59,6 @@ class UzivatelKontroler extends Kontroler {
 
                     $this->vsichniUzivatele = $sz->vypisAktivniUzivatele($_COOKIE[COOKIENAME]);
                     $this->pohled = "uzivatel-odeber";
-                    break;
-                case "heslo":
-                    $this->pohled = "zapomenute-heslo";
                     break;
 
                 case "odhlasit":
@@ -84,6 +95,31 @@ class UzivatelKontroler extends Kontroler {
                         //print_r($_SESSION);
                     }
                     break;
+                case "zapomenute":
+                    if ($sz->vratEmail($_POST['oscislo'])[0] == $_POST['email']) {
+                        $newpass;
+                        do {
+                            $newpass = rand(123456789, 987654321);
+                        } while ($this->existenceHesla($newpass) != FALSE);
+                        $headers = 'From: admin@fandasoft.cz';
+                        mail($_POST['email'], "fandasoft heslo", $newpass, $headers);
+                    } else {
+                        $this->errmsg = "informace se neshoduji";
+                    }
+                    $this->pohled = "uzivatel";
+                    break;
+                case "zmena-hesla":
+                    if ($this->zkontrolujUzivatele($_POST['oscislo'], $_POST['starepasswd'])) {
+                        if ($this->existenceHesla($_POST['novepasswd']) == FALSE && $this->existenceUzivatele($_POST['oscislo'])) {
+                            $sz->zmenHeslo($_POST['oscislo'], $_POST['novepasswd']);
+                            $this->errmsg = "zmeneno";
+                        } else {
+                            $this->errmsg = "heslo jiz existuje";
+                        }
+                    } else {
+                        $this->errmsg = "spatne heslo";
+                    }
+                    break;
             }
 
             $this->pohled = "uzivatel";
@@ -92,6 +128,11 @@ class UzivatelKontroler extends Kontroler {
         $this->titulekS = "uzivatel";
     }
 
+    private function zkontrolujUzivatele($oscislo, $heslo){
+        $sz = new SpravceZaznamu();
+        return $sz->zjistiHeslo($oscislo)[0] == $heslo;
+    }
+    
     private function prihlasUzivatele($oscislo, $heslo) {
         $sz = new SpravceZaznamu();
         if (!empty($vysledek = $sz->prihlasAdmina(array($oscislo, $heslo)))) {
