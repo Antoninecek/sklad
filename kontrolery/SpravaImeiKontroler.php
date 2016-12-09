@@ -48,11 +48,14 @@ class SpravaImeiKontroler extends Kontroler {
 
                     $v = $sz->vratSumuImei($imei, $_COOKIE[COOKIENAME]);
                     if ($v[0] > 0) {
-                        $this->msg += "Imei je uz pridanej, ";
+                        $this->msg = "Imei je uz pridanej";
                     } else {
-                        $this->msg += "Pridano, ";
+                        $this->msg = "Pridano";
                         $sz->pridejZaznam($ean, $imei, $imei1, 1, "1", "inventura", $_COOKIE[COOKIENAME]);
                     }
+                    $_SESSION['errmsg'] = $this->msg;
+                    
+                    //  123456789012412 8806088361810
                 }
                 break;
             case "zobraz":

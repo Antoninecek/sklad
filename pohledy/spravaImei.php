@@ -1,6 +1,7 @@
 
 <?php
 if ($this->pridej) {
+    print_r($_SESSION['errmsg']);
     ?>
 
     <form id="" role="form" method="post" action="spravaimei/pridej">
@@ -50,7 +51,14 @@ if ($this->pridej) {
             <tr>
                 <td><?= $b['imei'] ?></td>
                 <td><?= $b['imei1'] ?></td>
-                <td><a href="spravaimei/smaz/<?= $this->inventuraEan ?>/<?= $b['imei'] ?>/<?= $b['imei1'] ?>" class="btn btn-default">smaz</a></td>
+                <td><?= $b['sum(kusy)'] ?>x</td>
+                <td><a href="<?php
+                    echo(
+                    !empty($b['imei']) && $b['sum(kusy)'] < 0 ? 'spravaimei/pridej/' + $this->inventuraEan + '/' + $b['imei'] + '/' + $b['imei1'] : 'spravaimei/smaz/' + $this->inventuraEan + '/' + $b['imei'] + '/' + $b['imei1']
+                    )
+                    ?>" class="btn btn-default"><?php echo(
+               !empty($b['imei']) && $b['sum(kusy)'] < 0 ? "srovnej" : "smaz")
+                    ?></a></td>
             </tr>
             <?php
         }
@@ -59,16 +67,16 @@ if ($this->pridej) {
     <?php
 }
 ?>
-
+    
 <script type="text/javascript">
 
     $(document).ready(function () {
         console.log(window.location.href);
         console.log("<?= $this->akce ?>");
-        if (window.location.href != "http://<?= SERVERURL ?><?= PATHBASE ?>spravaimei/<?= $this->akce ?>/<?= $this->inventuraEan ?>") {
-            window.location.replace("spravaimei/<?= $this->akce ?>/<?= $this->inventuraEan ?>");
-            //console.log("http://<?= SERVERURL ?><?= PATHBASE ?>spravaimei/<?= $this->akce ?>/<?= $this->inventuraEan ?>");
-        }
+        /**if (window.location.href != "http://<?= SERVERURL ?><?= PATHBASE ?>spravaimei/<?= $this->akce ?>/<?= $this->inventuraEan ?>") {
+         window.location.replace("spravaimei/<?= $this->akce ?>/<?= $this->inventuraEan ?>");
+         //console.log("http://<?= SERVERURL ?><?= PATHBASE ?>spravaimei/<?= $this->akce ?>/<?= $this->inventuraEan ?>");
+         }**/
 
         $('#inventuraPridejFormEan').on('input', function () {
             if (document.getElementById('inventuraSkok').checked) {
